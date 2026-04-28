@@ -1,0 +1,272 @@
+/* ================================================================
+   NAVBAR.CSS
+   ================================================================ */
+
+/* ── Navbar-Wrapper ─────────────────────────────────────────────── */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-navbar);
+  background: rgba(18, 18, 18, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: box-shadow var(--t-normal);
+}
+
+.navbar.scrolled {
+  box-shadow: var(--shadow-md);
+}
+
+[data-theme="light"] .navbar {
+  background: rgba(250, 247, 244, 0.88);
+}
+
+/* ── Container ──────────────────────────────────────────────────── */
+.nav-container {
+  position: relative;           /* Anker für absolut-positionierten Titel */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.9rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ── Logo-Bereich (linke Seite) ─────────────────────────────────── */
+.nav-logo-area {
+  display: flex;
+  align-items: center;
+  min-width: 0;                 /* darf schrumpfen */
+  flex-shrink: 1;
+}
+
+/* ── Home-Logo ──────────────────────────────────────────────────── */
+.logo-home {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: transform var(--t-fast);
+}
+
+.logo-home:hover {
+  transform: translateY(-1px);
+}
+
+/* ── Sub-Logo (Unterseiten) ─────────────────────────────────────── */
+.logo-sub {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+/* ← Parent-Button */
+.nav-back-btn {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition:
+    background var(--t-fast),
+    color      var(--t-fast),
+    border-color var(--t-fast),
+    transform  var(--t-fast);
+}
+
+.nav-back-btn:hover {
+  background: var(--primary);
+  color: var(--text-on-primary);
+  border-color: var(--primary);
+  transform: translateX(-2px);
+}
+
+/* Logo-Icon (Klickbereich) */
+.logo-icon-link {
+  flex-shrink: 0;
+  display: flex;
+  text-decoration: none;
+}
+
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(
+    45deg,
+    rgba(var(--text-on-primary-rgb), 0.9),
+    rgba(var(--secondary-dark-rgb), 0.8)
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-on-primary);
+  box-shadow: inset 0 1px 0 var(--primary-light);
+  overflow: hidden;
+}
+
+.logo-icon img {
+  width: 85%;
+  height: 85%;
+  object-fit: contain;
+}
+
+/* History-Button ("Portfolio" / "Zurück") */
+.logo-prev-name {
+  /* Layout */
+  min-width: 0;
+  max-width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding: 0.25rem 0.5rem;
+
+  /* Darstellung */
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-decoration: none;
+
+  /* Transition – deckt ALLE veränderbaren Eigenschaften ab */
+  transition:
+    color      var(--t-fast),
+    max-width  350ms ease,
+    opacity    350ms ease,
+    padding    350ms ease;
+}
+
+.logo-prev-name:hover {
+  color: var(--primary);
+}
+
+/* Versteckt-Zustand — physisch auf 0 schrumpfen, kein Layout-Sprung */
+.logo-prev-name.nav-label-hidden {
+  max-width: 0 !important;
+  opacity:   0 !important;
+  padding:   0 !important;
+  pointer-events: none;
+}
+
+/* Home-Logo-Name */
+.logo-name {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* ── Seiten-Titel (mittig, absolut) ─────────────────────────────── */
+.nav-page-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+
+  /* Breite begrenzen damit er nicht zu viel Platz beansprucht */
+  max-width: 40%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  /* Typografie */
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.01em;
+
+  /* Standardmäßig unsichtbar */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--t-normal);
+}
+
+/* Sichtbar nach setPageTitle() */
+.nav-page-title.visible {
+  opacity: 1;
+}
+
+/* Versteckt wenn Kollision erkannt — sofort, kein Fade */
+.nav-page-title.collision-hidden {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
+/* ── Burger-Menü ────────────────────────────────────────────────── */
+.menu-btn {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 44px;
+  height: 44px;
+  gap: 5px;
+  border-radius: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.menu-btn span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--text-primary);
+  border-radius: 2px;
+  transition: all var(--t-normal);
+}
+
+/* Burger → X */
+.menu-btn.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.menu-btn.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-btn.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* ── Responsive ─────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .nav-container {
+    padding: 0.75rem 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .nav-container {
+    padding: 0.65rem 1rem;
+  }
+
+  .logo-name {
+    font-size: 1rem;
+  }
+
+  .nav-page-title {
+    max-width: 30%;
+    font-size: 0.78rem;
+  }
+
+  .logo-prev-name:not(.nav-label-hidden) {
+    max-width: 120px;
+    font-size: 0.9rem;
+  }
+}

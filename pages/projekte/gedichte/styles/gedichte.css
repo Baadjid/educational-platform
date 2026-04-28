@@ -1,0 +1,628 @@
+/* ================================================================
+   GEDICHTE.CSS
+   ================================================================ */
+
+/* Caveat Font von Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,500;1,300;1,500&display=swap');
+
+/* ================================================================
+   HERO
+   ================================================================ */
+
+.gedichte-hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-primary);
+  padding: 5rem 2rem;
+  text-align: center;
+}
+
+.gedichte-hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.gedichte-hero-orb {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(145, 70, 255, 0.12) 0%,
+    rgba(201, 168, 124, 0.06) 40%,
+    transparent 70%);
+  animation: orbPulse 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes orbPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+  50%       { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+}
+
+.gedichte-eyebrow {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.gedichte-headline {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 300;
+  line-height: 1.2;
+  color: var(--text-primary);
+  margin-bottom: 3rem;
+}
+
+.gedichte-headline em {
+  font-style: italic;
+  color: var(--primary);
+}
+
+.gedichte-scroll-hint {
+  margin-top: 2rem;
+}
+
+.gedichte-scroll-mouse {
+  width: 24px;
+  height: 40px;
+  border: 2px solid rgba(201, 168, 124, 0.3);
+  border-radius: 20px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.gedichte-scroll-wheel {
+  width: 5px;
+  height: 5px;
+  background: var(--primary);
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  top: 7px;
+  transform: translateX(-50%);
+  animation: scrollDot 1.6s ease-in-out infinite;
+}
+
+@keyframes scrollDot {
+  0%   { transform: translateX(-50%) translateY(0); opacity: 1; }
+  100% { transform: translateX(-50%) translateY(14px); opacity: 0; }
+}
+
+/* ================================================================
+   POETRY SECTION
+   ================================================================ */
+
+.poetry-section {
+  min-height: 100vh;
+  padding: 5rem 0;
+  background: linear-gradient(to bottom, var(--bg-primary), var(--bg-secondary));
+  position: relative;
+  z-index: 1;
+}
+
+.poetry-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* ================================================================
+   POETRY TABS
+   ================================================================ */
+
+.poetry-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 3rem;
+  padding: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  justify-content: center;
+}
+
+.poetry-tabs::-webkit-scrollbar { display: none; }
+
+.poetry-tab {
+  flex-shrink: 0;
+  padding: 10px 24px;
+  background: transparent;
+  border: none;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--t-normal);
+  font-family: inherit;
+}
+
+.poetry-tab:hover { color: var(--text-primary); }
+
+.poetry-tab.active {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-md);
+}
+
+.poetry-tab i { margin-right: 8px; }
+
+/* ================================================================
+   POETRY LAYOUT
+   ================================================================ */
+
+.poetry-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) 2fr;
+  gap: 4rem;
+}
+
+.poetry-list-wrap { position: relative; }
+
+.poetry-list-label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1.25rem;
+}
+
+.poetry-list-label::before,
+.poetry-list-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.poetry-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* ================================================================
+   POEM BUTTONS (Liste links)
+   ================================================================ */
+
+.poem-btn {
+  width: 100%;
+  text-align: left;
+  padding: 1.125rem;
+  border-radius: 12px;
+  border: 1px solid rgba(201, 168, 124, 0.06);
+  background: rgba(255, 255, 255, 0.03);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s ease;
+  color: var(--text-primary);
+  font-family: inherit;
+}
+
+.poem-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(201, 168, 124, 0.1), rgba(141, 110, 76, 0.06));
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+
+.poem-btn:hover::before { transform: translateX(0); }
+
+/* AKTIV — Hervorhebung */
+.poem-btn.active {
+  background: rgba(201, 168, 124, 0.1);
+  border-color: rgba(201, 168, 124, 0.3);
+  border-left: 3px solid var(--primary);
+  box-shadow: 0 4px 16px rgba(201, 168, 124, 0.12);
+}
+
+.poem-btn.active h3 {
+  color: var(--primary) !important;
+  font-weight: 600;
+}
+
+.poem-btn-num {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  font-family: monospace;
+}
+
+.poem-btn h3 {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-size: 1.15rem;
+  margin-bottom: 0.35rem;
+  color: var(--text-secondary);
+  transition: color 0.3s;
+  position: relative;
+}
+
+.poem-btn:hover h3 { color: var(--text-primary); }
+
+.poem-btn p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  position: relative;
+}
+
+/* ================================================================
+   POEM DISPLAY (rechts)
+   ================================================================ */
+
+.poem-display {
+  opacity: 0;
+  animation: poemIn 0.6s ease-out forwards;
+}
+
+@keyframes poemIn {
+  from { opacity: 0; transform: scale(0.97) translateY(30px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ================================================================
+   POEM CARD — BASIS
+   ================================================================ */
+
+.poem-card {
+  position: relative;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 24px;
+  padding: clamp(2rem, 5vw, 3.5rem);
+  border: 1px solid rgba(201, 168, 124, 0.15);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  transition: background 0.4s ease, border-color 0.4s ease;
+
+  /* Basis-Fallback */
+  background: linear-gradient(135deg, rgba(201, 168, 124, 0.1), rgba(201, 168, 124, 0.05));
+}
+
+/* Linienstruktur-Overlay */
+.poem-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 39px,
+    rgba(255, 255, 255, 0.02) 39px,
+    rgba(255, 255, 255, 0.02) 40px
+  );
+  border-radius: 24px;
+  pointer-events: none;
+  opacity: 0.5;
+  z-index: 0;
+}
+
+/* ================================================================
+   POEM CARD — INHALTE
+   ================================================================ */
+
+/* Goldener Glow-Rand oben */
+.poem-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--poem-accent, var(--primary)),
+    transparent
+  );
+  border-radius: 0 0 4px 4px;
+  opacity: 0.7;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ================================================================
+   TEXT BOX — Lesbarkeits-Overlay mit Blur hinter dem Text
+   ================================================================ */
+
+.poem-text-box {
+  position: relative;
+  z-index: 2;
+  background: rgba(14, 10, 8, 0.62);
+  backdrop-filter: blur(5px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border-radius: 16px;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 8px 32px rgba(0, 0, 0, 0.35);
+  transition:
+    background 0.35s ease,
+    border-color 0.35s ease,
+    backdrop-filter 0.35s ease;
+}
+
+/* Subtile innere Glut-Linie oben passend zum Akzent */
+.poem-text-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 15%;
+  right: 15%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--poem-accent, var(--primary)) 60%, transparent),
+    transparent
+  );
+  border-radius: 0 0 2px 2px;
+  pointer-events: none;
+}
+
+/* ── Light Mode ── */
+[data-theme="light"] .poem-text-box {
+  /* Helles, milchiges Frosted-Glass */
+  background: rgba(255, 252, 248, 0.6);
+  border-color: rgba(0, 0, 0, 0.07);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+.quote-mark {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  width: 52px;
+  height: 52px;
+  opacity: 0.08;
+  color: var(--poem-accent, var(--primary));
+  z-index: 2;
+}
+
+.poem-title-el {
+  font-family: 'Caveat', 'Cormorant Garamond', cursive;
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  position: relative;
+  z-index: 1;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+}
+
+.poem-dateline {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.poem-dateline::before {
+  content: '';
+  width: 3rem;
+  height: 1px;
+  background: linear-gradient(to right, var(--primary), transparent);
+}
+
+.poem-dateline span {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+.poem-text-area {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Gedicht-Text: Caveat-Schrift ── */
+.poem-stanza {
+  font-family: 'Caveat', 'Cormorant Garamond', cursive;
+  font-size: 1.35rem;
+  line-height: 1.85;
+  letter-spacing: 0.01em;
+  color: var(--text-primary);
+  white-space: pre-line;
+  margin-bottom: 1.75rem;
+  padding-left: 1.25rem;
+  border-left: 2px solid rgba(201, 168, 124, 0.2);
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: stanzaIn 0.6s ease-out forwards;
+}
+
+.poem-stanza:nth-child(1) { animation-delay: 0.3s; }
+.poem-stanza:nth-child(2) { animation-delay: 0.45s; }
+.poem-stanza:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes stanzaIn {
+  from { opacity: 0; transform: translateX(-15px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.poem-signature {
+  margin-top: 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  opacity: 0.35;
+  position: relative;
+  z-index: 1;
+}
+
+.poem-signature::before {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--primary), transparent);
+}
+
+/* ================================================================
+   POEM NAVIGATION
+   ================================================================ */
+
+.poem-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.75rem;
+  padding: 0 0.5rem;
+}
+
+.poem-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-family: inherit;
+  transition: color var(--t-fast), transform var(--t-fast);
+}
+
+.poem-nav-btn:hover { color: var(--text-primary); }
+.poem-nav-btn.prev:hover { transform: translateX(-3px); }
+.poem-nav-btn.next:hover { transform: translateX(3px); }
+
+.nav-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color var(--t-fast);
+}
+
+.poem-nav-btn:hover .nav-circle { border-color: var(--primary); }
+
+.poem-counter {
+  font-family: monospace;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+/* ================================================================
+   LIGHT MODE
+   ================================================================ */
+
+[data-theme="light"] .poem-btn.active {
+  background: rgba(184, 148, 90, 0.1);
+  border-color: rgba(184, 148, 90, 0.35);
+  border-left-color: var(--primary);
+  box-shadow: 0 4px 16px rgba(184, 148, 90, 0.1);
+}
+
+[data-theme="light"] .poem-btn.active h3 {
+  color: var(--primary-dark) !important;
+}
+
+/* Light Mode — Textfarben innerhalb der Card */
+[data-theme="light"] .poem-title-el {
+  color: #1a1410;
+}
+
+[data-theme="light"] .poem-stanza {
+  color: #1a1410;
+}
+
+[data-theme="light"] .poem-dateline span {
+  color: #6b5c4a;
+}
+
+[data-theme="light"] .poem-signature {
+  color: #4a3c2e;
+}
+
+
+/* ================================================================
+   RESPONSIVE
+   ================================================================ */
+
+@media (max-width: 1024px) {
+  .poetry-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .poetry-tabs { justify-content: flex-start; }
+
+  .poem-card { padding: 1.5rem; }
+
+  .poem-stanza {
+    font-size: 1.2rem;
+    line-height: 1.75;
+  }
+}
+
+@media (max-width: 600px) {
+  .gedichte-hero { padding: 4rem 1rem; }
+  .gedichte-hero-orb { width: 300px; height: 300px; }
+
+  .poetry-section { padding: 3rem 0; }
+  .poetry-inner { padding: 0 1rem; }
+  .poetry-layout { grid-template-columns: 1fr; gap: 1.5rem; }
+
+  .poetry-tabs { justify-content: flex-start; padding: 4px; }
+  .poetry-tab  { padding: 8px 16px; font-size: 13px; }
+
+  .poem-card { padding: 1.25rem; border-radius: 16px; }
+
+  .poem-stanza { font-size: 1.1rem; }
+
+  .poem-nav {
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  .poem-counter {
+    order: -1;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .poetry-inner  { padding: 0 1rem; }
+  .poem-stanza   { font-size: 1rem; }
+}

@@ -1,0 +1,158 @@
+/* ================================================================
+   pages/projekte/lernzettel/faecher/spanisch/spanisch.css
+   Spanisch · Übersichtsseite + Unterseiten-Basis
+   ================================================================ */
+
+/* ── Flaggen-Deko ────────────────────────────────────────────── */
+.lz-es-flag-deco {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  pointer-events: none; overflow: hidden;
+  opacity: 0.04; z-index: 0;
+}
+.lz-es-flag-stripe          { flex: 1; }
+.lz-es-flag-stripe--red     { background: #e53935; }
+.lz-es-flag-stripe--yellow  { background: #fdd835; flex: 2; }
+
+/* ── Stats ───────────────────────────────────────────────────── */
+.lz-es-stats {
+  display: flex; gap: 2rem; flex-wrap: wrap; margin-top: 1.75rem;
+}
+.lz-es-stat { display: flex; flex-direction: column; gap: .15rem; }
+.lz-es-stat-val {
+  font-size: 1.7rem; font-weight: 700; line-height: 1;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.lz-es-stat-label {
+  font-size: .72rem; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--clr-text-muted, rgba(255,255,255,.5));
+}
+
+/* ── Focus-Grid ──────────────────────────────────────────────── */
+.lz-es-focus-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1rem;
+}
+
+/* ── Focus-Card ──────────────────────────────────────────────── */
+.lz-es-focus-card {
+  position: relative; display: flex; align-items: flex-start;
+  gap: 1rem; padding: 1.25rem 1rem 1.25rem 1.25rem;
+  border-radius: 12px;
+  background: var(--clr-surface-2, rgba(255,255,255,.04));
+  border: 1px solid rgba(var(--focus-color-rgb), .15);
+  cursor: pointer; text-decoration: none; color: inherit;
+  overflow: hidden;
+  transition: background .35s, border-color .35s, transform .35s, box-shadow .35s;
+}
+.lz-es-focus-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(var(--focus-color-rgb),.06) 0%, transparent 60%);
+  opacity: 0; transition: opacity .35s; pointer-events: none;
+}
+.lz-es-focus-card:hover,
+.lz-es-focus-card:focus-visible {
+  background: var(--clr-surface-3, rgba(255,255,255,.07));
+  border-color: rgba(var(--focus-color-rgb), .45);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(var(--focus-color-rgb), .18);
+  outline: none;
+}
+.lz-es-focus-card:hover::before { opacity: 1; }
+
+.lz-es-focus-icon {
+  flex-shrink: 0; width: 42px; height: 42px; border-radius: 10px;
+  background: rgba(var(--focus-color-rgb), .12);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; color: var(--focus-color);
+  transition: background .35s;
+}
+.lz-es-focus-card:hover .lz-es-focus-icon {
+  background: rgba(var(--focus-color-rgb), .22);
+}
+
+.lz-es-focus-body { flex: 1; min-width: 0; }
+.lz-es-focus-badge {
+  display: inline-block; font-size: .65rem; text-transform: uppercase;
+  letter-spacing: .09em; color: var(--focus-color);
+  background: rgba(var(--focus-color-rgb), .12);
+  border-radius: 4px; padding: .15em .5em; margin-bottom: .35rem; font-weight: 600;
+}
+.lz-es-focus-title {
+  font-size: .95rem; font-weight: 700; color: var(--clr-text, #fff);
+  margin-bottom: .3rem; line-height: 1.3;
+}
+.lz-es-focus-desc {
+  font-size: .78rem; color: var(--clr-text-muted, rgba(255,255,255,.55));
+  line-height: 1.5;
+}
+.lz-es-focus-arrow {
+  flex-shrink: 0; font-size: .75rem;
+  color: rgba(var(--focus-color-rgb), .5); align-self: center;
+  transition: transform .3s, color .3s;
+}
+.lz-es-focus-card:hover .lz-es-focus-arrow {
+  transform: translateX(4px); color: var(--focus-color);
+}
+
+/* ── Unterseiten: Sub-Hero ───────────────────────────────────── */
+.lz-es-sub-section { padding-top: 2rem; }
+
+/* ── Ejemplo-Block (inline Spanisch-Beispiel) ────────────────── */
+.lz-es-ejemplo {
+  display: flex; flex-direction: column; gap: .35rem;
+  background: rgba(var(--lz-accent-rgb, 229,57,53), .06);
+  border-left: 3px solid var(--lz-accent, #e53935);
+  border-radius: 0 8px 8px 0;
+  padding: .85rem 1rem; margin: .5rem 0;
+}
+.lz-es-ejemplo-es {
+  font-style: italic; font-weight: 600;
+  color: var(--lz-accent, #e53935); font-size: .95rem;
+}
+.lz-es-ejemplo-de {
+  font-size: .82rem; color: var(--clr-text-muted, rgba(255,255,255,.55));
+}
+
+.lz-es-ejemplo-note {
+  font-size: .75rem; color: var(--clr-text-muted, rgba(255,255,255,.4));
+  font-style: normal;
+}
+
+[data-theme="light"] .lz-es-ejemplo-de   { color: var(--text-primary,#1a1612); }
+[data-theme="light"] .lz-es-ejemplo-note { color: var(--text-secondary,#4a4540); }
+
+/* ── Konjugations-Grid (kompakte Tabelle) ────────────────────── */
+.lz-es-konj-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: .75rem; margin: 1rem 0;
+}
+.lz-es-konj-card {
+  background: var(--clr-surface-2, rgba(255,255,255,.04));
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 10px; padding: 1rem;
+}
+.lz-es-konj-title {
+  font-size: .7rem; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--lz-accent, #e53935); font-weight: 700; margin-bottom: .6rem;
+}
+.lz-es-konj-row {
+  display: flex; justify-content: space-between;
+  font-size: .82rem; padding: .2rem 0;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+}
+.lz-es-konj-row:last-child { border-bottom: none; }
+.lz-es-konj-pro  { color: var(--clr-text-muted, rgba(255,255,255,.5)); }
+.lz-es-konj-form { font-weight: 600; color: var(--clr-text, #fff); }
+.lz-es-konj-form em { color: var(--lz-accent, #e53935); font-style: normal; }
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .lz-es-stats        { gap: 1.25rem; }
+  .lz-es-stat-val     { font-size: 1.4rem; }
+  .lz-es-focus-grid   { grid-template-columns: 1fr; }
+  .lz-es-focus-card   { padding: 1rem; }
+  .lz-es-konj-grid    { grid-template-columns: 1fr; }
+}

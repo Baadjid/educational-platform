@@ -1,0 +1,726 @@
+/* ================================================================
+   WIM.CSS — "Was ich mache" Section — MIT CSS-VARIABLEN
+   ================================================================ */
+
+/* ================================================================
+   SECTION & CONTAINER
+   ================================================================ */
+
+.was-ich-mache {
+  position: relative;
+  z-index: 1;
+  padding: 6rem 0;
+  background: transparent !important;
+}
+
+.wim-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  background: transparent !important;
+  border: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+/* ================================================================
+   HEADER
+   ================================================================ */
+
+.wim-header {
+  margin-bottom: 3.5rem;
+}
+
+.wim-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+
+.wim-label::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--primary);
+  border-radius: 50%;
+  animation: wimPulse 2s ease-in-out infinite;
+}
+
+@keyframes wimPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.6; transform: scale(1.2); }
+}
+
+.wim-title {
+  font-size: clamp(2rem, 4vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -2px;
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 16px;
+}
+
+.wim-subtitle {
+  font-size: 1.15rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 700px;
+}
+
+/* ================================================================
+   TABS MIT SMOOTH SLIDER
+   ================================================================ */
+
+.wim-tabs {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 auto 3rem auto;
+  padding: 8px;
+  width: fit-content;
+  max-width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  white-space: nowrap;
+  isolation: isolate;
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
+}
+
+.wim-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.wim-tab-slider {
+  position: absolute;
+  bottom: 6px;
+  left: 0;
+  height: calc(100% - 12px);
+  background: var(--bg-primary);
+  border-radius: 100px;
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    width    0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 0;
+  pointer-events: none;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+}
+
+.wim-tab {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  padding: 12px 28px;
+  background: transparent;
+  border: none;
+  border-radius: 100px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color 0.2s ease;
+  font-family: inherit;
+}
+
+.wim-tab:hover {
+  color: var(--text-primary);
+}
+
+.wim-tab.active {
+  color: var(--text-primary);
+}
+
+.wim-tab i {
+  margin-right: 8px;
+  position: relative;
+  z-index: 2;
+  color: var(--primary);
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.wim-tab:hover i,
+.wim-tab.active i {
+  opacity: 1;
+}
+
+/* ================================================================
+   KATEGORIEN – SANFT EIN-/AUSBLENDEN, PLATZSPAREND, KEIN ABSCHNEIDEN
+   ================================================================ */
+
+.wim-category {
+  display: block;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  /* Abstände zurücksetzen, damit im geschlossenen Zustand kein Platz bleibt */
+  padding: 0;
+  margin: 0;
+  transition: 
+    max-height 0.7s cubic-bezier(0.2, 0.9, 0.4, 1.1),
+    opacity 0.5s ease;
+}
+
+.wim-category.active {
+  /* Großzügiger Wert – garantiert größer als jede Kategorie (auch mobil) */
+  max-height: 10000px;
+  opacity: 1;
+  /* Ursprüngliche Abstände wiederherstellen (aus anderen Regeln) */
+  padding: unset;
+  margin: unset;
+  overflow: visible;
+}
+
+/* ================================================================
+   BENTO GRID
+   ================================================================ */
+
+.wim-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
+  margin-bottom: 2.5rem;
+}
+
+.wim-grid .card-large  { grid-column: span 8;  grid-row: span 2; min-height: 380px; }
+.wim-grid .card-medium { grid-column: span 4;  grid-row: span 2; min-height: 380px; }
+.wim-grid .card-small  { grid-column: span 4;  grid-row: span 1; min-height: 280px; }
+.wim-grid .card-wide   { grid-column: span 6;  grid-row: span 1; min-height: 280px; }
+
+/* ================================================================
+   CONTENT CARD — GRUNDSTRUKTUR
+   ================================================================ */
+
+.wim-grid .content-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transform: translateY(0);
+  will-change: transform, box-shadow, border-color;
+}
+
+/* Pseudo-Elemente unter z-index der Icons (z-index: 20) */
+.wim-grid .content-card::before,
+.wim-grid .content-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Mouse-tracked Glow */
+.wim-grid .content-card::before {
+  background: radial-gradient(
+    800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(var(--primary-rgb), 0.06),
+    transparent 50%
+  );
+  z-index: 1;
+}
+
+/* Gradient-Rand-Overlay */
+.wim-grid .content-card::after {
+  border-radius: 24px;
+  padding: 2px;
+  background: linear-gradient(145deg, var(--primary-light), transparent 80%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: 2;
+}
+
+.wim-grid .content-card:hover {
+  z-index: 100;
+  border-color: transparent;
+  transform: translateY(-8px) scale(1.02);
+  box-shadow:
+    0 20px 40px -10px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(var(--primary-rgb), 0.3);
+}
+
+.wim-grid .content-card:hover::before,
+.wim-grid .content-card:hover::after {
+  opacity: 0.5;
+}
+
+/* Featured Card */
+.wim-grid .content-card.featured {
+  background: linear-gradient(135deg, var(--primary-container) 0%, rgba(141, 110, 76, 0.25) 100%);
+  border-color: var(--primary);
+}
+
+.wim-grid .content-card.featured::before {
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+  z-index: 3;
+  transform: scale(0.5);
+  transition: transform 0.6s ease, opacity 0.6s ease;
+}
+
+.wim-grid .content-card.featured:hover::before {
+  opacity: 0.2;
+  transform: scale(1);
+}
+
+.wim-grid .content-card.featured .card-content {
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  position: relative;
+  z-index: 10;
+}
+
+/* ================================================================
+   CARD ICON — BASISREGELN
+   ================================================================ */
+
+.wim-grid .card-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 20;
+  isolation: isolate;
+  overflow: hidden;
+  transition:
+    transform    0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow   0.4s ease,
+    background   0.3s ease,
+    border-color 0.3s ease;
+}
+
+/* FontAwesome i-Element */
+.wim-grid .card-icon i {
+  position: relative;
+  z-index: 25;
+  transition: all 0.3s ease;
+}
+
+/* ================================================================
+   PNG-ICON (.card-icon img) — BASISREGELN
+   ================================================================ */
+
+.wim-grid .card-icon img {
+  width: 90%;
+  height: 90%;
+  border-radius: 14px;
+  object-fit: contain;
+  display: block;
+  position: relative;
+  z-index: 25;
+  pointer-events: none;
+  filter: none;
+  opacity: 1;
+  mix-blend-mode: normal;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: filter 0.3s ease;
+}
+
+/* Beim Hover: PNG bleibt vollständig sichtbar, nur goldener Drop-Shadow */
+.wim-grid .content-card:hover .card-icon img {
+  filter: drop-shadow(0 2px 8px rgba(var(--primary-rgb), 0.55));
+  opacity: 1 !important;
+}
+
+/* ================================================================
+   FONT AWESOME ICONS — NORMAL (Verwendung von CSS-Variablen)
+   ================================================================ */
+
+.wim-grid .card-icon.twitch {
+  color: var(--twitch-primary);
+  background: rgba(var(--twitch-primary-rgb), 0.1);
+  border: 1px solid rgba(var(--twitch-primary-rgb), 0.2);
+}
+
+.wim-grid .card-icon.tiktok {
+  color: var(--tiktok-primary);
+  background: rgba(var(--tiktok-primary-rgb), 0.1);
+  border: 1px solid rgba(var(--tiktok-primary-rgb), 0.2);
+}
+
+.wim-grid .card-icon.instagram {
+  background: linear-gradient(135deg, var(--instagram-primary), color-mix(in srgb, var(--instagram-primary) 70%, black));
+  color: #fff;
+  border: none;
+}
+
+.wim-grid .card-icon.blender {
+  color: var(--blender-primary);
+  background: rgba(var(--blender-primary-rgb), 0.15);
+  border: 1px solid rgba(var(--blender-primary-rgb), 0.2);
+}
+
+.wim-grid .card-icon.poetry {
+  color: var(--secondary);
+  background: var(--secondary-container);
+  border: 1px solid rgba(var(--secondary-dark-rgb), 0.2);
+}
+
+.wim-grid .card-icon.github {
+  color: var(--github-primary);
+  background: rgba(var(--github-primary-rgb), 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.wim-grid .card-icon.education {
+  color: var(--education-primary);
+  background: rgba(var(--education-primary-rgb), 0.15);
+  border: 1px solid rgba(var(--education-primary-rgb), 0.2);
+}
+
+.wim-grid .card-icon.csgo {
+  background: linear-gradient(135deg, #f0b90b, #8b5cf6);
+  color: #fff;
+  border: none;
+}
+
+.wim-grid .card-icon.flutter {
+  color: #02569b;
+  background: rgba(2, 86, 155, 0.15);
+  border: 1px solid rgba(2, 86, 155, 0.2);
+}
+
+/* ================================================================
+   PNG-ICONS — NORMAL (blender-custom, education-custom, csgo-custom, flutter-custom)
+   ================================================================ */
+
+.wim-grid .card-icon.blender-custom {
+  background: rgba(var(--blender-primary-rgb), 0.15);
+  border: 1px solid rgba(var(--blender-primary-rgb), 0.2);
+}
+
+.wim-grid .card-icon.education-custom {
+  background: rgba(var(--education-primary-rgb), 0.15);
+  border: 1px solid rgba(var(--education-primary-rgb), 0.2);
+}
+
+.wim-grid .card-icon.csgo-custom {
+  background: linear-gradient(135deg, rgba(240, 185, 11, 0.15), rgba(139, 92, 246, 0.15));
+  border: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.wim-grid .card-icon.flutter-custom {
+  color: #02569b;
+  background: rgba(2, 86, 155, 0.15);
+  border: 1px solid rgba(2, 86, 155, 0.2);
+}
+
+/* ================================================================
+   FONT AWESOME ICONS — HOVER
+   ================================================================ */
+
+.wim-grid .content-card:hover .card-icon.twitch {
+  color: var(--twitch-primary) !important;
+  background: rgba(var(--twitch-primary-rgb), 0.1) !important;
+  border-color: rgba(var(--twitch-primary-rgb), 0.4) !important;
+  transform: scale(1.12) rotate(-3deg);
+  box-shadow: 0 0 0 4px rgba(var(--twitch-primary-rgb), 0.3), 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.wim-grid .content-card:hover .card-icon.tiktok {
+  color: var(--tiktok-primary) !important;
+  background: rgba(var(--tiktok-primary-rgb), 0.1) !important;
+  border-color: rgba(var(--tiktok-primary-rgb), 0.4) !important;
+  transform: scale(1.12) rotate(-3deg);
+  box-shadow: 0 0 0 4px rgba(var(--tiktok-primary-rgb), 0.3), 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.wim-grid .content-card:hover .card-icon.instagram {
+  background: linear-gradient(135deg, var(--instagram-primary), color-mix(in srgb, var(--instagram-primary) 70%, black)) !important;
+  color: #fff !important;
+  border: none !important;
+  transform: scale(1.12) rotate(-3deg);
+  box-shadow: 0 0 0 4px rgba(var(--instagram-primary-rgb), 0.3), 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.wim-grid .content-card:hover .card-icon.blender {
+  color: var(--blender-primary) !important;
+  background: rgba(var(--blender-primary-rgb), 0.15) !important;
+  border-color: rgba(var(--blender-primary-rgb), 0.4) !important;
+  transform: scale(1.12) rotate(-3deg);
+  box-shadow: 0 0 0 4px rgba(var(--blender-primary-rgb), 0.3), 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.wim-grid .content-card:hover .card-icon.poetry {
+  color: var(--secondary) !important;
+  background: var(--secondary-container) !important;
+  border-color: rgba(var(--secondary-dark-rgb), 0.4) !important;
+  transform: scale(1.12) rotate(-3deg);
+  box-shadow: 0 0 0 4px rgba(var(--secondary-rgb), 0.3), 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.wim-grid .content-card:hover .card-icon.github {
+  color: var(--github-primary) !important;
+  background: rgba(var(--github-primary-rgb), 0.05) !important;
+  border-color: rgba(var(--github-primary-rgb), 0.2) !important;
+  transform: scale(1.12) rotate(-3deg);
+  box-shadow: 0 0 0 4px rgba(var(--github-primary-rgb), 0.2), 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.wim-grid .content-card:hover .card-icon.education {
+  color: var(--education-primary) !important;
+  background: rgba(var(--education-primary-rgb), 0.15) !important;
+  border-color: rgba(var(--education-primary-rgb), 0.4) !important;
+  transform: scale(1.12) rotate(-3deg);
+  box-shadow: 0 0 0 4px rgba(var(--education-primary-rgb), 0.3), 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.wim-grid .content-card:hover .card-icon.csgo {
+  background: linear-gradient(135deg, #f0b90b, #8b5cf6) !important;
+  color: #fff !important;
+  border: none !important;
+  transform: scale(1.12) rotate(-3deg);
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.4), 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.wim-grid .content-card:hover .card-icon.flutter {
+  color: #02569b !important;
+  background: rgba(2, 86, 155, 0.15) !important;
+  border-color: rgba(2, 86, 155, 0.4) !important;
+  transform: scale(1.12) rotate(-3deg);
+  box-shadow: 0 0 0 4px rgba(2, 86, 155, 0.3), 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* ================================================================
+   PNG-ICONS — HOVER
+   ================================================================ */
+
+.wim-grid .content-card:hover .card-icon.blender-custom {
+  background: rgba(var(--blender-primary-rgb), 0.25) !important;
+  border-color: rgba(var(--blender-primary-rgb), 0.5) !important;
+  transform: scale(1.12) rotate(-3deg);
+  box-shadow: 0 0 0 4px rgba(var(--blender-primary-rgb), 0.3), 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.wim-grid .content-card:hover .card-icon.education-custom {
+  background: rgba(var(--education-primary-rgb), 0.25) !important;
+  border-color: rgba(var(--education-primary-rgb), 0.5) !important;
+  transform: scale(1.12) rotate(-3deg);
+  box-shadow: 0 0 0 4px rgba(var(--education-primary-rgb), 0.3), 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.wim-grid .content-card:hover .card-icon.csgo-custom {
+  background: linear-gradient(135deg, rgba(240, 185, 11, 0.35), rgba(139, 92, 246, 0.35)) !important;
+  border-color: rgba(139, 92, 246, 0.5) !important;
+  transform: scale(1.12) rotate(-3deg);
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.4), 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.wim-grid .content-card:hover .card-icon.flutter-custom {
+  color: #02569b !important;
+  background: rgba(2, 86, 155, 0.25) !important;
+  border-color: rgba(2, 86, 155, 0.5) !important;
+  transform: scale(1.12) rotate(-3deg);
+  box-shadow: 0 0 0 4px rgba(2, 86, 155, 0.3), 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* ================================================================
+   LIGHT MODE — Nur noch Variablen, keine hartcodierten Farben mehr!
+   ================================================================ */
+
+[data-theme="light"] .wim-tabs {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .wim-tab-slider {
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Alle Light-Mode Farben werden jetzt über die CSS-Variablen in tokens.css gesteuert */
+/* Keine hartcodierten Farben mehr! */
+
+/* ================================================================
+   RESPONSIVE — 1200px
+   ================================================================ */
+
+@media (max-width: 1200px) {
+  .wim-grid .card-large  { grid-column: span 12; min-height: 350px; }
+  .wim-grid .card-medium { grid-column: span 6; }
+  .wim-grid .card-small  { grid-column: span 6; }
+  .wim-grid .card-wide   { grid-column: span 12; }
+}
+
+/* ================================================================
+   RESPONSIVE — 900px
+   ================================================================ */
+
+@media (max-width: 900px) {
+  .wim-grid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 16px;
+  }
+
+  .wim-grid .card-large,
+  .wim-grid .card-medium,
+  .wim-grid .card-small,
+  .wim-grid .card-wide {
+    grid-column: span 6;
+    min-height: 320px;
+  }
+
+  .wim-grid .card-content {
+    padding: 24px;
+  }
+}
+
+/* ================================================================
+   RESPONSIVE — 768px
+   ================================================================ */
+
+@media (max-width: 768px) {
+  .wim-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .wim-grid .card-large,
+  .wim-grid .card-medium,
+  .wim-grid .card-small,
+  .wim-grid .card-wide {
+    grid-column: span 1;
+    min-height: auto;
+  }
+
+  .wim-tabs {
+    width: 100%;
+    border-radius: 20px;
+    justify-content: flex-start;
+  }
+
+  .wim-tab {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+}
+
+/* ================================================================
+   RESPONSIVE — 600px (Touch-Geräte)
+   ================================================================ */
+
+@media (max-width: 600px) {
+  .was-ich-mache {
+    padding: 4rem 0;
+  }
+
+  .wim-container {
+    padding: 0 1rem;
+  }
+
+  .wim-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .wim-grid .card-large,
+  .wim-grid .card-medium,
+  .wim-grid .card-small,
+  .wim-grid .card-wide {
+    grid-column: 1;
+    grid-row: auto;
+    min-height: auto;
+  }
+
+  /* Touch: Hover-Effekte deaktivieren */
+  .wim-grid .content-card:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: var(--border);
+  }
+
+  .wim-grid .content-card:hover::after,
+  .wim-grid .content-card:hover::before {
+    opacity: 0;
+  }
+
+  .wim-grid .content-card:hover .card-icon,
+  .wim-grid .content-card:hover .card-icon.blender-custom,
+  .wim-grid .content-card:hover .card-icon.education-custom,
+  .wim-grid .content-card:hover .card-icon.csgo-custom,
+  .wim-grid .content-card:hover .card-icon.flutter-custom {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .wim-grid .content-card:hover .card-title {
+    color: var(--text-primary);
+    transform: none;
+  }
+
+  .wim-grid .content-card:hover .card-description {
+    color: var(--text-secondary);
+  }
+
+  .wim-grid .content-card:hover .card-body,
+  .wim-grid .content-card:hover .card-header {
+    transform: none;
+  }
+
+  .wim-grid .content-card:hover .card-badge {
+    transform: none;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .wim-grid .card-content      { padding: 20px; }
+  .wim-grid .card-title         { font-size: 20px; }
+  .wim-grid .card-large .card-title { font-size: 22px; }
+
+  .wim-tab                      { padding: 8px 16px; font-size: 13px; }
+  .wim-tab i                    { margin-right: 5px; font-size: 12px; }
+  .wim-tabs                     { border-radius: 16px; }
+
+  .wim-grid .card-cta           { padding: 10px 16px; font-size: 13px; }
+  .wim-grid .card-cta:hover     { transform: none; }
+
+  .wim-header                   { margin-bottom: 2rem; }
+  .wim-title                    { letter-spacing: -1px; }
+}
+
+/* ================================================================
+   RESPONSIVE — 480px
+   ================================================================ */
+
+@media (max-width: 480px) {
+  .wim-grid .card-cta {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+}

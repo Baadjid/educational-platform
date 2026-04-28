@@ -1,0 +1,232 @@
+/* ================================================================
+   LOGIN BUTTON  –  shared/styles/components/loginButton.css
+   Alle Farben über design tokens (tokens.css)
+   Verbesserungen: overflow: visible, keine rechteckigen Clipping-Boxen
+   + VERBESSERTER KLICK-EFFEKT: Kreise verschmelzen ineinander
+   ================================================================ */
+
+/* ── Container ────────────────────────────────────────────────── */
+.nav-login-container {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  margin-right: 0.5rem;
+  overflow: visible;           /* Container schneidet nichts ab */
+}
+
+/* ── Button Grundform ─────────────────────────────────────────── */
+.login-btn {
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-family: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 1px;
+  padding: 10px 16px;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: visible;           /* Geändert: von hidden → visible */
+  width: 70px;
+  transition:
+    width 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1),
+    background var(--t-fast),
+    border-color var(--t-fast);
+  border-radius: 48px;
+  position: relative;
+  z-index: 2;
+  /* Kein contain, clip-path oder overflow: hidden mehr */
+}
+
+@media (hover: hover) {
+  .login-btn:hover {
+    width: 155px;
+    background-color: var(--bg-card);
+    border-color: var(--primary);
+  }
+}
+
+/* ── Dynamisches Icon ─────────────────────────────────────────── */
+.dynamic-icon {
+  font-size: 1.35rem;
+  transition: transform var(--t-fast);
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+/* ── Ausroll-Text ─────────────────────────────────────────────── */
+.rollout-content {
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (hover: hover) {
+  .login-btn:hover .rollout-content {
+    display: inline-flex;
+  }
+}
+
+.rollout-text {
+  font-size: 0.78rem;
+  letter-spacing: 2px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* ── Goo-Effect Container (kein Clipping mehr) ────────────────── */
+.login-btn__wrapper {
+  position: relative;
+  display: inline-block;
+  overflow: visible;           /* Neu: erlaubt Überlauf der absoluten Elemente */
+}
+
+.login-btn__effect-container {
+  position: absolute;
+  display: block;
+  width: 200%;
+  height: 400%;
+  top: -150%;
+  left: -50%;
+  filter: url("#goo");
+  transition: all 0.1s ease-out;
+  pointer-events: none;
+  z-index: 1;
+  overflow: visible;           /* Sicherheitshalber */
+}
+
+/* ── Blobs (können jetzt überall erscheinen) ──────────────────── */
+.collision-blob {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--primary);
+  opacity: 0;
+  transition: background 0.1s;
+  box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.5);
+}
+.blob-left {
+  top: 40%;
+  left: 10%;
+  transform: translate(-50%, -50%);
+}
+.blob-right {
+  bottom: 40%;
+  right: 10%;
+  transform: translate(50%, 50%);
+}
+
+.effect-button {
+  position: absolute;
+  width: 50%;
+  height: 25%;
+  top: 50%;
+  left: 25%;
+  z-index: 1;
+  transform: translateY(-50%);
+  background: var(--bg-elevated);
+  transition: background 0.1s ease-out;
+}
+
+/* ── Partikel-Container (ohne Einschränkung) ──────────────────── */
+#particle-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+  overflow: visible;           /* Partikel können überall hin */
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform, opacity;
+  filter: blur(0.5px);
+  background: radial-gradient(circle, var(--primary-light), var(--primary-dark));
+  box-shadow: 0 0 6px rgba(var(--primary-rgb), 0.6);
+}
+
+/* ================================================================
+   VERBESSERTER KLICK-EFFEKT: Kreise verschmelzen interaktiv
+   - Nutzt :active für "während dem Klick"
+   - Beide Blobs laufen in der Mitte zusammen, werden größer & verschmelzen
+   - Goo‑Filter sorgt für das "ineinander aufgehen"
+   - Rectangle filling (effect-button) bleibt unverändert
+   ================================================================ */
+
+/* ── Basis‑Übergänge für alle Blob‑Eigenschaften ───────────────── */
+.collision-blob {
+  transition: all 0.28s cubic-bezier(0.34, 1.2, 0.64, 1);
+  will-change: transform, width, height, opacity, left, top;
+}
+
+/* ── Beide Blobs wandern beim Klick zur Mitte & verschmelzen ───── */
+.login-btn:active .blob-left,
+.login-btn:active .blob-right {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  height: 48px;
+  opacity: 0.95;
+  background: radial-gradient(circle, var(--primary-light), var(--primary));
+  box-shadow: 0 0 18px rgba(var(--primary-rgb), 0.8);
+  transition: all 0.22s cubic-bezier(0.2, 0.9, 0.4, 1.2);
+}
+
+/* ── Leicht unterschiedliche Laufwege für dynamischeren Zusammenstoß */
+.login-btn:active .blob-left {
+  transition-delay: 0.01s;
+}
+.login-btn:active .blob-right {
+  transition-delay: 0.03s;
+}
+
+/* ── Goo‑Container kurz pulsen lassen, um Filter zu betonen ────── */
+.login-btn:active .login-btn__effect-container {
+  transform: scale(1.02);
+  filter: url("#goo") brightness(1.02);
+  transition: transform 0.18s ease-out, filter 0.1s;
+}
+
+/* ── Zusätzlicher "Kollisions‑Puls": leichter Rundum‑Schatten ──── */
+.login-btn:active {
+  box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.1s;
+}
+
+/* ── Das Icon dreht/kurzzuckt als Rückmeldung ──────────────────── */
+.login-btn:active .dynamic-icon {
+  transform: scale(1.2) rotate(5deg);
+  transition: transform 0.12s cubic-bezier(0.2, 1.2, 0.4, 1);
+}
+
+/* ── Optional: Falls der Text kurz sichtbar sein soll (nicht nötig, aber hübsch) */
+.login-btn:active .rollout-content {
+  opacity: 0.9;
+  transition: opacity 0.05s;
+}
+
+/* ── Verbesserte Partikel‑Interaktion (optional) ───────────────── */
+/* Sorgt dafür, dass beim Klick auch die Partikel kurz aufleuchten können */
+.login-btn:active ~ #particle-container .particle {
+  animation: clickFlash 0.25s ease-out;
+}
+
+@keyframes clickFlash {
+  0% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.8);
+  }
+}

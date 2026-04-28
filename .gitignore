@@ -1,0 +1,34 @@
+# Node / npm
+node_modules/
+npm-debug.log*
+package-lock.json
+
+# Betriebssystem
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Umgebungsvariablen (WICHTIG: niemals pushen)
+.env
+.env.local
+.env.*.local
+
+# Build-Outputs
+dist/
+build/
+.cache/
+
+# Firebase lokale Konfiguration
+.firebase/
+firebase-debug.log
+firestore-debug.log
+
+# Temporäre Dateien
+*.log
+*.tmp

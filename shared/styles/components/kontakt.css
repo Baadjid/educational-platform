@@ -1,0 +1,400 @@
+/* ================================================================
+   KONTAKT.CSS - Optimiert für 1-Spaltiges Layout
+   ================================================================ */
+
+.kontakt-hero {
+  min-height: 100vh;
+  padding: 2rem 0 5rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* Standard: 1-Spaltiges Layout */
+.kontakt-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  max-width: 800px;
+  margin: 2rem auto 0;
+}
+
+/* Optional: 2-Spalten für größere Bildschirme */
+@media (min-width: 1000px) {
+  .kontakt-grid.two-columns {
+    grid-template-columns: 1fr 1fr;
+    max-width: 1100px;
+    gap: 4rem;
+  }
+}
+
+/* Linke Spalte - Info */
+.kontakt-info h3 {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  color: var(--text-primary);
+}
+
+.kontakt-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.kontakt-card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem 1.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  text-decoration: none;
+  color: inherit;
+  transition: all var(--t-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.kontakt-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--primary-container), transparent);
+  opacity: 0;
+  transition: opacity var(--t-normal);
+}
+
+.kontakt-card:hover {
+  border-color: var(--primary);
+  transform: translateX(10px);
+  box-shadow: var(--shadow-lg);
+}
+
+.kontakt-card:hover::before {
+  opacity: 1;
+}
+
+.kontakt-icon {
+  width: 52px;
+  height: 52px;
+  background: var(--primary-container);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  transition: all var(--t-normal);
+  position: relative;
+  z-index: 1;
+}
+
+.kontakt-card:hover .kontakt-icon {
+  background: var(--primary);
+  color: var(--text-on-primary);
+  transform: scale(1.1) rotate(5deg);
+}
+
+.kontakt-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.kontakt-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+.kontakt-value {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.kontakt-arrow {
+  color: var(--primary);
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: all var(--t-normal);
+  position: relative;
+  z-index: 1;
+}
+
+.kontakt-card:hover .kontakt-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Soziale Links vertikal */
+.kontakt-social h4 {
+  font-size: 1rem;
+  margin-bottom: 1.25rem;
+  color: var(--text-secondary);
+}
+
+.social-links-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  text-decoration: none;
+  color: inherit;
+  transition: all var(--t-fast);
+}
+
+.social-link:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+/* GitHub Hover - Beide Themes */
+.social-link.github:hover {
+  border-color: #6e5494;
+}
+
+.social-link.github:hover .social-icon {
+  background: #6e5494;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .social-link.github:hover {
+  border-color: #c9510c;
+}
+
+[data-theme="dark"] .social-link.github:hover .social-icon {
+  background: #c9510c;
+  color: #ffffff;
+}
+
+[data-theme="light"] .social-link.github:hover {
+  border-color: #24292e;
+}
+
+[data-theme="light"] .social-link.github:hover .social-icon {
+  background: #24292e;
+  color: #ffffff;
+}
+
+/* Twitch Hover */
+.social-link.twitch:hover {
+  border-color: var(--twitch-primary, #9146ff);
+}
+
+.social-link.twitch:hover .social-icon {
+  background: var(--twitch-primary, #9146ff);
+  color: #fff;
+}
+
+/* TikTok Hover */
+.social-link.tiktok:hover {
+  border-color: var(--tiktok-primary, #00f2ea);
+}
+
+.social-link.tiktok:hover .social-icon {
+  background: var(--tiktok-primary, #00f2ea);
+  color: #000;
+}
+
+/* Instagram Hover */
+.social-link.instagram:hover {
+  border-color: var(--instagram-primary, #e1306c);
+}
+
+.social-link.instagram:hover .social-icon {
+  background: var(--instagram-primary, #e1306c);
+  color: #fff;
+}
+
+.social-icon {
+  width: 46px;
+  height: 46px;
+  background: var(--bg-elevated);
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  transition: all var(--t-fast);
+  flex-shrink: 0;
+}
+
+.social-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.social-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.social-handle {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+/* Formular */
+.kontakt-form-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 2.5rem;
+  display: none;
+}
+
+.kontakt-form-container.visible {
+  display: block;
+}
+
+.kontakt-form-container h3 {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.kontakt-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all var(--t-fast);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-container);
+}
+
+.form-group.focused label {
+  color: var(--primary);
+}
+
+.form-submit {
+  width: 100%;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.form-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Utility-Klassen */
+.kontakt-grid.one-column {
+  grid-template-columns: 1fr;
+  max-width: 800px;
+}
+
+.kontakt-grid.two-columns {
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 1000px) {
+  .kontakt-grid.two-columns {
+    grid-template-columns: 1fr 1fr;
+    max-width: 1100px;
+    gap: 4rem;
+  }
+  
+  .kontakt-grid.two-columns .kontakt-form-container {
+    display: block;
+  }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .kontakt-grid {
+    gap: 2rem;
+  }
+  
+  .kontakt-form-container {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .kontakt-hero {
+    padding: 2rem 0 3rem;
+  }
+
+  .kontakt-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .kontakt-card {
+    padding: 1.25rem;
+    gap: 1rem;
+  }
+
+  .kontakt-card:hover {
+    transform: none;
+  }
+
+  .kontakt-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 1rem;
+  }
+
+  .social-link {
+    padding: 0.875rem 1rem;
+  }
+
+  .kontakt-form-container {
+    padding: 1.5rem;
+  }
+
+  .social-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+  }
+}

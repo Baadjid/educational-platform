@@ -1,0 +1,198 @@
+/* ================================================================
+   BOXES.CSS — Infobox, Formelbox, Vergleichsfeld
+ 
+   ================================================================ */
+
+/* ================================================================
+   INFOBOX
+   ================================================================ */
+
+.lz-infobox {
+  background: rgba(var(--lz-accent-rgb, 201,168,124), 0.07);
+  border: 1px solid rgba(var(--lz-accent-rgb, 201,168,124), 0.22);
+  border-radius: 14px;
+  padding: 1.1rem 1.4rem;
+  margin: 1.25rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.lz-infobox::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--lz-accent, #c9a87c);
+  border-radius: 4px 0 0 4px;
+}
+
+.lz-infobox-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--lz-accent, #c9a87c);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.lz-infobox-body {
+  font-size: 0.875rem;
+  color: var(--text-secondary, #bdb5ab);
+  line-height: 1.7;
+}
+
+.lz-infobox-body strong {
+  color: var(--text-primary, #f5f0eb);
+  font-weight: 600;
+}
+
+/* Varianten */
+.lz-infobox--warning {
+  background: rgba(249,168,37,0.07);
+  border-color: rgba(249,168,37,0.28);
+}
+.lz-infobox--warning::before { background: #f9a825; }
+.lz-infobox--warning .lz-infobox-title { color: #f9a825; }
+
+.lz-infobox--success {
+  background: rgba(76,175,80,0.07);
+  border-color: rgba(76,175,80,0.22);
+}
+.lz-infobox--success::before { background: #4caf50; }
+.lz-infobox--success .lz-infobox-title { color: #4caf50; }
+
+.lz-infobox--danger {
+  background: rgba(186,26,26,0.07);
+  border-color: rgba(186,26,26,0.22);
+}
+.lz-infobox--danger::before { background: #e57373; }
+.lz-infobox--danger .lz-infobox-title { color: #e57373; }
+
+.lz-infobox--blue {
+  background: rgba(66,165,245,0.07);
+  border-color: rgba(66,165,245,0.22);
+}
+.lz-infobox--blue::before { background: #42a5f5; }
+.lz-infobox--blue .lz-infobox-title { color: #42a5f5; }
+
+/* ================================================================
+   FORMEL-BOX
+   ================================================================ */
+
+.lz-formula-box {
+  background: linear-gradient(135deg,
+    rgba(var(--lz-accent-rgb, 201,168,124), 0.1),
+    rgba(var(--lz-accent-rgb, 201,168,124), 0.04));
+  border: 1px solid rgba(var(--lz-accent-rgb, 201,168,124), 0.28);
+  border-radius: 14px;
+  padding: 1.4rem;
+  margin: 1.25rem 0;
+  text-align: center;
+}
+
+.lz-formula-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted, #8a847c);
+  margin-bottom: 0.6rem;
+}
+
+.lz-formula-main {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--text-primary, #f5f0eb);
+  letter-spacing: 0.02em;
+  line-height: 1.55;
+  font-family: 'Courier New', Georgia, serif;
+}
+
+.lz-formula-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted, #8a847c);
+  margin-top: 0.65rem;
+  line-height: 1.6;
+}
+
+/* ================================================================
+   VERGLEICHSFELD (2 Spalten)
+   ================================================================ */
+
+.lz-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.875rem;
+  margin: 1.25rem 0;
+}
+
+.lz-compare-col {
+  background: var(--bg-card, #211f1d);
+  border: 1px solid var(--border, rgba(201,168,124,0.12));
+  border-radius: 14px;
+  padding: 1.1rem 1.25rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.lz-compare-col::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: 14px 14px 0 0;
+}
+
+.lz-compare-col--a::before { background: var(--lz-accent, #c9a87c); }
+.lz-compare-col--b::before { background: var(--tertiary, #7a9e7e); }
+
+.lz-compare-head {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.75rem;
+}
+
+.lz-compare-col--a .lz-compare-head { color: var(--lz-accent, #c9a87c); }
+.lz-compare-col--b .lz-compare-head { color: var(--tertiary, #7a9e7e); }
+
+.lz-compare-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.lz-compare-list li {
+  font-size: 0.845rem;
+  color: var(--text-secondary, #bdb5ab);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  line-height: 1.5;
+}
+
+.lz-compare-list li::before {
+  content: '–';
+  color: var(--text-muted, #8a847c);
+  flex-shrink: 0;
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+
+@media (max-width: 600px) {
+  .lz-compare {
+    grid-template-columns: 1fr;
+  }
+
+  .lz-formula-main {
+    font-size: 1.1rem;
+  }
+}

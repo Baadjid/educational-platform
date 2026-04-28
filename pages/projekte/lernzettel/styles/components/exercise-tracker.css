@@ -1,0 +1,235 @@
+/* ================================================================
+   EXERCISE-TRACKER.CSS — Verbesserte Version
+   Nutzt die vorhandenen Custom Properties der Seite
+   ================================================================ */
+
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║ GLOBAL VARIABLES & SMOOTH TRANSITIONS                       ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+:root {
+  --transition-smooth: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║ 1. PROGRESS CARD                                             ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+.et-progress {
+  background: rgba(var(--bg-card-rgb, 255, 255, 255), 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border, rgba(0, 0, 0, 0.08));
+  border-radius: 28px;
+  padding: 1.5rem 1.8rem;
+  margin: 1.5rem 0 2rem;
+  transition: var(--transition-smooth);
+}
+
+.et-progress:hover {
+  background: rgba(var(--bg-card-rgb, 255, 255, 255), 0.8);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+.et-progress-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.et-progress-label i {
+  color: var(--lz-accent, #5b9bd5);
+  font-size: 1.1rem;
+}
+
+/* Fortschrittsbalken */
+.et-bar-track {
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 40px;
+  height: 10px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.et-bar-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--lz-accent, #5b9bd5), #8cb9e8);
+  border-radius: 40px;
+  transition: width 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+
+/* Statistik-Karten */
+.et-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 500px) {
+  .et-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+.et-stat {
+  background: rgba(var(--bg-elevated-rgb, 248, 248, 248), 0.8);
+  border-radius: 20px;
+  padding: 0.9rem;
+  text-align: center;
+  transition: var(--transition-smooth);
+  border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.et-stat:hover {
+  transform: translateY(-3px);
+  background: rgba(var(--bg-elevated-rgb, 248, 248, 248), 1);
+}
+
+.et-stat-num {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--lz-accent, #5b9bd5);
+}
+
+.et-stat-num--done {
+  color: #2c7a4d;
+}
+
+.et-stat-num--remain {
+  color: #c2410c;
+}
+
+.et-stat-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-top: 0.25rem;
+}
+
+/* Reset-Button */
+.et-reset-btn {
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 60px;
+  padding: 0.5rem 1.2rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: var(--transition-smooth);
+}
+
+.et-reset-btn:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+.et-reset-btn:active {
+  transform: scale(0.97);
+}
+
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║ 2. CHIPS (Exercise-Buttons)                                  ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+.et-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.et-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 0.9rem;
+  background: rgba(var(--lz-accent-rgb, 91, 155, 213), 0.08);
+  border: 1px solid rgba(var(--lz-accent-rgb, 91, 155, 213), 0.25);
+  border-radius: 40px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: monospace;
+  color: var(--lz-accent, #5b9bd5);
+  text-decoration: none;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  letter-spacing: 0.02em;
+}
+
+@media (hover: hover) {
+  .et-chip:hover {
+    background: rgba(var(--lz-accent-rgb, 91, 155, 213), 0.18);
+    border-color: rgba(var(--lz-accent-rgb, 91, 155, 213), 0.5);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+}
+
+.et-chip:active {
+  transform: scale(0.96);
+}
+
+/* Done-Zustand – erledigte Übungen */
+.et-chip.done {
+  background: rgba(44, 122, 77, 0.12);
+  border-color: rgba(44, 122, 77, 0.4);
+  color: #2c7a4d;
+  text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+  text-decoration-color: #2c7a4d;
+  filter: grayscale(0.1);
+  opacity: 0.85;
+}
+
+.et-chip.done:hover {
+  background: rgba(44, 122, 77, 0.2);
+  transform: translateY(-1px);
+}
+
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║ 3. MOBILE OPTIMIERUNG                                        ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+@media (max-width: 640px) {
+  .et-progress {
+    padding: 1.2rem;
+  }
+  .et-chip {
+    font-size: 0.7rem;
+    padding: 0.35rem 0.7rem;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .et-chip {
+    min-height: 44px;
+    padding: 0.6rem 1rem;
+  }
+  .et-reset-btn {
+    min-height: 44px;
+  }
+}
+
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║ 4. ACCESSIBILITY                                             ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+.et-chip:focus-visible,
+.et-reset-btn:focus-visible {
+  outline: 2px solid var(--lz-accent, #5b9bd5);
+  outline-offset: 3px;
+}

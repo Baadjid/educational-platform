@@ -1,0 +1,163 @@
+/* ================================================================
+   TABLES.CSS — Tabellen-Komponente (mobil optimiert)
+   ================================================================ */
+
+/* ── Wrapper ────────────────────────────────────────────────── */
+
+.lz-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 14px;
+  border: 1px solid var(--border, rgba(201,168,124,0.12));
+  margin: 1.5rem 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Tabelle ────────────────────────────────────────────────── */
+
+.lz-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  background: var(--bg-card, #211f1d);
+  min-width: 400px;  /* sorgt für Scroll bei sehr schmalen Geräten */
+}
+
+/* Head */
+.lz-table thead tr {
+  background: rgba(var(--lz-accent-rgb, 201,168,124), 0.1);
+  border-bottom: 2px solid rgba(var(--lz-accent-rgb, 201,168,124), 0.28);
+}
+
+.lz-table th {
+  padding: 0.8rem 1rem;
+  text-align: left;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--lz-accent, #c9a87c);
+  white-space: nowrap;
+}
+
+/* Body */
+.lz-table td {
+  padding: 0.7rem 1rem;
+  color: var(--text-secondary, #bdb5ab);
+  vertical-align: top;
+  border-bottom: 1px solid var(--border, rgba(201,168,124,0.1));
+  line-height: 1.55;
+  /* Verhindert Überlauf von langen Wörtern / URLs */
+  word-break: break-word;
+}
+
+.lz-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.lz-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.lz-table tbody tr:hover {
+  background: rgba(var(--lz-accent-rgb, 201,168,124), 0.04);
+}
+
+/* Highlight-Zeile */
+.lz-table tr.lz-table-hl td {
+  background: rgba(var(--lz-accent-rgb, 201,168,124), 0.08);
+  color: var(--text-primary, #f5f0eb);
+  font-weight: 500;
+}
+
+/* Formel-Zelle */
+.lz-cell-code {
+  font-family: 'Courier New', monospace;
+  font-size: 0.82rem;
+  color: var(--lz-accent, #c9a87c);
+  background: rgba(var(--lz-accent-rgb, 201,168,124), 0.08);
+  padding: 0.15rem 0.45rem;
+  border-radius: 5px;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* ── Mobilanpassungen (schmale Bildschirme) ────────────────── */
+
+@media (max-width: 768px) {
+  .lz-table {
+    font-size: 0.8rem;
+    min-width: 360px;  /* etwas kleiner, aber immer noch scrollfähig */
+  }
+
+  .lz-table th,
+  .lz-table td {
+    padding: 0.6rem 0.8rem;
+  }
+
+  .lz-table th {
+    font-size: 0.65rem;
+  }
+
+  /* Code-Zellen auf Mobilgeräten umbrechen lassen, damit kein horizontaler Overflow entsteht */
+  .lz-cell-code {
+    white-space: normal;
+    word-break: break-word;
+    display: inline-block;
+    max-width: 100%;
+  }
+}
+
+/* Extra kleine Geräte (z. B. < 480px) */
+@media (max-width: 480px) {
+  .lz-table {
+    min-width: 300px;
+  }
+
+  .lz-table th,
+  .lz-table td {
+    padding: 0.5rem 0.6rem;
+  }
+
+  .lz-table th {
+    font-size: 0.6rem;
+  }
+
+  .lz-table td {
+    font-size: 0.75rem;
+  }
+}
+
+/* ── Light Mode ─────────────────────────────────────────────── */
+
+[data-theme="light"] .lz-table {
+  background: #ffffff;
+}
+
+[data-theme="light"] .lz-table td {
+  color: var(--text-secondary, #4a4540);
+  border-bottom-color: rgba(141,110,76,0.12);
+}
+
+/* ── Erzwinge vollständige Höhe der Tabelle ───────────────── */
+
+.lz-table-wrap,
+.lz-table {
+  height: auto !important;
+  max-height: none !important;
+  overflow-y: visible !important;
+}
+
+/* Zusätzlich: sicherstellen, dass der Wrap nicht durch „overflow: hidden“ beeinträchtigt wird */
+.lz-table-wrap {
+  overflow-x: auto;
+  overflow-y: visible;
+}
+
+/* Für mobile Geräte – ggf. übergeordnete Einschränkungen durchbrechen */
+@media (max-width: 768px) {
+  .lz-table-wrap {
+    overflow-y: visible;
+    max-height: none;
+  }
+}

@@ -1,0 +1,128 @@
+/* ================================================================
+   ANIMATIONS.CSS — Globale Animationen
+   ================================================================ */
+
+/* Bubble-Animationen (Hintergrund) */
+@keyframes floatBubble {
+  0%, 100% { transform: translate(0, 0); }
+  25%      { transform: translate(30px, -40px); }
+  50%      { transform: translate(-20px, 30px); }
+  75%      { transform: translate(40px, 20px); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.12; transform: scale(1); }
+  50%      { opacity: 0.2; transform: scale(1.1); }
+}
+
+/* Reveal-Animation (Scroll) */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger-Animationen */
+.stagger-1 { transition-delay: 0.1s; }
+.stagger-2 { transition-delay: 0.2s; }
+.stagger-3 { transition-delay: 0.3s; }
+.stagger-4 { transition-delay: 0.4s; }
+
+/* Loading-Spinner */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* Pulse-Dot für Live-Status */
+@keyframes pulseDot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  50%      { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+}
+
+/* Shake-Animation für Formular-Fehler */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+/* Rotate-Cue für Flip-Cards */
+@keyframes rotateCue {
+  0%, 100% { transform: rotate(0); }
+  50%      { transform: rotate(180deg); }
+}
+
+/* Gallery-FadeIn */
+@keyframes galleryIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade-In-Scale für Gedichte */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Slide-In-Left für Gedicht-Strophen */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Scroll-Wheel-Animation */
+@keyframes scrollDot {
+  0% {
+    transform: translate(-50%, 0);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  80% {
+    transform: translate(-50%, 12px);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}

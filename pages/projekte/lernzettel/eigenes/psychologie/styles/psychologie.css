@@ -1,0 +1,676 @@
+/* ================================================================
+   PSYCHOLOGIE.CSS — Kompendium + Entscheidungsmatrix
+   WIM-Tabs · Accordions · Dialog-Bubbles · Quote-Cards
+   Gold-Akzent · Glassmorphism
+   ================================================================ */
+
+/* ================================================================
+   HERO
+   ================================================================ */
+
+.psy-hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-primary);
+  padding: 5rem 2rem;
+  text-align: center;
+}
+
+.psy-hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.psy-hero-orb {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(201, 168, 124, 0.15) 0%,
+    rgba(124, 77, 255, 0.06) 40%,
+    transparent 70%);
+  animation: psyOrbPulse 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes psyOrbPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+  50%      { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+}
+
+.psy-eyebrow {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.psy-eyebrow i { color: var(--primary); }
+
+.psy-headline {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 300;
+  line-height: 1.2;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+.psy-headline em {
+  font-style: italic;
+  color: var(--primary);
+}
+
+.psy-hero-desc {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  max-width: 520px;
+  margin: 0 auto 2rem;
+}
+
+.psy-scroll-hint { margin-top: 2rem; }
+
+.psy-scroll-mouse {
+  width: 24px;
+  height: 40px;
+  border: 2px solid rgba(201, 168, 124, 0.3);
+  border-radius: 20px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.psy-scroll-wheel {
+  width: 5px;
+  height: 5px;
+  background: var(--primary);
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  top: 7px;
+  transform: translateX(-50%);
+  animation: scrollDot 1.6s ease-in-out infinite;
+}
+
+/* ================================================================
+   CONTENT SECTION
+   ================================================================ */
+
+.psy-content {
+  padding: 5rem 0;
+  position: relative;
+  z-index: 1;
+  background: var(--bg-primary);
+}
+
+.psy-content-wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* ================================================================
+   WIM-TAB OVERRIDES (Psychologie-spezifisch)
+   Basis-Styles aus wim.css — hier nur Spacing
+   ================================================================ */
+
+.psy-content .wim-tabs {
+  margin-bottom: 3rem;
+}
+
+/* ================================================================
+   PANELS
+   ================================================================ */
+
+.psy-panels {
+  position: relative;
+}
+
+.psy-panel {
+  display: none;
+  flex-direction: column;
+  gap: 2rem;
+  animation: psyPanelIn 0.5s ease-out;
+}
+
+.psy-panel.active {
+  display: flex;
+}
+
+@keyframes psyPanelIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ================================================================
+   QUOTE CARD — Glassmorphism
+   ================================================================ */
+
+.psy-quote-card {
+  position: relative;
+  background: linear-gradient(135deg,
+    rgba(201, 168, 124, 0.1),
+    rgba(201, 168, 124, 0.03));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(201, 168, 124, 0.2);
+  border-radius: 24px;
+  padding: 2.5rem 2.5rem 2rem;
+  overflow: hidden;
+}
+
+.psy-quote-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 15%;
+  right: 15%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  opacity: 0.5;
+  border-radius: 0 0 4px 4px;
+}
+
+.psy-quote-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    0deg, transparent, transparent 39px,
+    rgba(201, 168, 124, 0.03) 39px,
+    rgba(201, 168, 124, 0.03) 40px);
+  pointer-events: none;
+  border-radius: 24px;
+  opacity: 0.6;
+}
+
+.psy-quote-icon {
+  font-size: 1.5rem;
+  color: var(--primary);
+  opacity: 0.5;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.psy-quote-text {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+  font-style: italic;
+  line-height: 1.7;
+  color: var(--text-primary);
+  margin-bottom: 1.25rem;
+  position: relative;
+  z-index: 1;
+}
+
+.psy-quote-author {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  font-style: normal;
+  color: var(--text-muted);
+  position: relative;
+  z-index: 1;
+}
+
+.psy-quote-author::before {
+  content: '';
+  width: 2rem;
+  height: 1px;
+  background: linear-gradient(to right, var(--primary), transparent);
+}
+
+/* ================================================================
+   PANEL INTRO
+   ================================================================ */
+
+.psy-panel-intro {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  padding: 2rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+
+.psy-panel-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: var(--primary);
+  background: var(--primary-container);
+  border: 1px solid rgba(201, 168, 124, 0.2);
+  flex-shrink: 0;
+}
+
+.psy-panel-intro-text h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.psy-panel-intro-text p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+/* ================================================================
+   ACCORDIONS
+   ================================================================ */
+
+.psy-accordions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.psy-accordion {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.psy-accordion:hover { border-color: var(--border-hover); }
+
+.psy-accordion.open {
+  border-color: var(--primary);
+  box-shadow: 0 4px 24px rgba(201, 168, 124, 0.1);
+}
+
+.psy-accordion-head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+  color: inherit;
+  text-align: left;
+  transition: background 0.3s ease;
+}
+
+.psy-accordion-head:hover { background: rgba(201, 168, 124, 0.04); }
+
+.psy-accordion-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--primary);
+  opacity: 0.6;
+  flex-shrink: 0;
+  width: 1.5rem;
+}
+
+.psy-accordion-title {
+  flex: 1;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
+}
+
+.psy-accordion.open .psy-accordion-title { color: var(--primary); }
+
+.psy-accordion-chevron {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.psy-accordion.open .psy-accordion-chevron {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--text-on-primary);
+  transform: rotate(180deg);
+}
+
+.psy-accordion-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.psy-accordion.open .psy-accordion-body { max-height: 800px; }
+
+.psy-accordion-content {
+  padding: 0 1.5rem 1.5rem 3.75rem;
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.85;
+  white-space: pre-line;
+}
+
+/* ================================================================
+   DIALOG BUBBLES — Prokrastination
+   Links = Problem/Frage · Rechts = Wissenschaftliche Antwort
+   ================================================================ */
+
+.psy-dialog-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.psy-dialog-pair {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  opacity: 0;
+  animation: psyDialogIn 0.5s ease-out forwards;
+}
+
+@keyframes psyDialogIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.psy-bubble {
+  position: relative;
+  padding: 1.5rem 1.75rem;
+  border-radius: 20px;
+  max-width: 88%;
+}
+
+/* Frage (links) */
+.psy-bubble--question {
+  align-self: flex-start;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-bottom-left-radius: 6px;
+}
+
+.psy-bubble-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.psy-bubble-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--primary);
+  opacity: 0.6;
+}
+
+.psy-bubble-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--primary);
+  padding: 0.2rem 0.65rem;
+  background: var(--primary-container);
+  border-radius: 100px;
+}
+
+.psy-bubble--question .psy-bubble-text {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+/* Antwort (rechts) */
+.psy-bubble--answer {
+  align-self: flex-end;
+  background: linear-gradient(135deg,
+    rgba(201, 168, 124, 0.1),
+    rgba(201, 168, 124, 0.04));
+  border: 1px solid rgba(201, 168, 124, 0.2);
+  border-bottom-right-radius: 6px;
+}
+
+.psy-bubble--answer .psy-bubble-text {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+/* Impact-Balken */
+.psy-bubble-metric {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(201, 168, 124, 0.12);
+}
+
+.psy-metric-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.psy-metric-bar {
+  flex: 1;
+  height: 4px;
+  background: var(--bg-elevated);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.psy-metric-fill {
+  display: block;
+  height: 100%;
+  width: var(--fill, 70%);
+  background: linear-gradient(90deg, var(--primary-dark), var(--primary));
+  border-radius: 100px;
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ================================================================
+   SUMMARY CARD
+   ================================================================ */
+
+.psy-summary-card {
+  position: relative;
+  background: linear-gradient(135deg,
+    rgba(201, 168, 124, 0.12),
+    rgba(201, 168, 124, 0.04));
+  border: 1px solid rgba(201, 168, 124, 0.25);
+  border-radius: 24px;
+  padding: 2.5rem;
+  text-align: center;
+  margin-top: 1rem;
+  overflow: hidden;
+}
+
+.psy-summary-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  opacity: 0.6;
+}
+
+.psy-summary-icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 1.25rem;
+  background: var(--primary);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: var(--text-on-primary);
+}
+
+.psy-summary-card h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.psy-summary-card p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ================================================================
+   LIGHT MODE
+   ================================================================ */
+
+[data-theme="light"] .psy-quote-card {
+  background: linear-gradient(135deg,
+    rgba(184, 148, 90, 0.08),
+    rgba(184, 148, 90, 0.02));
+  border-color: rgba(184, 148, 90, 0.2);
+}
+
+[data-theme="light"] .psy-bubble--answer {
+  background: linear-gradient(135deg,
+    rgba(184, 148, 90, 0.08),
+    rgba(184, 148, 90, 0.03));
+  border-color: rgba(184, 148, 90, 0.2);
+}
+
+[data-theme="light"] .psy-accordion-head:hover {
+  background: rgba(184, 148, 90, 0.04);
+}
+
+[data-theme="light"] .psy-accordion.open {
+  box-shadow: 0 4px 24px rgba(184, 148, 90, 0.08);
+}
+
+[data-theme="light"] .psy-summary-card {
+  background: linear-gradient(135deg,
+    rgba(184, 148, 90, 0.08),
+    rgba(184, 148, 90, 0.03));
+  border-color: rgba(184, 148, 90, 0.2);
+}
+
+[data-theme="light"] .psy-bubble-metric {
+  border-top-color: rgba(184, 148, 90, 0.12);
+}
+
+/* ================================================================
+   RESPONSIVE
+   ================================================================ */
+
+@media (max-width: 768px) {
+  .psy-content .wim-tabs { margin-bottom: 2rem; }
+
+  .psy-panel-intro {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.5rem;
+  }
+
+  .psy-quote-card {
+    padding: 2rem 1.5rem 1.5rem;
+    border-radius: 20px;
+  }
+
+  .psy-accordion-content { padding-left: 1.5rem; }
+
+  .psy-bubble { max-width: 95%; }
+
+  .psy-summary-card { padding: 2rem 1.5rem; }
+}
+
+@media (max-width: 600px) {
+  .psy-hero { padding: 4rem 1rem; }
+  .psy-hero-orb { width: 300px; height: 300px; }
+
+  .psy-content { padding: 3rem 0; }
+  .psy-content-wrap { padding: 0 1rem; }
+  .psy-content .wim-tabs { margin-bottom: 1.5rem; }
+
+  .psy-accordion-head { padding: 1rem 1.25rem; gap: 0.75rem; }
+  .psy-accordion-content {
+    padding: 0 1.25rem 1.25rem 1.25rem;
+    font-size: 0.88rem;
+  }
+
+  .psy-quote-card {
+    padding: 1.5rem 1.25rem 1.25rem;
+    border-radius: 16px;
+  }
+  .psy-quote-text { font-size: 1.05rem; }
+
+  .psy-panel-icon {
+    width: 48px; height: 48px;
+    font-size: 1.2rem; border-radius: 14px;
+  }
+  .psy-panel-intro { padding: 1.25rem; border-radius: 16px; }
+
+  .psy-bubble {
+    max-width: 100%;
+    padding: 1.25rem;
+    border-radius: 16px;
+  }
+  .psy-bubble--question { border-bottom-left-radius: 4px; }
+  .psy-bubble--answer   { border-bottom-right-radius: 4px; }
+  .psy-dialog-list { gap: 1.5rem; }
+
+  .psy-summary-card { padding: 1.5rem 1.25rem; border-radius: 16px; }
+}
+
+@media (max-width: 480px) {
+  .psy-accordion-num { display: none; }
+  .psy-accordion-chevron { width: 28px; height: 28px; font-size: 0.65rem; }
+  .psy-bubble-text { font-size: 0.88rem !important; }
+}
+
+/* ================================================================
+   TOUCH DEVICES
+   ================================================================ */
+
+@media (hover: none) {
+  .psy-accordion:hover { border-color: var(--border); }
+  .psy-accordion.open:hover { border-color: var(--primary); }
+  .psy-bubble { max-width: 100%; }
+}

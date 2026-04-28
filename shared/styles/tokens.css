@@ -1,0 +1,262 @@
+/* ================================================================
+   DESIGN TOKENS (DARK MODE DEFAULT)
+   ================================================================ */
+
+:root {
+  /* Primär Gold */
+  --primary:          #c9a87c;
+  --primary-light:    #dfc9a8;
+  --primary-dark:     #a68a5b;
+  --primary-container: rgba(201, 168, 124, 0.15);
+  --primary-rgb: 201, 168, 124;
+
+  /* Sekundär Braun */
+  --secondary:        #8d6e4c;
+  --secondary-light:  #a68a6a;
+  --secondary-dark:   #6b4f35;
+  --secondary-dark-rgb: 107, 79, 53;
+  --secondary-container: rgba(141, 110, 76, 0.15);
+  --secondary-rgb: 141, 110, 76;
+
+  /* Tertiär Grün */
+  --tertiary:         #7a9e7e;
+  --tertiary-container: rgba(122, 158, 126, 0.15);
+  --tertiary-rgb: 122, 158, 126;
+
+  /* Status */
+  --error:            #ba1a1a;
+  --error-container: rgba(186, 26, 26, 0.15);
+  --error-rgb: 186, 26, 26;
+  
+  --success:          #4caf50;
+  --success-container: rgba(76, 175, 80, 0.15);
+  --success-rgb: 76, 175, 80;
+  
+  --warning:          #f9a825;
+  --warning-container: rgba(249, 168, 37, 0.15);
+  --warning-rgb: 249, 168, 37;
+
+  /* Hintergrund */
+  --bg-primary: #121212;
+  --bg-primary-rgb: 18, 18, 18;
+  --bg-secondary: #1a1816;
+  --bg-secondary-rgb: 26, 24, 22;
+  --bg-card: #211f1d;
+  --bg-card-rgb: 33, 31, 29;
+  --bg-elevated: #2a2725;
+  --bg-elevated-rgb: 42, 39, 37;
+  --bg-input: #1e1c1a;
+  --bg-input-rgb: 30, 28, 26;
+
+  /* Text */
+  --text-primary:     #f5f0eb;
+  --text-primary-rgb: 245, 240, 235;
+  --text-secondary:   #bdb5ab;
+  --text-secondary-rgb: 189, 181, 171;
+  --text-muted:       #8a847c;
+  --text-muted-rgb: 138, 132, 124;
+  --text-on-primary:  #1a1612;
+  --text-on-primary-rgb: 26, 22, 18;
+
+  /* Border & Shadow */
+  --border:       rgba(201, 168, 124, 0.12);
+  --border-hover: rgba(201, 168, 124, 0.28);
+  --shadow-sm:    0 2px 8px rgba(0,0,0,.35);
+  --shadow-md:    0 8px 24px rgba(0,0,0,.45);
+  --shadow-lg:    0 16px 48px rgba(0,0,0,.55);
+  --accent-glow:  rgba(201, 168, 124, 0.2);
+
+  /* Plattform-Farben – Dark Mode (Standard) */
+  --twitch-primary: #9146ff;
+  --twitch-primary-rgb: 145, 70, 255;
+  --twitch-bg:      rgba(145, 70, 255, 0.12);
+  
+  --tiktok-primary: #00f2ea;
+  --tiktok-primary-rgb: 0, 242, 234;
+  --tiktok-bg:      rgba(0, 242, 234, 0.12);
+  
+  --instagram-primary: #e1306c;
+  --instagram-primary-rgb: 225, 48, 108;
+  --instagram-bg:   rgba(225, 48, 108, 0.12);
+  
+  --blender-primary: #ea7600;
+  --blender-primary-rgb: 234, 118, 0;
+  --blender-bg:     rgba(234, 118, 0, 0.12);
+  
+  --education-primary: #5c9ead;
+  --education-primary-rgb: 92, 158, 173;
+  --education-bg:   rgba(92, 158, 173, 0.12);
+  
+  --github-primary: #f5f5f5;
+  --github-primary-rgb: 245, 245, 245;
+  --github-bg:      rgba(255, 255, 255, 0.08);
+
+  /* ================================================================
+     HOLOGRAPHIC CARD - MIT DEINEN BRAUN/GOLD FARBEN
+     ================================================================ */
+
+  --pointer-x:            50%;
+  --pointer-y:            50%;
+  --pointer-from-center:  0;
+  --pointer-from-top:     0.5;
+  --pointer-from-left:    0.5;
+  --card-opacity:         0;
+  --rotate-x:             0deg;
+  --rotate-y:             0deg;
+  --background-x:         50%;
+  --background-y:         50%;
+
+  --grain:                url("https://res.cloudinary.com/dglahdmrm/image/upload/q_auto/f_auto/v1775611260/Hintergrund_Norman_prgxfb.png");
+  --metafy:               url("https://res.cloudinary.com/dglahdmrm/image/upload/q_auto/f_auto/v1775611259/Hintergrund_Color_znkh5k.png");
+  
+  --card-radius:          6.55% / 4.75%;
+  
+  --holo-1: #c9a87c;
+  --holo-2: #dfc9a8;
+  --holo-3: #a68a5b;
+  --holo-4: #8d6e4c;
+  --holo-5: #b8945a;
+  --holo-6: #6b4f35;
+
+  --sunpillar-1: #c9a87c;
+  --sunpillar-2: #dfc9a8;
+  --sunpillar-3: #b8945a;
+  --sunpillar-4: #a68a5b;
+  --sunpillar-5: #8d6e4c;
+  --sunpillar-6: #6b4f35;
+  
+  --sunpillar-clr-1: var(--sunpillar-1);
+  --sunpillar-clr-2: var(--sunpillar-2);
+  --sunpillar-clr-3: var(--sunpillar-3);
+  --sunpillar-clr-4: var(--sunpillar-4);
+  --sunpillar-clr-5: var(--sunpillar-5);
+  --sunpillar-clr-6: var(--sunpillar-6);
+
+  /* Transitions */
+  --t-fast:    150ms ease;
+  --t-normal:  300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --t-slow:    500ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Z-Index */
+  --z-navbar:  1000;
+  --z-sidebar: 1001;
+  --z-modal:    1100;
+  --z-tooltip:  1200;
+}
+
+/* ================================================================
+   LIGHT MODE OVERRIDES - MIT DEINEN BRAUN/GOLD FARBEN
+   ================================================================ */
+
+[data-theme="light"] {
+  /* Primär Gold */
+  --primary:       #b8945a;
+  --primary-light: #d4b88c;
+  --primary-dark:  #967845;
+  --primary-container: rgba(184, 148, 90, 0.12);
+  --primary-rgb: 184, 148, 90;
+
+  /* Sekundär Braun */
+  --secondary:      #7a5c3a;
+  --secondary-light: #947a5a;
+  --secondary-dark: #5c4327;
+  --secondary-dark-rgb: 92, 67, 39;
+  --secondary-container: rgba(122, 92, 58, 0.12);
+  --secondary-rgb: 122, 92, 58;
+
+  /* Tertiär Grün */
+  --tertiary:       #5a8a5e;
+  --tertiary-container: rgba(90, 138, 94, 0.12);
+  --tertiary-rgb: 90, 138, 94;
+
+  /* Status */
+  --error:            #ba1a1a;
+  --error-container: rgba(186, 26, 26, 0.12);
+  --error-rgb: 186, 26, 26;
+  
+  --success:          #4caf50;
+  --success-container: rgba(76, 175, 80, 0.12);
+  --success-rgb: 76, 175, 80;
+  
+  --warning:          #f9a825;
+  --warning-container: rgba(255, 157, 0, 0.12);
+  --warning-rgb: 249, 168, 37;
+
+  /* Hintergrund */
+  --bg-primary: #faf7f4;
+  --bg-primary-rgb: 250, 247, 244;
+  --bg-secondary: #f0ebe5;
+  --bg-secondary-rgb: 240, 235, 229;
+  --bg-card: #ffffff;
+  --bg-card-rgb: 255, 255, 255;
+  --bg-elevated: #f8f5f1;
+  --bg-elevated-rgb: 248, 245, 241;
+  --bg-input: #f5f1ec;
+  --bg-input-rgb: 245, 241, 236;
+
+  /* Text */
+  --text-primary:   #1a1612;
+  --text-primary-rgb: 26, 22, 18;
+  --text-secondary: #4a4540;
+  --text-secondary-rgb: 74, 69, 64;
+  --text-muted:     #7a756e;
+  --text-muted-rgb: 122, 117, 110;
+  --text-on-primary: #ffffff;
+  --text-on-primary-rgb: 255, 255, 255;
+
+  /* Border & Shadow */
+  --border:       rgba(141, 110, 76, 0.15);
+  --border-hover: rgba(141, 110, 76, 0.30);
+  --shadow-sm:    0 1px 3px rgba(0,0,0,.05);
+  --shadow-md:    0 4px 12px rgba(0,0,0,.08);
+  --shadow-lg:    0 12px 32px rgba(0,0,0,.10);
+  --accent-glow:  rgba(201, 168, 124, 0.25);
+
+  /* Plattform-Farben - Light Mode */
+  --twitch-primary: #9146ff;
+  --twitch-primary-rgb: 145, 70, 255;
+  --twitch-bg:      rgba(145, 70, 255, 0.08);
+  
+  --tiktok-primary: #00d4cc;
+  --tiktok-primary-rgb: 0, 212, 204;
+  --tiktok-bg:      rgba(0, 212, 204, 0.08);
+  
+  --instagram-primary: #c13584;
+  --instagram-primary-rgb: 193, 53, 132;
+  --instagram-bg:   rgba(193, 53, 132, 0.08);
+  
+  --blender-primary: #d66800;
+  --blender-primary-rgb: 214, 104, 0;
+  --blender-bg:     rgba(214, 104, 0, 0.08);
+  
+  --education-primary: #4a8a99;
+  --education-primary-rgb: 74, 138, 153;
+  --education-bg:   rgba(74, 138, 153, 0.08);
+  
+  --github-primary: #24292e;
+  --github-primary-rgb: 36, 41, 46;
+  --github-bg:      rgba(36, 41, 46, 0.08);
+
+  /* Holo-Farben für Light Mode */
+  --holo-1: #b8945a;
+  --holo-2: #d4b88c;
+  --holo-3: #967845;
+  --holo-4: #7a5c3a;
+  --holo-5: #947a5a;
+  --holo-6: #5c4327;
+
+  /* Sunpillar Farben für Light Mode */
+  --sunpillar-1: #b8945a;
+  --sunpillar-2: #d4b88c;
+  --sunpillar-3: #a68a5b;
+  --sunpillar-4: #8d6e4c;
+  --sunpillar-5: #7a5c3a;
+  --sunpillar-6: #5c4327;
+  
+  --sunpillar-clr-1: var(--sunpillar-1);
+  --sunpillar-clr-2: var(--sunpillar-2);
+  --sunpillar-clr-3: var(--sunpillar-3);
+  --sunpillar-clr-4: var(--sunpillar-4);
+  --sunpillar-clr-5: var(--sunpillar-5);
+  --sunpillar-clr-6: var(--sunpillar-6);
+}

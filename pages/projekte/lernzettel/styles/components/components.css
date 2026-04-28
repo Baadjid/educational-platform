@@ -1,0 +1,55 @@
+/* ================================================================
+   COMPONENTS.CSS — Master-Import
+
+   
+   Importiert alle Teil-Stylesheets der Lernzettel-Komponenten.
+   Wird einmalig pro Fach-Seite geladen.
+   ================================================================ */
+
+/* Fach-Akzentfarbe (Standard: Gold — wird pro Fach überschrieben) */
+:root {
+  --lz-accent:     var(--primary,     #c9a87c);
+  --lz-accent-rgb: var(--primary-rgb, 201, 168, 124);
+}
+
+/* Sektion-Wrapper */
+.lz-section-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.lz-content-section {
+  padding: 4rem 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* Einzelne Sub-Stylesheets */
+@import url('./mindmap.css');
+@import url('./tables.css');
+@import url('./boxes.css');
+@import url('./interactive.css');
+
+/* ── Light Mode Basis ───────────────────────────────────────── */
+
+[data-theme="light"] .lz-accordion-item,
+[data-theme="light"] .lz-merkbox,
+[data-theme="light"] .lz-compare-col {
+  background: #ffffff;
+}
+
+[data-theme="light"] .lz-tab-btn.active {
+  background: #f5f0eb;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+[data-theme="light"] .lz-table-wrap {
+  border-color: rgba(141,110,76,0.18);
+}
+
+[data-theme="light"] .lz-formula-box {
+  background: linear-gradient(135deg,
+    rgba(var(--lz-accent-rgb, 201,168,124), 0.08),
+    rgba(var(--lz-accent-rgb, 201,168,124), 0.02));
+}

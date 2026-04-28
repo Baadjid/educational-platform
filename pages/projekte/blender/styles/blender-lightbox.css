@@ -1,0 +1,344 @@
+/* ================================================================
+   BLENDER-LIGHTBOX.CSS
+   ================================================================ */
+
+/* ── Overlay Backdrop ─────────────────────────────────────────── */
+
+.lb-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0, 0, 0, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.lb-overlay.lb-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ── Container ───────────────────────────────────────────────── */
+
+.lb-container {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  max-height: 95vh;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ── Schließen-Button — im Bild-Frame eingebettet ────────────── */
+
+.lb-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  width: 46px;
+  height: 46px;
+  /* Nur unten-links gerundet — oben-rechts passt zum Frame-Radius */
+  border-radius: 0 16px 0 14px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: none;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.lb-close:hover {
+  background: var(--primary);
+  color: var(--text-on-primary);
+}
+
+/* ── Hauptbild ───────────────────────────────────────────────── */
+
+.lb-image-wrap {
+  position: relative;
+  width: 100%;
+  max-height: 65vh;
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.03);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lb-main-img {
+  max-width: 100%;
+  max-height: 65vh;
+  object-fit: contain;
+  border-radius: 12px;
+  display: block;
+  transition: opacity 0.2s ease;
+}
+
+/* ── Navigation Buttons ──────────────────────────────────────── */
+
+.lb-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.lb-prev { left: 1rem; }
+.lb-next { right: 1rem; }
+
+.lb-nav:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* ── Bildnummer ──────────────────────────────────────────────── */
+
+.lb-counter {
+  position: absolute;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 100px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: monospace;
+}
+
+/* ── Unterzeile ──────────────────────────────────────────────── */
+
+.lb-bottom {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.5rem;
+}
+
+/* ── Thumbnails ──────────────────────────────────────────────── */
+
+.lb-thumbs {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+.lb-thumb {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+  padding: 0;
+  background: none;
+  flex-shrink: 0;
+}
+
+.lb-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.lb-thumb:hover {
+  transform: scale(1.05);
+  border-color: rgba(201, 168, 124, 0.5);
+}
+
+.lb-thumb.active {
+  border-color: var(--primary);
+}
+
+/* ── Projektinfo (unten links) ───────────────────────────────── */
+
+.lb-info {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+}
+
+.lb-info-main {
+  flex: 1;
+}
+
+.lb-info-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.lb-info-engine {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.lb-info-sep {
+  opacity: 0.4;
+}
+
+.lb-info-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.4rem;
+}
+
+.lb-info-desc {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.55;
+  margin-bottom: 0.75rem;
+  max-width: 500px;
+}
+
+.lb-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.lb-tag {
+  padding: 0.2rem 0.65rem;
+  background: rgba(201, 168, 124, 0.12);
+  border: 1px solid rgba(201, 168, 124, 0.25);
+  border-radius: 100px;
+  font-size: 0.72rem;
+  color: var(--primary);
+  font-weight: 500;
+}
+
+/* ── ArtStation Button ───────────────────────────────────────── */
+
+.lb-artstation-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.lb-artstation-btn:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--text-on-primary);
+  transform: translateY(-2px);
+}
+
+/* ── Light Mode ──────────────────────────────────────────────── */
+
+[data-theme="light"] .lb-overlay {
+  background: rgba(0, 0, 0, 0.85);
+}
+
+[data-theme="light"] .lb-info {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .lb-bottom {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .lb-thumbs {
+    justify-content: center;
+  }
+
+  .lb-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+
+  .lb-info-desc {
+    display: none;
+  }
+
+  .lb-image-wrap {
+    max-height: 50vh;
+  }
+
+  .lb-main-img {
+    max-height: 50vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .lb-nav {
+    width: 38px;
+    height: 38px;
+    font-size: 0.9rem;
+  }
+
+  .lb-prev { left: 0.5rem; }
+  .lb-next { right: 0.5rem; }
+
+  .lb-thumb {
+    width: 48px;
+    height: 48px;
+  }
+
+  .lb-close {
+    width: 40px;
+    height: 40px;
+    font-size: 0.9rem;
+  }
+}

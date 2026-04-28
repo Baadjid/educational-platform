@@ -1,0 +1,612 @@
+/* ================================================================
+   BLENDER HOTKEYS PAGE  –  blender-hotkeys.css
+   pages/projekte/blender/styles/blender-hotkeys.css
+   ================================================================ */
+
+/* ── Accent-Variablen ─────────────────────────────────────────── */
+.hk-accent-primary { --hk-a: var(--primary);  --hk-r: var(--primary-rgb); }
+.hk-accent-success { --hk-a: var(--success);  --hk-r: var(--success-rgb); }
+.hk-accent-warning { --hk-a: var(--warning);  --hk-r: var(--warning-rgb); }
+.hk-accent-error   { --hk-a: var(--error);    --hk-r: var(--error-rgb);   }
+.hk-accent-info    { --hk-a: #5b9bd5;         --hk-r: 91, 155, 213;       }
+
+/* ================================================================
+   WAVE-GRADIENT BUTTON   .btn-wave-3d
+   In BlenderPage als Link-Button zur Hotkeys-Seite einsetzen
+   ================================================================ */
+
+.btn-wave-3d {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: .65rem;
+  padding: .82rem 1.65rem;
+  border-radius: 14px;
+  font-weight: 650;
+  font-size: .9rem;
+  color: var(--text-on-primary);
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  isolation: isolate;
+  overflow: visible;
+
+  /* ── Wellenförmiger Gradient – 300% breit ── */
+  background: linear-gradient(
+    105deg,
+    #5a3e20        0%,
+    var(--primary)  18%,
+    #e8d4b0        35%,
+    var(--primary)  52%,
+    #a07840        68%,
+    var(--primary-light) 84%,
+    #5a3e20        100%
+  );
+  background-size: 300% 100%;
+  animation: btnWaveFlow 4s ease infinite;
+
+  /* Ruhezustand: nur innere Tiefe – kein großer Außenschatten */
+  box-shadow:
+    0 3px 0   rgba(0, 0, 0, .50),
+    inset 0 1px 0 rgba(255, 255, 255, .18),
+    inset 0 -1px 0 rgba(0, 0, 0, .12);
+
+  transition:
+    transform  .5s cubic-bezier(.22, .68, 0, 1.2),
+    box-shadow .5s cubic-bezier(.22, .68, 0, 1.2),
+    filter     .4s ease;
+}
+
+@keyframes btnWaveFlow {
+  0%   { background-position:   0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position:   0% 50%; }
+}
+
+/* ── Glanzschicht oben ── */
+.btn-wave-3d::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, .16) 0%,
+    transparent 52%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Schwebeshatten – als eigenes Layer mit opacity-Übergang ──
+   opacity: 0 → 1 lässt den Schatten sanft auftauchen,
+   statt ihn via box-shadow-Wert hart zu schalten.          */
+.btn-wave-3d::after {
+  content: '';
+  position: absolute;
+  /* etwas größer als der Button damit der Schatten ringsrum sichtbar ist */
+  inset: -4px -6px -22px;
+  border-radius: 18px;
+  background: transparent;
+  /* der eigentliche Schwebeschatten */
+  box-shadow:
+    0 18px 0    rgba(0, 0, 0, .38),
+    0 22px 8px  rgba(0, 0, 0, .22),
+    0 28px 40px rgba(var(--primary-rgb), .42),
+    0 38px 55px rgba(0, 0, 0, .18);
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+  transition: opacity .55s ease;
+}
+
+/* ── 3D-Lift beim Hover ── */
+.btn-wave-3d:hover {
+  transform: translateY(-9px) perspective(520px) rotateX(6deg);
+  filter: brightness(1.08);
+  animation-play-state: paused;
+  box-shadow:
+    0 3px 0   rgba(0, 0, 0, .50),
+    inset 0 1px 0 rgba(255, 255, 255, .22),
+    inset 0 -1px 0 rgba(0, 0, 0, .10);
+}
+
+/* Schatten einblenden */
+.btn-wave-3d:hover::after {
+  opacity: 1;
+}
+
+/* ── Active-Press ── */
+.btn-wave-3d:active {
+  transform: translateY(-3px) perspective(520px) rotateX(2deg);
+  transition-duration: .12s;
+  filter: brightness(.97);
+  box-shadow:
+    0 2px 0   rgba(0, 0, 0, .50),
+    inset 0 1px 0 rgba(255, 255, 255, .12);
+}
+.btn-wave-3d:active::after {
+  opacity: .35;
+  transition-duration: .12s;
+}
+
+.btn-wave-3d i {
+  position: relative;
+  z-index: 2;
+  font-size: .84rem;
+  transition: transform .45s cubic-bezier(.22, .68, 0, 1.2);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .4));
+}
+.btn-wave-3d:hover i {
+  transform: translateY(-2px) scale(1.18) rotate(-8deg);
+}
+
+.btn-wave-3d span {
+  position: relative;
+  z-index: 2;
+}
+
+/* ================================================================
+   HERO
+   ================================================================ */
+.hk-hero {
+  position: relative;
+  min-height: 52vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 7rem 2rem 5rem;
+}
+.hk-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 55% at 50% -5%,
+      rgba(var(--primary-rgb), .13) 0%, transparent 65%),
+    radial-gradient(ellipse 35% 25% at 85% 80%,
+      rgba(var(--primary-rgb), .05) 0%, transparent 55%);
+  pointer-events: none;
+}
+.hk-hero-inner {
+  position: relative;
+  max-width: 860px;
+  margin: 0 auto;
+  text-align: center;
+  z-index: 1;
+}
+
+/* zurück-link */
+.hk-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  font-size: .74rem;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+  margin-bottom: 2rem;
+  cursor: pointer;
+  transition: color .4s, gap .4s;
+}
+.hk-back-link:hover { color: var(--primary); gap: .7rem; }
+.hk-back-link i { font-size: .7rem; }
+
+/* badge */
+.hk-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .68rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--primary);
+  border: 1px solid rgba(var(--primary-rgb), .28);
+  background: rgba(var(--primary-rgb), .07);
+  padding: .3rem 1rem;
+  border-radius: 100px;
+  margin-bottom: 1.6rem;
+  box-shadow: 0 0 24px rgba(var(--primary-rgb), .1);
+}
+
+/* Titel */
+.hk-hero-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -.025em;
+  color: var(--text-primary);
+  margin-bottom: 1.2rem;
+}
+.hk-hero-title em {
+  font-style: normal;
+  background: linear-gradient(120deg,
+    var(--primary-light) 0%,
+    var(--primary)       40%,
+    var(--secondary-light) 70%,
+    var(--primary-light) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: titleShimmer 5s linear infinite;
+}
+@keyframes titleShimmer {
+  to { background-position: 200% center; }
+}
+
+.hk-hero-sub {
+  max-width: 580px;
+  margin: 0 auto 2.8rem;
+  color: var(--text-secondary);
+  font-size: 1.02rem;
+  line-height: 1.75;
+}
+
+/* stats */
+.hk-stat-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.2rem;
+  flex-wrap: wrap;
+}
+.hk-stat { text-align: center; }
+.hk-stat-num {
+  display: block;
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1;
+  letter-spacing: -.02em;
+}
+.hk-stat-label {
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .11em;
+  color: var(--text-muted);
+  margin-top: .25rem;
+  display: block;
+}
+.hk-stat-divider {
+  width: 1px;
+  height: 2.8rem;
+  background: linear-gradient(180deg,
+    transparent, rgba(var(--primary-rgb), .3), transparent);
+}
+
+/* ================================================================
+   LEGEND
+   ================================================================ */
+.hk-legend-section { padding: 2.5rem 2rem 0; }
+.hk-legend-inner {
+  max-width: 1060px;
+  margin: 0 auto;
+  background: rgba(var(--bg-elevated-rgb), .6);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 1rem 1.8rem;
+  display: flex;
+  align-items: center;
+  gap: 1.8rem;
+  flex-wrap: wrap;
+  backdrop-filter: blur(8px);
+}
+.hk-legend-title {
+  font-size: .68rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+  margin: 0;
+}
+.hk-legend-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem 1.6rem;
+  flex: 1;
+}
+.hk-legend-item {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .78rem;
+  color: var(--text-secondary);
+}
+.hk-legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--hk-a);
+  flex-shrink: 0;
+  box-shadow:
+    0 0 8px  rgba(var(--hk-r), .55),
+    0 0 18px rgba(var(--hk-r), .2);
+}
+
+/* ================================================================
+   MAIN
+   ================================================================ */
+.hk-main { padding: 3rem 2rem 6rem; }
+.hk-main-inner { max-width: 1200px; margin: 0 auto; }
+
+.hk-tabs .wim-tab {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+}
+.hk-tabs .wim-tab i {
+  font-size: .82rem;
+  opacity: .6;
+  transition: opacity .4s, transform .4s;
+}
+.hk-tabs .wim-tab.active i,
+.hk-tabs .wim-tab:hover  i { opacity: 1; transform: scale(1.15); }
+
+.hk-tab-desc {
+  margin: 1.8rem 0 2.2rem;
+  padding: .95rem 1.4rem;
+  background: rgba(var(--bg-card-rgb), .5);
+  border-left: 3px solid rgba(var(--primary-rgb), .45);
+  border-radius: 0 12px 12px 0;
+  color: var(--text-secondary);
+  font-size: .9rem;
+  line-height: 1.7;
+  backdrop-filter: blur(4px);
+}
+
+/* ================================================================
+   CARD GRID
+   ================================================================ */
+.hk-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+
+/* ================================================================
+   HOTKEY CARD  —  3D LIFT EFFECT
+   ================================================================ */
+.hk-card {
+  position: relative;
+  background: rgba(var(--bg-card-rgb), .92);
+  border: 1px solid rgba(var(--hk-r), .16);
+  border-radius: 18px;
+  padding: 1.3rem 1.45rem 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: .85rem;
+  isolation: isolate;
+  overflow: hidden;
+  animation: hkFadeUp .5s both;
+
+  /* Ruhezustand: sanfte Tiefe */
+  box-shadow:
+    0 2px 0   rgba(0, 0, 0, .48),
+    0 5px 15px rgba(0, 0, 0, .28),
+    inset 0 1px 0 rgba(var(--hk-r), .08);
+
+  transition:
+    transform    .45s cubic-bezier(.22, .68, 0, 1.2),
+    box-shadow   .45s cubic-bezier(.22, .68, 0, 1.2),
+    border-color .4s ease,
+    background   .4s ease;
+}
+
+/* Ecken-Glühen */
+.hk-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 90px; height: 90px;
+  background: radial-gradient(
+    circle at 0% 0%,
+    rgba(var(--hk-r), .15) 0%,
+    transparent 72%
+  );
+  border-radius: 18px 0 0 0;
+  pointer-events: none;
+  transition: opacity .4s;
+}
+
+/* Oberflächen-Glanz */
+.hk-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    170deg,
+    rgba(255, 255, 255, .06) 0%,
+    transparent 50%
+  );
+  pointer-events: none;
+}
+
+/* ── Hover: 3D-Lift ── */
+.hk-card:hover {
+  transform: translateY(-9px) perspective(700px) rotateX(4deg);
+  border-color: rgba(var(--hk-r), .38);
+  background: rgba(var(--bg-elevated-rgb), .97);
+  box-shadow:
+    0 15px 0    rgba(0, 0, 0, .42),
+    0 20px 8px  rgba(0, 0, 0, .22),
+    0 28px 45px rgba(0, 0, 0, .18),
+    0 0  30px   rgba(var(--hk-r), .13),
+    inset 0 1px 0 rgba(var(--hk-r), .14);
+}
+.hk-card:hover::before { opacity: 1.6; }
+
+.hk-card:active {
+  transform: translateY(-3px);
+  transition-duration: .12s;
+}
+
+/* ── Keys-Reihe ── */
+.hk-keys-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .42rem;
+}
+
+.hk-key {
+  display: inline-block;
+  font-family: 'JetBrains Mono', 'Consolas', monospace;
+  font-size: .75rem;
+  font-weight: 700;
+  font-style: normal;
+  letter-spacing: .02em;
+  color: var(--hk-a);
+  background: rgba(var(--hk-r), .1);
+  border: 1px solid rgba(var(--hk-r), .28);
+  border-radius: 8px;
+  padding: .22rem .65rem;
+  line-height: 1.5;
+  white-space: nowrap;
+
+  /* Tasten-Tiefe */
+  box-shadow:
+    0 3px 0   rgba(0, 0, 0, .48),
+    0 4px 9px rgba(0, 0, 0, .2),
+    inset 0 1px 0 rgba(255, 255, 255, .09);
+
+  transition:
+    transform    .4s cubic-bezier(.22, .68, 0, 1.2),
+    box-shadow   .4s ease,
+    background   .4s ease,
+    border-color .4s ease;
+}
+
+.hk-card:hover .hk-key {
+  transform: translateY(-3px);
+  background: rgba(var(--hk-r), .18);
+  border-color: rgba(var(--hk-r), .52);
+  box-shadow:
+    0 6px 0    rgba(0, 0, 0, .42),
+    0 9px 14px rgba(0, 0, 0, .2),
+    0 0  14px  rgba(var(--hk-r), .18),
+    inset 0 1px 0 rgba(255, 255, 255, .1);
+}
+
+.hk-plus {
+  font-size: .7rem;
+  color: var(--text-muted);
+  user-select: none;
+  opacity: .65;
+}
+
+/* ── Body ── */
+.hk-action {
+  font-size: .91rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 .28rem;
+  line-height: 1.3;
+  transition: color .4s;
+}
+.hk-card:hover .hk-action { color: var(--hk-a); }
+
+.hk-desc {
+  font-size: .81rem;
+  color: var(--text-secondary);
+  line-height: 1.68;
+  margin: 0;
+  transition: color .4s;
+}
+.hk-card:hover .hk-desc { color: rgba(var(--text-primary-rgb), .85); }
+
+/* Akzent-Linie unten beim Hover */
+.hk-card-accent-line {
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 55%;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(var(--hk-r), .8),
+    transparent);
+  border-radius: 0 0 18px 18px;
+  transition: transform .45s cubic-bezier(.22, .68, 0, 1.2);
+  pointer-events: none;
+}
+.hk-card:hover .hk-card-accent-line { transform: translateX(-50%) scaleX(1); }
+
+/* ================================================================
+   TIP BANNER
+   ================================================================ */
+.hk-tip-section { padding: 0 2rem 5rem; }
+.hk-tip-inner {
+  max-width: 1060px;
+  margin: 0 auto;
+  background: rgba(var(--primary-rgb), .06);
+  border: 1px solid rgba(var(--primary-rgb), .2);
+  border-radius: 18px;
+  padding: 1.5rem 2rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.3rem;
+  position: relative;
+  overflow: hidden;
+}
+.hk-tip-inner::before {
+  content: '';
+  position: absolute;
+  top: -50px; right: -50px;
+  width: 180px; height: 180px;
+  background: radial-gradient(circle,
+    rgba(var(--primary-rgb), .07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hk-tip-icon {
+  font-size: 1.4rem;
+  color: var(--primary);
+  flex-shrink: 0;
+  margin-top: .1rem;
+  filter: drop-shadow(0 0 8px rgba(var(--primary-rgb), .45));
+}
+.hk-tip-inner strong {
+  display: block;
+  color: var(--primary);
+  font-size: .72rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-bottom: .4rem;
+}
+.hk-tip-inner p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: .87rem;
+  line-height: 1.7;
+}
+
+/* ================================================================
+   ANIMATIONEN
+   ================================================================ */
+@keyframes hkFadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ================================================================
+   RESPONSIVE
+   ================================================================ */
+@media (max-width: 640px) {
+  .hk-hero      { padding: 6rem 1.2rem 3rem; min-height: auto; }
+  .hk-main      { padding: 2rem 1rem 4rem; }
+  .hk-legend-inner { flex-direction: column; gap: .8rem; padding: .9rem 1.1rem; }
+  .hk-tip-inner    { flex-direction: column; gap: .8rem; padding: 1.1rem 1.2rem; }
+  .hk-stat-row     { gap: 1.2rem; }
+  .hk-grid         { grid-template-columns: 1fr; }
+  .hk-tab-desc     { font-size: .83rem; }
+}
+
+/* Touch-Geräte: 3D-Effekte deaktivieren */
+@media (hover: none) {
+  .hk-card    { transform: none !important; }
+  .btn-wave-3d { transform: none !important; }
+  .btn-wave-3d::after { display: none; }
+  .btn-wave-3d:active { transform: scale(.97) !important; transition-duration: .12s; }
+}

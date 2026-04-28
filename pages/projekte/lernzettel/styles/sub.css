@@ -1,0 +1,702 @@
+/* ================================================================
+   SUB.CSS — Universelle Styles für ALLE Lernzettel-Unterseiten
+   Ablage: Portfolio/pages/projekte/lernzettel/styles/sub.css
+
+   Fachübergreifend: Chemie · Physik · Mathematik · Geschichte · Ethik …
+   Akzentfarbe steuern via:
+     --kap-color      (hex)   z.B.  #4caf50
+     --kap-color-rgb  (r,g,b) z.B.  76,175,80
+   ================================================================ */
+
+
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║  1. GLOBALE DESIGN-TOKENS                                    ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+:root {
+  /* ── Radien ────────────────────────────────────────────────── */
+  --sub-r-xs : 6px;
+  --sub-r-sm : 10px;
+  --sub-r    : 14px;
+  --sub-r-lg : 20px;
+  --sub-r-xl : 28px;
+
+  /* ── Schatten ───────────────────────────────────────────────── */
+  --sub-sh-xs : 0 1px  6px rgba(0,0,0,.20);
+  --sub-sh-sm : 0 3px 12px rgba(0,0,0,.26);
+  --sub-sh    : 0 6px 28px rgba(0,0,0,.32);
+  --sub-sh-lg : 0 14px 48px rgba(0,0,0,.44);
+  --sub-sh-xl : 0 24px 72px rgba(0,0,0,.54);
+
+  /* ── Glas (dunkel) ──────────────────────────────────────────── */
+  --sub-glass         : rgba(255,255,255,.038);
+  --sub-glass-hover   : rgba(255,255,255,.07);
+  --sub-glass-border  : rgba(255,255,255,.09);
+  --sub-glass-bh      : rgba(255,255,255,.22);
+  --sub-blur          : blur(16px) saturate(1.5);
+  --sub-blur-sm       : blur(8px)  saturate(1.3);
+
+  /* ── Timing ─────────────────────────────────────────────────── */
+  --sub-ease   : cubic-bezier(.4,0,.2,1);
+  --sub-spring : cubic-bezier(.34,1.56,.64,1);
+  --sub-tf     : 160ms;
+  --sub-t      : 260ms;
+  --sub-ts     : 420ms;
+
+  /* ── PSE-Kategoriefarben ────────────────────────────────────── */
+  /* Hex-Werte  (für background, border …) */
+  --pse-c1 : #c62828;   /* Alkalimetalle       */
+  --pse-c2 : #d84315;   /* Erdalkalimetalle    */
+  --pse-c3 : #37474f;   /* Übergangsmetalle    */
+  --pse-c4 : #6a1b9a;   /* Lanthanoide         */
+  --pse-c5 : #4a0072;   /* Actinoide           */
+  --pse-c6 : #1565c0;   /* Post-Transition-Met */
+  --pse-c7 : #2e7d32;   /* Halbmetalle         */
+  --pse-c8 : #00695c;   /* Nichtmetalle        */
+  --pse-c9 : #880e4f;   /* Halogene            */
+  --pse-c10: #263238;   /* Edelgase            */
+
+  /* RGB-Tripel  (für rgba(var(--pse-rN), alpha)) */
+  --pse-r1 : 198,40,40;
+  --pse-r2 : 216,67,21;
+  --pse-r3 : 55,71,79;
+  --pse-r4 : 106,27,154;
+  --pse-r5 : 74,0,114;
+  --pse-r6 : 21,101,192;
+  --pse-r7 : 46,125,50;
+  --pse-r8 : 0,105,92;
+  --pse-r9 : 136,14,79;
+  --pse-r10: 38,50,56;
+}
+
+[data-theme="light"] {
+  --sub-glass        : rgba(255,255,255,.58);
+  --sub-glass-hover  : rgba(255,255,255,.85);
+  --sub-glass-border : rgba(0,0,0,.08);
+  --sub-glass-bh     : rgba(0,0,0,.20);
+}
+
+
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║  2. PAGE-SHELL                                               ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+.lz-content-section {
+  padding: 3rem 2rem;
+}
+
+.lz-section-wrap {
+  max-width: 1060px;
+  margin: 0 auto;
+}
+
+
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║  3. SUB-HERO                                                 ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+.lz-sub-hero {
+  min-height: 52vh;
+  display: flex;
+  align-items: center;
+  padding: 7rem 2rem 4rem;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.lz-sub-hero-inner {
+  max-width: 820px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+/* Hintergrund-Orb */
+.lz-sub-hero-orb {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 560px; height: 560px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(var(--kap-color-rgb,76,175,80),.18) 0%,
+    rgba(var(--kap-color-rgb,76,175,80),.06) 55%,
+    transparent 78%);
+  pointer-events: none;
+  z-index: 0;
+  animation: subHeroOrb 8s ease-in-out infinite;
+}
+
+@keyframes subHeroOrb {
+  0%,100% { transform:translate(-50%,-50%) scale(1.00); opacity:.80; }
+  50%     { transform:translate(-50%,-50%) scale(1.12); opacity:1.00; }
+}
+
+/* Breadcrumb */
+.lz-sub-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.lz-bread-link {
+  background: none; border: none;
+  font-family: inherit; font-size: .8rem; font-weight: 600;
+  color: var(--kap-color,#4caf50);
+  cursor: pointer; padding: 0;
+  text-decoration: underline; text-underline-offset: 3px;
+  transition: opacity var(--sub-tf);
+}
+.lz-bread-link:hover { opacity: .72; }
+
+.lz-sub-breadcrumb i    { font-size: .6rem; color: var(--text-muted,#8a847c); }
+.lz-sub-breadcrumb span { font-size: .8rem; color: var(--text-muted,#8a847c); font-weight: 500; }
+
+/* Titel */
+.lz-sub-title {
+  font-size: clamp(2rem,5vw,3.25rem);
+  font-weight: 800; line-height: 1.12;
+  letter-spacing: -.03em; margin-bottom: 1rem;
+  color: var(--text-primary,#f5f0eb);
+}
+.lz-sub-title em { font-style: italic; color: var(--kap-color,#4caf50); font-weight: 700; }
+[data-theme="light"] .lz-sub-title { color: var(--text-primary,#1a1612); }
+
+.lz-sub-desc {
+  font-size: 1rem; line-height: 1.7;
+  color: var(--text-secondary,#bdb5ab);
+  max-width: 600px; margin-bottom: 1.25rem;
+}
+
+
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║  4. PAGE-NAVIGATION  (Prev / Up / Next)                      ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+.lz-page-nav {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  gap: 1rem; padding: 1.5rem 0;
+  border-top: 1px solid var(--border,rgba(201,168,124,.12));
+}
+
+.lz-page-nav-btn {
+  display: flex; align-items: center; gap: .6rem;
+  padding: .75rem 1.25rem;
+  border-radius: var(--sub-r);
+  border: 1px solid var(--sub-glass-border);
+  background: var(--sub-glass);
+  backdrop-filter: var(--sub-blur);
+  -webkit-backdrop-filter: var(--sub-blur);
+  color: var(--text-secondary,#bdb5ab);
+  font-family: inherit; font-size: .85rem; font-weight: 600;
+  cursor: pointer;
+  transition: all var(--sub-t) var(--sub-ease);
+}
+.lz-page-nav-btn:hover {
+  border-color: rgba(var(--lz-accent-rgb,76,175,80),.45);
+  color: var(--text-primary,#f5f0eb);
+  background: rgba(var(--lz-accent-rgb,76,175,80),.08);
+  box-shadow: 0 0 0 1px rgba(var(--lz-accent-rgb,76,175,80),.18);
+}
+.lz-page-nav-btn--up {
+  background: rgba(var(--lz-accent-rgb,76,175,80),.08);
+  border-color: rgba(var(--lz-accent-rgb,76,175,80),.28);
+  color: var(--lz-accent,#4caf50);
+}
+.lz-page-nav-btn--up:hover { background: rgba(var(--lz-accent-rgb,76,175,80),.18); }
+
+[data-theme="light"] .lz-page-nav-btn {
+  background: rgba(255,255,255,.72); border-color: rgba(0,0,0,.10);
+}
+
+
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║  5. TYPOGRAFIE                                               ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+.lz-h2 {
+  font-size: clamp(1.4rem,3vw,1.9rem);
+  font-weight: 800; letter-spacing: -.025em;
+  color: var(--text-primary,#f5f0eb);
+  margin: 0 0 .85rem; line-height: 1.15;
+}
+.lz-h3 {
+  font-size: 1.1rem; font-weight: 700;
+  color: var(--text-primary,#f5f0eb);
+  margin: 0 0 .6rem;
+}
+.lz-prose {
+  font-size: .925rem; line-height: 1.78;
+  color: var(--text-secondary,#bdb5ab);
+  margin-bottom: 1rem; max-width: 780px;
+}
+.lz-prose strong { color: var(--text-primary,#f5f0eb); font-weight: 600; }
+
+[data-theme="light"] .lz-h2,
+[data-theme="light"] .lz-h3   { color: var(--text-primary,#1a1612); }
+[data-theme="light"] .lz-prose { color: var(--text-secondary,#4a4540); }
+
+
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║  6. PERIODENSYSTEM (PSE)                                     ║
+   ║                                                              ║
+   ║  Mobile-Strategie:                                           ║
+   ║   - backdrop-filter NUR bei @media(hover:hover) → Desktop    ║
+   ║   - Tooltip-::after NUR bei @media(hover:hover)              ║
+   ║   - transform-Transition NUR bei @media(hover:hover)         ║
+   ║   - Touch: nur opacity-Tap-Feedback, kein Glaseffekt         ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+/* ── Scroll-Container ───────────────────────────────────────── */
+.pse-outer {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  /*
+    Padding MUSS ausreichend groß sein, damit der scale(1.22)-Hover
+    der Randelemente nicht vom Container abgeschnitten wird.
+    Horizontal: 0.5rem reicht — das Grid scrollt.
+    Vertikal: 2rem oben/unten für Hover-Überlauf.
+  */
+  padding: 2rem 0.5rem 2.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,.12) transparent;
+}
+.pse-outer::-webkit-scrollbar       { height: 4px; }
+.pse-outer::-webkit-scrollbar-track { background: transparent; }
+.pse-outer::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); border-radius: 2px; }
+
+/* ── Das 18-Spalten-Grid ────────────────────────────────────── */
+.pse-grid {
+  display: grid;
+  grid-template-columns: repeat(18, minmax(0,1fr));
+  gap: 3px;
+  min-width: 680px;
+  width: 100%;
+  /*
+    overflow MUSS visible sein!
+    Sonst werden die scale()-Hover-Zellen am Grid-Rand abgeschnitten.
+  */
+  overflow: visible;
+}
+
+/* ── Lücken-Zelle ───────────────────────────────────────────── */
+.pse-gap {
+  aspect-ratio: 1 / 1.15;
+  /* kein background, kein border — unsichtbar */
+}
+
+/* ── Element-Basis ──────────────────────────────────────────── */
+.pse-el {
+  /*
+    --el-rgb wird pro Kategorie via [data-cat] überschrieben.
+    Fallback: Übergangsmetall-Ton.
+  */
+  --el-rgb: 55,71,79;
+
+  position: relative;
+  aspect-ratio: 1 / 1.15;
+  border-radius: var(--sub-r-sm);
+  padding: 3px 4px 3px;
+  cursor: pointer;
+  user-select: none;
+
+  /*
+    Gradient-Background IMMER (auch Mobile).
+    backdrop-filter NICHT hier — nur im @media(hover:hover)-Block.
+  */
+  background: linear-gradient(145deg,
+    rgba(var(--el-rgb),.82),
+    rgba(var(--el-rgb),.56));
+  border: 1px solid rgba(255,255,255,.10);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.12), var(--sub-sh-xs);
+
+  /*
+    5-Felder-Layout:
+    ┌─────────────┐
+    │ Z       u   │  ← Ordnungszahl links, Atommasse rechts
+    │ EN    Kat   │  ← EN links Mitte, Kategorie rechts Mitte
+    │    Symbol   │  ← Symbol unten, volle Breite
+    └─────────────┘
+  */
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "z   u"
+    "en  cat"
+    "sym sym";
+  color: #fff;
+
+  /*
+    Transition nur für Farbe/Border auf Mobile (kein transform!).
+    transform-Transition kommt nur im @media(hover:hover)-Block.
+  */
+  transition: border-color var(--sub-tf) var(--sub-ease),
+              opacity      var(--sub-tf);
+}
+
+/* Ordnungszahl  – links oben */
+.pse-el-z   {
+  grid-area: z;
+  font-size: .50em; font-weight: 700;
+  opacity: .85; line-height: 1.1;
+}
+/* Atommasse     – rechts oben */
+.pse-el-u   {
+  grid-area: u;
+  font-size: .42em; opacity: .65;
+  line-height: 1.1; text-align: right;
+}
+/* Elektroneg.   – links Mitte */
+.pse-el-en  {
+  grid-area: en;
+  font-size: .44em; opacity: .72;
+  align-self: center; line-height: 1;
+}
+/* Kategorie     – rechts Mitte */
+.pse-el-cat {
+  grid-area: cat;
+  font-size: .38em; opacity: .58;
+  text-align: right; align-self: center;
+  line-height: 1;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+/* Symbol        – unten, groß */
+.pse-el-sym {
+  grid-area: sym;
+  font-size: 1.05em; font-weight: 800;
+  text-align: center; line-height: 1;
+  letter-spacing: -.01em;
+  text-shadow: 0 1px 4px rgba(0,0,0,.38);
+}
+
+/* ── Desktop: Glaseffekt + Hover + Tooltip ──────────────────── */
+/*
+  Alles was teuer ist (backdrop-filter, scale, ::after-Tooltip)
+  NUR bei echten Hover-Geräten aktivieren.
+  → keine Performanceprobleme auf Smartphones.
+*/
+@media (hover: hover) {
+  .pse-el {
+    backdrop-filter: var(--sub-blur-sm);
+    -webkit-backdrop-filter: var(--sub-blur-sm);
+    transition:
+      transform      var(--sub-t)  var(--sub-spring),
+      box-shadow     var(--sub-t)  var(--sub-ease),
+      border-color   var(--sub-tf) var(--sub-ease),
+      opacity        var(--sub-tf);
+  }
+
+  .pse-el:hover {
+    transform: scale(1.22) translateY(-4px);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.22),
+      0 0 0 1.5px rgba(255,255,255,.30),
+      var(--sub-sh-lg),
+      0 0 22px rgba(var(--el-rgb),.50);
+    border-color: rgba(255,255,255,.38);
+    z-index: 100;
+  }
+
+  /* ── Tooltip via CSS ::after ─────────────────────────────── */
+  /*
+    data-tip-Attribut wird im JS gesetzt:
+    el.dataset.tip = "Z  Symbol  Name\nMasse: X u  |  EN: Y\nKategorie\nKonfig"
+  */
+  .pse-el::after {
+    content: attr(data-tip);
+    position: absolute;
+    /* Standard: oberhalb des Elements */
+    bottom: calc(100% + 9px);
+    top: auto;
+    left: 50%;
+    transform: translateX(-50%) translateY(6px);
+    /* Styling */
+    background: rgba(12,12,18,.95);
+    backdrop-filter: blur(20px) saturate(1.6);
+    -webkit-backdrop-filter: blur(20px) saturate(1.6);
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: var(--sub-r-sm);
+    padding: .55rem .85rem;
+    font-size: .72rem;
+    white-space: pre;   /* \n → Zeilenumbruch */
+    color: #f0eee8;
+    line-height: 1.55;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--sub-tf), transform var(--sub-tf);
+    box-shadow: var(--sub-sh);
+    min-width: 148px;
+    text-align: left;
+    z-index: 200;
+    /* Verhindert Layout-Shift */
+    will-change: opacity, transform;
+  }
+
+  .pse-el:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* ── Tooltip-Richtungsklassen ────────────────────────────── */
+  /*
+    Werden im JS gesetzt, abhängig von der Position im Grid.
+    Verhindert Abschneiden an allen vier Rändern.
+  */
+
+  /* Tooltip UNTERHALB (für Elemente in Reihe 1-2) */
+  .pse-tip-down::after {
+    bottom: auto;
+    top: calc(100% + 9px);
+    transform: translateX(-50%) translateY(-6px);
+  }
+  .pse-tip-down:hover::after {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Tooltip an linker Kante → nach rechts verschieben */
+  .pse-tip-right::after {
+    left: 0;
+    transform: translateX(0) translateY(6px);
+  }
+  .pse-tip-right:hover::after {
+    transform: translateX(0) translateY(0);
+  }
+
+  /* Tooltip an rechter Kante → nach links verschieben */
+  .pse-tip-left::after {
+    left: auto;
+    right: 0;
+    transform: translateX(0) translateY(6px);
+  }
+  .pse-tip-left:hover::after {
+    transform: translateX(0) translateY(0);
+  }
+
+  /* Kombination: oben+rechts (z.B. H in Periode 1, Spalte 1) */
+  .pse-tip-down.pse-tip-right::after {
+    bottom: auto; top: calc(100% + 9px);
+    left: 0;
+    transform: translateX(0) translateY(-6px);
+  }
+  .pse-tip-down.pse-tip-right:hover::after {
+    transform: translateX(0) translateY(0);
+  }
+
+  /* Kombination: oben+links (z.B. He in Periode 1, Spalte 18) */
+  .pse-tip-down.pse-tip-left::after {
+    bottom: auto; top: calc(100% + 9px);
+    left: auto; right: 0;
+    transform: translateX(0) translateY(-6px);
+  }
+  .pse-tip-down.pse-tip-left:hover::after {
+    transform: translateX(0) translateY(0);
+  }
+}
+
+/* ── Aktiv-Zustand (nach Klick) ─────────────────────────────── */
+.pse-el--active {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.25),
+    0 0 0 2px rgba(255,255,255,.55),
+    var(--sub-sh-lg);
+  border-color: rgba(255,255,255,.55) !important;
+  z-index: 90;
+  transform: scale(1.06);
+}
+
+/* ── Kategoriefarben via data-cat ───────────────────────────── */
+.pse-el[data-cat="1"]  { --el-rgb: var(--pse-r1);  }
+.pse-el[data-cat="2"]  { --el-rgb: var(--pse-r2);  }
+.pse-el[data-cat="3"]  { --el-rgb: var(--pse-r3);  }
+.pse-el[data-cat="4"]  { --el-rgb: var(--pse-r4);  }
+.pse-el[data-cat="5"]  { --el-rgb: var(--pse-r5);  }
+.pse-el[data-cat="6"]  { --el-rgb: var(--pse-r6);  }
+.pse-el[data-cat="7"]  { --el-rgb: var(--pse-r7);  }
+.pse-el[data-cat="8"]  { --el-rgb: var(--pse-r8);  }
+.pse-el[data-cat="9"]  { --el-rgb: var(--pse-r9);  }
+.pse-el[data-cat="10"] { --el-rgb: var(--pse-r10); }
+
+/* ── Platzhalter-Zellen (La…Lu / Ac…Lr) ────────────────────── */
+.pse-placeholder {
+  aspect-ratio: 1 / 1.15;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  background: rgba(100,80,130,.22);
+  border: 1px dashed rgba(255,255,255,.14);
+  border-radius: var(--sub-r-sm);
+  font-size: .52em;
+  color: rgba(255,255,255,.55);
+  text-align: center;
+  cursor: default;
+}
+.pse-placeholder .pse-ph-range { font-weight: 700; font-size: 1.15em; }
+.pse-placeholder .pse-ph-sub   { opacity: .65; }
+
+/* ── f-Block-Trennzeile ─────────────────────────────────────── */
+.pse-f-label {
+  grid-column: 1 / -1;
+  padding: .6rem 0 .15rem;
+  font-size: .63rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .10em;
+  color: var(--text-muted,#8a847c);
+  text-align: center;
+  opacity: .7;
+}
+
+/* ── Legende ────────────────────────────────────────────────── */
+.pse-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .45rem .875rem;
+  margin-bottom: 1.25rem;
+}
+.pse-legend-item {
+  display: flex; align-items: center;
+  gap: .4rem; font-size: .72rem;
+  color: var(--text-secondary,#bdb5ab);
+}
+.pse-legend-dot {
+  width: 11px; height: 11px;
+  border-radius: 3px; flex-shrink: 0;
+  border: 1px solid rgba(255,255,255,.14);
+}
+
+/* ── Detail-Panel (nach Klick) ──────────────────────────────── */
+.pse-detail {
+  margin-top: 1.25rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: var(--sub-r);
+  background: var(--sub-glass);
+  border: 1px solid var(--sub-glass-border);
+  box-shadow: var(--sub-sh-sm);
+  display: none;
+  animation: pseDetailIn var(--sub-t) var(--sub-ease);
+}
+.pse-detail--open { display: block; }
+
+@keyframes pseDetailIn {
+  from { opacity:0; transform:translateY(8px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+.pse-detail-header {
+  display: flex; align-items: center;
+  gap: 1rem; margin-bottom: 1rem;
+}
+.pse-detail-badge {
+  width: 64px; height: 64px;
+  border-radius: var(--sub-r-sm);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  font-weight: 800; flex-shrink: 0;
+  border: 1px solid rgba(255,255,255,.20);
+  box-shadow: var(--sub-sh-sm); color: #fff;
+}
+.pse-detail-badge-z   { font-size: .58rem; opacity: .8; }
+.pse-detail-badge-sym { font-size: 1.7rem; line-height: 1; }
+
+.pse-detail-meta h3   { font-size: 1.1rem; font-weight: 700; color: var(--text-primary,#f5f0eb); margin: 0 0 .2rem; }
+.pse-detail-meta span { font-size: .78rem; color: var(--text-muted,#8a847c); }
+
+.pse-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px,1fr));
+  gap: .55rem;
+}
+.pse-detail-prop {
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--sub-glass-border);
+  border-radius: var(--sub-r-xs);
+  padding: .5rem .75rem;
+}
+.pse-detail-prop-key { font-size: .62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--text-muted,#8a847c); margin-bottom: .2rem; }
+.pse-detail-prop-val { font-size: .85rem; font-weight: 600; color: var(--text-primary,#f5f0eb); }
+
+[data-theme="light"] .pse-detail          { background: rgba(255,255,255,.72); border-color: rgba(0,0,0,.10); }
+[data-theme="light"] .pse-detail-prop     { background: rgba(0,0,0,.04); border-color: rgba(0,0,0,.08); }
+[data-theme="light"] .pse-detail-meta h3  { color: var(--text-primary,#1a1612); }
+[data-theme="light"] .pse-detail-prop-val { color: var(--text-primary,#1a1612); }
+
+
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║  7. RESPONSIVE                                               ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+/* Navigation Responsive - unter 650px vertikal anordnen */
+@media (max-width: 650px) {
+  .lz-page-nav { 
+    flex-direction: column; 
+    align-items: stretch; 
+    gap: 0.75rem; 
+  }
+  .lz-page-nav-btn { 
+    width: 100%; 
+    justify-content: center; 
+  }
+}
+
+@media (max-width: 768px) {
+  /* Hero */
+  .lz-sub-hero    { padding: 6rem 1.5rem 3rem; }
+  .lz-sub-hero-orb { width: 300px; height: 300px; }
+
+  /* Navigation - Original bleibt für 651-768px */
+  .lz-page-nav    { flex-wrap: wrap; justify-content: center; gap: .75rem; }
+  .lz-page-nav-btn { flex: 1; min-width: 120px; justify-content: center; }
+
+  /* PSE Mobile — nur Symbol, kein Glas, kein Transform */
+  .pse-outer { padding: 1rem 0 1.5rem; }
+  .pse-grid  { gap: 2px; min-width: 420px; }
+
+  .pse-el {
+    border-radius: 4px;
+    /* Kein teurer Glaseffekt */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    /* Keine transform-Transition */
+    transition: opacity var(--sub-tf);
+    /* Nur Symbol-Zelle */
+    grid-template-areas: "sym sym";
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr;
+    align-items: center;
+  }
+  /* Tap-Feedback statt Hover */
+  .pse-el:active { opacity: .72; }
+
+  /* Metadaten ausblenden */
+  .pse-el-z,
+  .pse-el-u,
+  .pse-el-en,
+  .pse-el-cat { display: none; }
+
+  .pse-el-sym { font-size: .88em; }
+
+  /* Kein Aktiv-Transform auf Mobile */
+  .pse-el--active { transform: none; }
+
+  /* Detail-Panel kompakter */
+  .pse-detail { padding: 1rem; }
+  .pse-detail-badge { width: 52px; height: 52px; }
+  .pse-detail-badge-sym { font-size: 1.4rem; }
+  .pse-detail-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 480px) {
+  .lz-sub-title { font-size: 1.75rem; }
+
+  .pse-grid  { min-width: 360px; }
+  .pse-el-sym { font-size: .78em; }
+}
