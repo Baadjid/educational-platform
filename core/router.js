@@ -44,10 +44,10 @@ const MAIN_ROUTES = {
   '/portfolio':               () => import('../pages/portfolio/Portfolio.js'),
   '/projekte/blender':        () => import('../pages/projekte/blender/BlenderPage.js'),
   '/projekte/blender/js/hotkeys': () => import('../pages/projekte/blender/js/BlenderHotkeys.js'),
-  '/projekte/study-planner':   () => import('../pages/projekte/study-planner/StudyPlannerPage.js'),
+  '/projekte/study-planner':   () => import('../pages/NotFound.js'), //() => import('../pages/projekte/study-planner/StudyPlannerPage.js'),
   '/projekte/gedichte':       () => import('../pages/projekte/gedichte/GedichtePage.js'),
   '/projekte/lernzettel':     () => import('../pages/projekte/lernzettel/LernzettelPage.js'),
-  '/projekte/lernzettel/eigenes/psychologie': () => import('../pages/projekte/lernzettel/eigenes/psychologie/psychologie.js'),
+  '/projekte/lernzettel/eigenes/psychologie': () => import('../pages/NotFound.js'),  //() => import('../pages/projekte/lernzettel/eigenes/psychologie/psychologie.js'),
   '/404':                     () => import('../pages/NotFound.js'),
 };
 
