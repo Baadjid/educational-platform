@@ -23,6 +23,7 @@ export function ensureComponentsCSS() {
     'pages/projekte/lernzettel/styles/components/boxes.css',
     'pages/projekte/lernzettel/styles/components/interactive.css',
     'pages/projekte/lernzettel/styles/sub.css',
+    'pages/projekte/lernzettel/styles/components/code-examples.css'
   ];
   files.forEach(loadComponentCSS);
 }

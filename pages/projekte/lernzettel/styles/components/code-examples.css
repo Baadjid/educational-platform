@@ -1,0 +1,114 @@
+/* code-examples.css - für Code-Blöcke und Beispiele */
+
+/* Container für Code-Blöcke mit horizontalem Scroll auf mobilen Geräten */
+.code-block,
+pre.code-block,
+pre:has(code) {
+  background: var(--bg-code, #1e293b);
+  color: #e2e8f0;
+  padding: 1rem;
+  border-radius: 10px;
+  font-family: 'Fira Code', 'Cascadia Code', 'Courier New', monospace;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 1rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+/* Für kleine Bildschirme: mehr Padding und etwas größere Schrift */
+@media (max-width: 768px) {
+  .code-block,
+  pre.code-block,
+  pre:has(code) {
+    padding: 0.75rem;
+    font-size: 0.8rem;
+    border-radius: 8px;
+  }
+}
+
+/* Für sehr kleine Bildschirme */
+@media (max-width: 480px) {
+  .code-block,
+  pre.code-block,
+  pre:has(code) {
+    padding: 0.5rem;
+    font-size: 0.75rem;
+    line-height: 1.6;
+  }
+}
+
+/* Inline-Code-Stil */
+code:not(pre code) {
+  background: var(--bg-code-light, #1e293b);
+  color: #e2e8f0;
+  padding: 0.2rem 0.4rem;
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 0.85em;
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* Responsive Tabellen für Mobile (falls Tabellen in Code-Abschnitten vorkommen) */
+.table-responsive {
+  overflow-x: auto;
+  margin: 1rem 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive table {
+  min-width: 500px;
+  width: 100%;
+}
+
+/* Spezifisch für deine vorhandenen Pre-Blöcke mit Inline-Style */
+pre[style*="background:var(--bg-code"] {
+  background: var(--bg-code, #1e293b) !important;
+  color: #e2e8f0 !important;
+  padding: 1.5rem !important;
+  border-radius: 10px !important;
+  font-family: monospace !important;
+  font-size: 0.85rem !important;
+  line-height: 1.7 !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+/* Für kleine Bildschirme die Inline-Styles überschreiben */
+@media (max-width: 768px) {
+  pre[style*="background:var(--bg-code"],
+  pre[style*="background:var(--bg-code"] {
+    padding: 1rem !important;
+    font-size: 0.75rem !important;
+  }
+}
+
+/* Syntax Highlighting Farben (optional) */
+.code-block .keyword,
+pre .keyword {
+  color: #60a5fa;
+}
+
+.code-block .string,
+pre .string {
+  color: #fbbf24;
+}
+
+.code-block .comment,
+pre .comment {
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.code-block .function,
+pre .function {
+  color: #c084fc;
+}
+
+.code-block .number,
+pre .number {
+  color: #f87171;
+}
