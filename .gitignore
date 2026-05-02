@@ -14,7 +14,7 @@ desktop.ini
 *.swp
 *.swo
 
-# Umgebungsvariablen (WICHTIG: niemals pushen)
+# Umgebungsvariablen
 .env
 .env.local
 .env.*.local
@@ -24,11 +24,20 @@ dist/
 build/
 .cache/
 
-# Firebase lokale Konfiguration
+# Firebase
 .firebase/
 firebase-debug.log
 firestore-debug.log
+serviceAccountKey.json
 
-# Temporäre Dateien
-*.log
-*.tmp
+# Admin-Tools (nie auf GitHub)
+upload-poems.html
+upload-*.html
+upload-timeline.html
+
+# Lokale Test-Seiten
+test.html
+debug.html
+
+# nie auf GitHub
+Uploads/

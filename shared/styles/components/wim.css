@@ -164,32 +164,10 @@
   opacity: 1;
 }
 
-/* ================================================================
-   KATEGORIEN – SANFT EIN-/AUSBLENDEN, PLATZSPAREND, KEIN ABSCHNEIDEN
-   ================================================================ */
+/* Kategorien */
+.wim-category         { display: none; }
+.wim-category.active  { display: block; }
 
-.wim-category {
-  display: block;
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-  /* Abstände zurücksetzen, damit im geschlossenen Zustand kein Platz bleibt */
-  padding: 0;
-  margin: 0;
-  transition: 
-    max-height 0.7s cubic-bezier(0.2, 0.9, 0.4, 1.1),
-    opacity 0.5s ease;
-}
-
-.wim-category.active {
-  /* Großzügiger Wert – garantiert größer als jede Kategorie (auch mobil) */
-  max-height: 10000px;
-  opacity: 1;
-  /* Ursprüngliche Abstände wiederherstellen (aus anderen Regeln) */
-  padding: unset;
-  margin: unset;
-  overflow: visible;
-}
 
 /* ================================================================
    BENTO GRID
@@ -261,7 +239,6 @@
 }
 
 .wim-grid .content-card:hover {
-  z-index: 100;
   border-color: transparent;
   transform: translateY(-8px) scale(1.02);
   box-shadow:
@@ -566,6 +543,12 @@
 
 /* Alle Light-Mode Farben werden jetzt über die CSS-Variablen in tokens.css gesteuert */
 /* Keine hartcodierten Farben mehr! */
+
+/* ================================================================
+   RESPONSIVE — bleibt unverändert
+   ================================================================ */
+
+/* ... (responsive styles bleiben gleich) ... */
 
 /* ================================================================
    RESPONSIVE — 1200px

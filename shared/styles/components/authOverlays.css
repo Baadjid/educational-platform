@@ -1,8 +1,9 @@
 /* ================================================================
    AUTH OVERLAYS  –  shared/styles/components/authOverlays.css
-   Drei Overlays:
+   Overlays:
      1. #authOverlay   – Login / Register / Logout
      2. #gateOverlay   – "Bitte anmelden" Sperre
+     3. .locked-overlay – Karten-/Sidebar-/Footer-Sperre
    Alle Farben über design tokens (tokens.css)
    ================================================================ */
 
@@ -181,7 +182,7 @@
   color: var(--text-primary);
 }
 
-/* ── Logout-Karte (einziges Panel, kein Tab) ─────────────────── */
+/* ── Logout-Karte ────────────────────────────────────────────── */
 .auth-logout-panel {
   display: flex;
   flex-direction: column;
@@ -268,7 +269,7 @@
   gap: 10px;
 }
 
-/* ── Lade-Spinner (während Auth-Check) ───────────────────────── */
+/* ── Lade-Spinner ────────────────────────────────────────────── */
 @keyframes auth-spin {
   to { transform: rotate(360deg); }
 }
@@ -280,4 +281,125 @@
   border-radius: 50%;
   animation: auth-spin 0.7s linear infinite;
   margin: 16px auto;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   LOCK-WRAP  –  Container für geschützte Buttons
+   (Sidebar-Nav & Footer-Liste)
+   ══════════════════════════════════════════════════════════════ */
+
+/* Basis: position:relative damit das absolute .locked-overlay korrekt sitzt */
+.lock-wrap {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+/* Footer-<li> als lock-wrap: list-item-Verhalten beibehalten */
+li.lock-wrap,
+.footer-lock-item {
+  display: list-item;
+  position: relative;
+  list-style: none;
+}
+
+/* Button/Link unter dem Lock: leicht unscharf & deaktiviert */
+.lock-wrap > button,
+.lock-wrap > a {
+  opacity: 0.55;
+  filter: blur(1.5px);
+  pointer-events: none;   /* Klick geht durch zum .locked-overlay darunter */
+  user-select: none;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   EINGELOGGT  –  Alle Lock-Effekte aufheben
+   Setzt Sidebar-Buttons, Footer-Links und Karten-Overlays zurück.
+   ══════════════════════════════════════════════════════════════ */
+
+/* Overlay unsichtbar */
+.user-logged-in .locked-overlay {
+  display: none !important;
+}
+
+/* Button/Link wieder voll sichtbar + klickbar */
+.user-logged-in .lock-wrap > button,
+.user-logged-in .lock-wrap > a {
+  opacity: 1 !important;
+  filter: none !important;
+  pointer-events: auto !important;
+  user-select: auto !important;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   LOCKED-OVERLAY  –  Das Schloss-Symbol auf Karten / Buttons
+   ══════════════════════════════════════════════════════════════ */
+
+.locked-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border-radius: inherit;
+  cursor: pointer;
+  z-index: 10;
+  transition:
+    background var(--t-fast),
+    backdrop-filter var(--t-fast);
+}
+
+.locked-overlay:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* Schloss-Icon — runder Badge mit Amber-Akzent */
+.locked-overlay i {
+  font-size: 1.6rem;
+  color: #ffb347;
+  background: rgba(0, 0, 0, 0.65);
+  padding: 12px;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 1px rgba(255, 179, 71, 0.25),
+    0 4px 20px rgba(0, 0, 0, 0.4);
+  transition: transform var(--t-fast), box-shadow var(--t-fast);
+}
+
+.locked-overlay:hover i {
+  transform: scale(1.12);
+  box-shadow:
+    0 0 0 2px rgba(255, 179, 71, 0.4),
+    0 6px 24px rgba(255, 179, 71, 0.25);
+}
+
+/* Sidebar-spezifisch: kleinerer Icon-Badge, passt zum sidebar-link */
+.sidebar-nav .locked-overlay {
+  border-radius: 12px;
+}
+
+.sidebar-nav .locked-overlay i {
+  font-size: 1rem;
+  padding: 8px 10px;
+}
+
+/* Footer-spezifisch: flacheres Overlay, Icon links ausgerichtet */
+.footer-lock-item .locked-overlay {
+  border-radius: 6px;
+  justify-content: flex-start;
+  padding-left: 14px;
+}
+
+.footer-lock-item .locked-overlay i {
+  font-size: 0.85rem;
+  padding: 5px 7px;
+}
+
+/* ── WimSection-Karten: Button unter der Karte darf nicht ausgeblendet werden */
+/* (die Karte selbst ist der Klick-Handler, kein .lock-wrap dazwischen)        */
+.content-card .locked-overlay {
+  border-radius: 24px;
 }

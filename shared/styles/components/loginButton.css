@@ -84,21 +84,7 @@
 .login-btn__wrapper {
   position: relative;
   display: inline-block;
-  overflow: visible;           /* Neu: erlaubt Überlauf der absoluten Elemente */
-}
-
-.login-btn__effect-container {
-  position: absolute;
-  display: block;
-  width: 200%;
-  height: 400%;
-  top: -150%;
-  left: -50%;
-  filter: url("#goo");
-  transition: all 0.1s ease-out;
-  pointer-events: none;
-  z-index: 1;
-  overflow: visible;           /* Sicherheitshalber */
+  
 }
 
 /* ── Blobs (können jetzt überall erscheinen) ──────────────────── */

@@ -1,5 +1,6 @@
 // components/Footer.js
 import { CONFIG } from '../core/config.js';
+import { renderProtectedFooterLink } from '../core/routes/protected.js';
 
 export function footerHTML(router, options = {}) {
   const { extraColumn = null } = options;
@@ -11,7 +12,8 @@ export function footerHTML(router, options = {}) {
       return `<li><a href="${item.href}" target="_blank" rel="noopener noreferrer"${i18nAttr}>${item.label}</a></li>`;
     }
     if (item.link) {
-      return `<li><button class="footer-btn" data-link="${item.link}"${i18nAttr}>${item.label}</button></li>`;
+      // Verwende die spezielle Funktion für Footer-Links
+      return renderProtectedFooterLink(item.link, item.label, item.i18n);
     }
     return '';
   };
@@ -36,7 +38,6 @@ export function footerHTML(router, options = {}) {
             <a class="logo" data-link="/">
               <div class="logo-icon">
                 <img src="https://res.cloudinary.com/dglahdmrm/image/upload/q_auto/f_auto/v1775611280/Kirill_Heldt_Logo_rrbwgj.png" alt="Logo"
-                     alt="Kirill Heldt"
                      onerror="this.parentElement.innerHTML='<i class=\\'fas fa-k\\'></i>'">
               </div>
               <span class="logo-name">Kirill Heldt</span>
@@ -61,12 +62,12 @@ export function footerHTML(router, options = {}) {
             <div class="footer-column">
               <h4 data-i18n="footer.nav.title">Navigation</h4>
               <ul>
-                <li><button class="footer-btn" data-link="${CONFIG.ROUTES.HOME}" data-i18n="footer.nav.home">Startseite</button></li>
-                <li><button class="footer-btn" data-link="${CONFIG.ROUTES.PORTFOLIO}" data-i18n="footer.nav.portfolio">Portfolio</button></li>
-                <li><button class="footer-btn" data-link="${CONFIG.ROUTES.BLENDER}" data-i18n="footer.nav.blender">3D Projekte</button></li>
-                <li><button class="footer-btn" data-link="${CONFIG.ROUTES.POEMS}" data-i18n="footer.nav.gedichte">Gedichte</button></li>
-                <li><button class="footer-btn" data-link="${CONFIG.ROUTES.LERNSETTEL}" data-i18n="footer.nav.lernzettel">Lernressourcen</button></li>
-                <li><button class="footer-btn" data-link="/projekte/study-planner" data-i18n="footer.nav.planner">Schedule Crunch</button></li>
+                ${renderProtectedFooterLink(CONFIG.ROUTES.HOME, 'Startseite', 'footer.nav.home')}
+                ${renderProtectedFooterLink(CONFIG.ROUTES.PORTFOLIO, 'Portfolio', 'footer.nav.portfolio')}
+                ${renderProtectedFooterLink(CONFIG.ROUTES.BLENDER, '3D Projekte', 'footer.nav.blender')}
+                ${renderProtectedFooterLink(CONFIG.ROUTES.POEMS, 'Gedichte', 'footer.nav.gedichte')}
+                ${renderProtectedFooterLink(CONFIG.ROUTES.LERNSETTEL, 'Lernressourcen', 'footer.nav.lernzettel')}
+                ${renderProtectedFooterLink('/projekte/study-planner', 'Schedule Crunch', 'footer.nav.planner')}
               </ul>
             </div>
 

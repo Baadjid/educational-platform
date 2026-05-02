@@ -50,6 +50,7 @@ export const CONFIG = {
     POEMS: '/projekte/gedichte',
     LERNSETTEL: '/projekte/lernzettel',
     PSYCHOLOGY: '/projekte/lernzettel/eigenes/psychologie',
+    SCHEDULECRUNCH: '/projekte/study-planner',
     IMPRESSUM: '/impressum',
     DATENSCHUTZ: '/datenschutz',
   },

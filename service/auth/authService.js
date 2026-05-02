@@ -1,4 +1,4 @@
-// service/authService.js
+// service/auth/authService.js
 import { auth } from '../firebase.js';
 import {
   signInWithEmailAndPassword,
@@ -15,16 +15,27 @@ class AuthService {
     this.currentUser    = null;
     this.listeners      = [];
     this.googleProvider = new GoogleAuthProvider();
+    this._ready = new Promise(resolve => { this._readyResolve = resolve; });
     this._initObserver();
   }
 
   _initObserver() {
     onAuthStateChanged(auth, (user) => {
       this.currentUser = user;
+
+      // Body-Klasse steuert Sichtbarkeit aller .locked-overlay im DOM.
+      // CSS: .user-logged-in .locked-overlay { display: none }
+      document.body.classList.toggle('user-logged-in', !!user);
+
+      if (this._readyResolve) {
+        this._readyResolve();
+        this._readyResolve = null;
+      }
       this.listeners.forEach(cb => cb(this.isLoggedIn(), this.currentUser));
     });
   }
 
+  ready()      { return this._ready; }
   isLoggedIn() { return !!this.currentUser; }
 
   async login(email, password) {

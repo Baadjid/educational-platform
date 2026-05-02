@@ -4,9 +4,17 @@ import { navbar } from '../components/Navbar.js';
 import { initSidebar } from '../shared/js/sidebar.js';
 import { initTheme } from '../shared/js/theme.js';
 import { initScrollTop } from '../shared/js/scroll.js';
-import { i18n } from '../shared/js/i18n.js';
 import { de, en, ru, es } from './translation/translation.js';
+import { i18n } from '../shared/js/i18n.js';
 import { initActivitiesScroll } from '../shared/js/index.js';
+import { authService } from '../service/auth/authService.js';
+import { gateOverlay } from '../service/auth/overlay.js';
+import { 
+  isRouteProtected,
+  getProtectedBase,
+  getLockTitle, 
+  getLockMessage 
+} from './routes/protected.js';
 
 // ── Import aller Fach‑Routen ───────────────────────────────────
 import { CHEMIE_TITLE_KEYS, CHEMIE_ROUTES, CHEMIE_TITLE_TRANSLATION } from './routes/faecher/chemie_routes.js';
@@ -18,7 +26,7 @@ import { INFORMATIK_TITLE_KEYS, INFORMATIK_ROUTES, INFORMATIK_TITLE_TRANSLATION 
 import { SPANISCH_TITLE_KEYS, SPANISCH_ROUTES, SPANISCH_TITLE_TRANSLATION } from './routes/faecher/spanisch_routes.js';
 import { SPORT_TITLE_KEYS, SPORT_ROUTES, SPORT_TITLE_TRANSLATION } from './routes/faecher/sport_routes.js';
 
-// ── Hauptseiten (nicht ausgelagert) ────────────────────────────
+// ── Hauptseiten ────────────────────────────────────────────────
 const MAIN_TITLE_KEYS = {
   '/':                                          'page.title.home',
   '/portfolio':                                 'page.title.portfolio',
@@ -36,13 +44,13 @@ const MAIN_ROUTES = {
   '/portfolio':               () => import('../pages/portfolio/Portfolio.js'),
   '/projekte/blender':        () => import('../pages/projekte/blender/BlenderPage.js'),
   '/projekte/blender/js/hotkeys': () => import('../pages/projekte/blender/js/BlenderHotkeys.js'),
+  '/projekte/study-planner':   () => import('../pages/projekte/study-planner/StudyPlannerPage.js'),
   '/projekte/gedichte':       () => import('../pages/projekte/gedichte/GedichtePage.js'),
   '/projekte/lernzettel':     () => import('../pages/projekte/lernzettel/LernzettelPage.js'),
   '/projekte/lernzettel/eigenes/psychologie': () => import('../pages/projekte/lernzettel/eigenes/psychologie/psychologie.js'),
   '/404':                     () => import('../pages/NotFound.js'),
 };
 
-// ── Alle Titel‑Keys zusammenführen ─────────────────────────────
 const PAGE_TITLE_KEYS = {
   ...MAIN_TITLE_KEYS,
   ...CHEMIE_TITLE_KEYS,
@@ -55,7 +63,6 @@ const PAGE_TITLE_KEYS = {
   ...SPORT_TITLE_KEYS,
 };
 
-// ── Alle Routen zusammenführen ─────────────────────────────────
 const ALL_ROUTES = {
   ...MAIN_ROUTES,
   ...CHEMIE_ROUTES,
@@ -68,7 +75,6 @@ const ALL_ROUTES = {
   ...SPORT_ROUTES,
 };
 
-// ── Alle deutschen Übersetzungen aus den Modulen sammeln ───────
 const ALL_TITLE_TRANSLATIONS = {
   ...CHEMIE_TITLE_TRANSLATION,
   ...DEUTSCH_TITLE_TRANSLATION,
@@ -80,13 +86,12 @@ const ALL_TITLE_TRANSLATIONS = {
   ...SPORT_TITLE_TRANSLATION,
 };
 
-// ── Basis‑Übersetzungen (global + Fehlerseite) ─────────────────
 const BASE_DE = {
   ...de,
   ...ALL_TITLE_TRANSLATIONS,
 };
 
-// Seiten mit Sprach‑Sektion in der Sidebar
+// Seiten, die Sprachauswahl anzeigen
 const LANG_ROUTES = new Set([
   '/', '/portfolio', '/projekte/blender', '/projekte/gedichte',
   '/projekte/lernzettel', '/projekte/lernzettel/eigenes/psychologie',
@@ -95,10 +100,10 @@ const LANG_ROUTES = new Set([
 
 class Router {
   constructor() {
-    this.currentRoute  = '/';
-    this.previousRoute = null;
-    this.previousPage  = null;
-    this.routes        = ALL_ROUTES;
+    this.currentRoute   = '/';
+    this.previousRoute  = null;
+    this.previousPage   = null;
+    this.routes         = ALL_ROUTES;
     this._canvasCleanup = null;
     this.init();
   }
@@ -113,28 +118,21 @@ class Router {
   }
 
   init() {
-    // Übersetzungen laden (deutsch erweitert, englisch/spanisch/russisch bleiben vorerst ohne Fach‑Titel)
-    i18n.load({
-      de: BASE_DE,
-      en,
-      ru,
-      es,
+    i18n.load({ de: BASE_DE, en, ru, es });
+    
+    window.addEventListener('languageChanged', () => {
+      this._applyTitle(this.currentRoute);
     });
 
     document.addEventListener('click', (e) => {
       const el = e.target.closest('[data-link]');
       if (!el) return;
       e.preventDefault();
-      const path = el.getAttribute('data-link');
-      this.navigateTo(path);
+      this.navigateTo(el.getAttribute('data-link'));
     });
 
     window.addEventListener('hashchange', () => this.handleRoute());
     window.addEventListener('load',       () => this.handleRoute());
-
-    window.addEventListener('languageChanged', () => {
-      this._applyTitle(this.currentRoute);
-    });
 
     initTheme();
     initSidebar();
@@ -143,12 +141,8 @@ class Router {
   }
 
   navigateTo(path, anchor = null) {
-    if (anchor) {
-      window.location.hash = path === '/' ? '' : path;
-      sessionStorage.setItem('scrollToAnchor', anchor);
-    } else {
-      window.location.hash = path === '/' ? '' : path;
-    }
+    if (anchor) sessionStorage.setItem('scrollToAnchor', anchor);
+    window.location.hash = path === '/' ? '' : path;
     if (this.currentRoute === path) this.handleRoute();
   }
 
@@ -168,6 +162,24 @@ class Router {
     this._updateLangSection(effectiveRoute);
     this._applyTitle(route);
 
+    // ── AUTH-GUARD mit Präfix-Matching ────────────────────────
+    if (isRouteProtected(route)) {
+      await authService.ready();
+
+      if (!authService.isLoggedIn()) {
+        document.getElementById('app').innerHTML = '';
+
+        // Basis-Route für Titel/Nachricht ermitteln (Subrouten korrekt mappen)
+        const base    = getProtectedBase(route) ?? route;
+        const title   = getLockTitle(base);
+        const message = getLockMessage(base);
+
+        // fromRouteGuard: true → "Zurück" navigiert zur Startseite
+        gateOverlay.show(title, message, { fromRouteGuard: true, route: base });
+        return;
+      }
+    }
+
     await this._renderPage(route, effectiveRoute);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -176,7 +188,6 @@ class Router {
     const key        = PAGE_TITLE_KEYS[route] || PAGE_TITLE_KEYS['/404'];
     const translated = i18n.t(key);
     const hasTitle   = translated !== key;
-
     document.title = hasTitle ? `Kirill Heldt · ${translated}` : 'Kirill Heldt';
     navbar.setPageTitle(hasTitle ? translated : '');
     navbar.updateCurrentLabel(hasTitle ? translated : navbar._labelFor(route));
@@ -186,16 +197,11 @@ class Router {
     const app = document.getElementById('app');
 
     if (this.previousPage?.cleanup) this.previousPage.cleanup();
-    if (window.__canvasCleanup) {
-      window.__canvasCleanup();
-      window.__canvasCleanup = null;
-    }
-    if (i18n.destroy) i18n.destroy();
+    if (window.__canvasCleanup) { window.__canvasCleanup(); window.__canvasCleanup = null; }
 
     app.innerHTML = '<div class="page-loading"><div class="loading-spinner"></div></div>';
 
-    const targetRoute = effectiveRoute;
-    const loader = this.routes[targetRoute];
+    const loader = this.routes[effectiveRoute];
 
     try {
       const module    = await loader();
@@ -212,7 +218,6 @@ class Router {
       window.__canvasCleanup = initBackground();
 
       requestAnimationFrame(() => initActivitiesScroll());
-
       this.previousPage = page;
 
     } catch (err) {
@@ -250,13 +255,13 @@ class Router {
     const style = document.createElement('style');
     style.id = 'error-page-styles';
     style.textContent = `
-      .error-page-container { min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 2rem; }
-      .error-page { text-align: center; max-width: 500px; padding: 2rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 24px; box-shadow: var(--shadow-lg); }
-      .error-icon { font-size: 3rem; color: var(--error); margin-bottom: 1rem; }
-      .error-title { font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary); }
-      .error-text { color: var(--text-secondary); margin-bottom: 1rem; }
-      .error-detail { font-size: 0.8rem; color: var(--text-muted); background: rgba(0,0,0,0.05); padding: 0.5rem; border-radius: 8px; margin-bottom: 1.5rem; word-break: break-all; font-family: monospace; }
-      .error-btn { display: inline-flex; align-items: center; gap: 0.5rem; }
+      .error-page-container{min-height:80vh;display:flex;align-items:center;justify-content:center;padding:2rem}
+      .error-page{text-align:center;max-width:500px;padding:2rem;background:var(--bg-card);border:1px solid var(--border);border-radius:24px;box-shadow:var(--shadow-lg)}
+      .error-icon{font-size:3rem;color:var(--error);margin-bottom:1rem}
+      .error-title{font-size:1.5rem;margin-bottom:.5rem;color:var(--text-primary)}
+      .error-text{color:var(--text-secondary);margin-bottom:1rem}
+      .error-detail{font-size:.8rem;color:var(--text-muted);background:rgba(0,0,0,.05);padding:.5rem;border-radius:8px;margin-bottom:1.5rem;word-break:break-all;font-family:monospace}
+      .error-btn{display:inline-flex;align-items:center;gap:.5rem}
     `;
     document.head.appendChild(style);
   }
@@ -269,9 +274,7 @@ class Router {
 
   _updateLangSection(route) {
     const section = document.getElementById('langSection');
-    if (section) {
-      section.style.display = LANG_ROUTES.has(route) ? 'block' : 'none';
-    }
+    if (section) section.style.display = LANG_ROUTES.has(route) ? 'block' : 'none';
   }
 }
 

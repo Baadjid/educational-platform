@@ -7,7 +7,7 @@ const es = {
 
   'wim.label':    'Proyectos y presencia',
   'wim.title':    'Lo que hago',
-  'wim.subtitle': 'Gaming, creación 3D en vivo y productos digitales — técnicamente preciso, visualmente cuidado y orientado a la comunidad.',
+  'wim.subtitle': 'Gaming, creación 3D en directo y productos digitales — técnicamente preciso, visualmente cuidado y orientado a la comunidad.',
 
   'wim.tab.all':       'Todo',
   'wim.tab.social':    'Redes sociales',
@@ -16,7 +16,7 @@ const es = {
   'wim.tab.education': 'Educación',
 
   'wim.twitch.badge':       'Proyecto en vivo',
-  'wim.twitch.title':       'Twitch: Gaming y creación 3D en directo',
+  'wim.twitch.title':       'Twitch Gaming & Creación 3D en directo',
   'wim.twitch.desc':        'Streams de gaming combinados con la creación en vivo de modelos 3D y diseños — interactivo, transparente y en tiempo real.',
   'wim.twitch.cta':         'Ver stream',
   'wim.twitch.stat1':       'En vivo',
@@ -25,7 +25,7 @@ const es = {
 
   'wim.blender.badge':      'Proyecto creativo',
   'wim.blender.title':      'Visualización 3D',
-  'wim.blender.desc':       'Modelos 3D de alta calidad, animaciones y renderizados con foco en precisión y estética.',
+  'wim.blender.desc':       'Modelos 3D, animaciones y renders de alta calidad con enfoque en precisión y estética.',
   'wim.blender.cta':        'Abrir galería',
 
   'wim.tiktok.badge':       'Canal de contenido',
@@ -35,7 +35,7 @@ const es = {
 
   'wim.instagram.badge':    'Canal de contenido',
   'wim.instagram.title':    'Instagram',
-  'wim.instagram.desc':     'Vistazos a proyectos, procesos de diseño y conceptos creativos — moderno y consistente.',
+  'wim.instagram.desc':     'Perspectivas de proyectos, procesos de diseño y conceptos creativos — moderno y consistente.',
   'wim.instagram.cta':      'Ver perfil',
 
   'wim.poetry.badge':       'Proyecto creativo',
@@ -43,32 +43,36 @@ const es = {
   'wim.poetry.desc':        'Obras literarias centradas en la expresión, el estilo y la claridad lingüística.',
   'wim.poetry.cta':         'Leer textos',
 
-  'wim.github.badge':       'Open Source',
+  'wim.github.badge':       'Código abierto',
   'wim.github.title':       'Proyectos de software',
-  'wim.github.desc':        'Proyectos técnicos, herramientas y experimentos con arquitectura limpia y enfoque en rendimiento.',
+  'wim.github.desc':        'Proyectos técnicos, herramientas y experimentos con arquitectura limpia y enfoque en el rendimiento.',
   'wim.github.cta':         'Ver repositorio',
 
-  'wim.lernzettel.badge':   'Proyecto de conocimiento',
+  'wim.lernzettel.badge':   'Proyecto educativo',
   'wim.lernzettel.title':   'Recursos de aprendizaje',
-  'wim.lernzettel.desc':    'Materiales de estudio estructurados y resúmenes técnicos — eficientes y orientados a la práctica.',
+  'wim.lernzettel.desc':    'Apuntes estructurados y resúmenes técnicos — eficientes y orientados a la práctica.',
   'wim.lernzettel.cta':     'Abrir recursos',
 
   'wim.planner.badge':      'En desarrollo',
-  'wim.planner.title':      'Study Planner App',
-  'wim.planner.desc':       'App de productividad para la planificación estructurada de fases de estudio y proyectos.',
+  'wim.planner.title':      'Schedule Crunch',
+  'wim.planner.desc':       'App de productividad para planificar fases de estudio y proyectos de forma estructurada.',
   'wim.planner.cta':        'Seguir el desarrollo',
 
+  /* Cards — Social-Tab */
   'wim.twitch.desc.social':    'Sesiones de gaming interactivas combinadas con creación 3D en tiempo real.',
   'wim.twitch.stat3.social':   'Comunidad',
-  'wim.tiktok.desc.social':    'Tutoriales compactos y formatos cortos creativos.',
+  'wim.tiktok.desc.social':    'Tutoriales compactos y formatos creativos de vídeo corto.',
   'wim.instagram.desc.social': 'Portafolio curado y destacados visuales de proyectos.',
 
-  'wim.blender.desc.creative': 'Diseño 3D profesional y renderizados de alta calidad.',
-  'wim.poetry.desc.creative':  'Proyectos literarios con ambición estilística.',
+  /* Cards — Creative-Tab */
+  'wim.blender.desc.creative': 'Diseño 3D profesional y renders de alta calidad.',
+  'wim.poetry.desc.creative':  'Proyectos literarios con alto estándar estilístico.',
 
+  /* Cards — Dev-Tab */
   'wim.github.desc.dev':       'Proyectos web escalables y arquitecturas de código estructuradas.',
 
-  'wim.lernzettel.desc.edu':   'Materiales de estudio preparados sistemáticamente para una transferencia eficiente del conocimiento.',
+  /* Cards — Education-Tab */
+  'wim.lernzettel.desc.edu':   'Materiales de estudio preparados sistemáticamente para una transmisión eficiente del conocimiento.',
 
   /* ══════════════════════════════════════════════════════════
      SIDEBAR
@@ -101,6 +105,21 @@ const es = {
   'footer.copyright':       '© 2026 Kirill Heldt · Todos los derechos reservados',
   'footer.impressum':       'Aviso legal',
   'footer.datenschutz':     'Privacidad',
+
+  /* ══════════════════════════════════════════════════════════
+     LOCK / GATE OVERLAYS
+     ══════════════════════════════════════════════════════════ */
+  'lock.gedichte.title':        'Poemas — Acceso restringido',
+  'lock.gedichte.message':      'Inicia sesión para leer mis poemas personales.',
+  'lock.portfolio.title':       'Portafolio — Acceso restringido',
+  'lock.portfolio.message':     'Inicia sesión para ver mi portafolio completo.',
+  'lock.study-planner.title':   'Schedule Crunch — Acceso restringido',
+  'lock.study-planner.message': 'Inicia sesión para usar la app de planificación de estudio.',
+  'lock.lernzettel.title':      'Apuntes — Acceso restringido',
+  'lock.lernzettel.message':    'Inicia sesión para acceder a estos recursos de aprendizaje.',
+  'lock.default.title':         'Acceso restringido',
+  'lock.default.message':       'Esta área solo es accesible para usuarios registrados.',
+
 };
 
 export default es;

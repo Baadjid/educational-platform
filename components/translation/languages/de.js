@@ -57,7 +57,7 @@ const de = {
   'wim.lernzettel.cta':     'Ressourcen öffnen',
 
   'wim.planner.badge':      'In Entwicklung',
-  'wim.planner.title':      'Study Planner App',
+  'wim.planner.title':      'Schedule Crunch',
   'wim.planner.desc':       'Produktivitäts-App zur strukturierten Planung von Lern- und Projektphasen.',
   'wim.planner.cta':        'Entwicklung verfolgen',
 
@@ -108,6 +108,22 @@ const de = {
   'footer.copyright':       '© 2026 Kirill Heldt · Alle Rechte vorbehalten',
   'footer.impressum':       'Impressum',
   'footer.datenschutz':     'Datenschutz',
+
+  /* ══════════════════════════════════════════════════════════
+     LOCK / GATE OVERLAYS
+     ══════════════════════════════════════════════════════════ */
+  'lock.gedichte.title':        'Gedichte — Zugang gesperrt',
+  'lock.gedichte.message':      'Melde dich an, um meine persönlichen Gedichte zu lesen.',
+  'lock.portfolio.title':       'Portfolio — Zugang gesperrt',
+  'lock.portfolio.message':     'Melde dich an, um mein vollständiges Portfolio zu sehen.',
+  'lock.study-planner.title':   'Schedule Crunch — Zugang gesperrt',
+  'lock.study-planner.message': 'Melde dich an, um die Lernplaner-App zu nutzen.',
+  'lock.lernzettel.title':      'Lernzettel — Zugang gesperrt',
+  'lock.lernzettel.message':    'Melde dich an, um auf diese Lernressourcen zuzugreifen.',
+  'lock.default.title':         'Zugang gesperrt',
+  'lock.default.message':       'Dieser Bereich ist nur für angemeldete Nutzer zugänglich.',
 };
+
+
 
 export default de;

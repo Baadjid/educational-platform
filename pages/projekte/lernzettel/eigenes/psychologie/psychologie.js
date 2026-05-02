@@ -1,57 +1,237 @@
 // pages/projekte/lernzettel/eigenes/psychologie/psychologie.js
-// Psychologie-Kompendium + Entscheidungsmatrix (Prokrastination)
-// WIM-Tabs · Accordions · Dialog-Bubbles · Zitat-Cards · i18n
+// Psychologie-Kompendium — Hub/Übersichtsseite
+// Editorial-Blog-Layout mit Kategorien und Artikel-Cards
 
 import { initScrollReveal } from '../../../../../shared/js/index.js';
 import { footerHTML } from '../../../../../components/Footer.js';
-import { i18n } from '../../../../../shared/js/i18n.js';
-import { de, en, ru, es } from './js/translation/translation.js';
 
-// ══════════════════════════════════════════════════════════
-// TAB-DEFINITIONEN
-// ══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════
+// ARTIKEL-DATENBANK
+// Jeder Artikel hat: slug, cat (für CSS-Akzentfarbe), hook, subhook,
+// teaser, readTime, level, featured (optional, erster in Kategorie groß)
+// ══════════════════════════════════════════════════════════════════
 
-const PSYCH_TABS = [
-  { id: 'tiefenpsychologie', icon: 'fas fa-couch',         sections: 4 },
-  { id: 'behaviorismus',     icon: 'fas fa-bell',          sections: 4 },
-  { id: 'kognitive',         icon: 'fas fa-microchip',     sections: 4 },
-  { id: 'humanistische',     icon: 'fas fa-seedling',      sections: 4 },
-  { id: 'neurowissenschaft', icon: 'fas fa-brain',         sections: 4 },
-  { id: 'sozialpsychologie', icon: 'fas fa-users',         sections: 4 },
-  { id: 'prokrastination',   icon: 'fas fa-hourglass-half', sections: 0 },
+const CATEGORIES = [
+  {
+    id:    'schulen',
+    label: 'Klassische Schulen',
+    title: 'Die Theorien, die alles begannen',
+    desc:  'Freud, Skinner, Piaget — die Schulen, die das Fundament legten.',
+    articles: [
+      {
+        slug:     'tiefenpsychologie',
+        hook:     'Du bist nicht Herr in deinem eigenen Haus.',
+        subhook:  'Freud, Jung & das Unbewusste',
+        teaser:   'Freud nannte es die dritte große Kränkung der Menschheit: Der Mensch regiert sein eigenes Bewusstsein nicht. Was dahinter steckt — und warum es dich jeden Tag beeinflusst.',
+        readTime: '12 min',
+        level:    'Grundlagen',
+        featured: true,
+      },
+      {
+        slug:     'behaviorismus',
+        hook:     'Bist du frei — oder nur gut konditioniert?',
+        subhook:  'Pavlov, Skinner & die Reiz-Reaktions-Psychologie',
+        teaser:   'Der Behaviorismus sagt: Was du Charakter nennst, ist meistens trainiertes Verhalten. Das klingt ernüchternd — und öffnet gleichzeitig enorme Möglichkeiten.',
+        readTime: '10 min',
+        level:    'Grundlagen',
+      },
+      {
+        slug:     'kognitivismus',
+        hook:     'Nicht die Dinge verletzen uns. Was wir darüber denken.',
+        subhook:  'Kognition, Verzerrungen & das ABC-Modell',
+        teaser:   'Dein Gehirn filtert, interpretiert und erfindet — und du nimmst das Ergebnis für die Realität. Die Kognitionspsychologie zeigt, wo das schiefgeht.',
+        readTime: '11 min',
+        level:    'Grundlagen',
+      },
+      {
+        slug:     'humanistische-psychologie',
+        hook:     'Was musst du sein — bevor du weißt, wer du bist?',
+        subhook:  'Maslow, Rogers & die Dritte Kraft',
+        teaser:   'Maslow, Rogers und die humanistische Psychologie setzten dem Behaviorismus etwas entgegen: Der Mensch strebt nicht nur nach Überleben — er strebt nach Bedeutung.',
+        readTime: '9 min',
+        level:    'Grundlagen',
+      },
+    ],
+  },
+  {
+    id:    'sozial',
+    label: 'Soziale Psychologie',
+    title: 'Andere Menschen formen dich mehr als du denkst',
+    desc:  'Konformität, Manipulation, Gruppen — und warum wir alle anfälliger sind als wir glauben.',
+    articles: [
+      {
+        slug:     'soziale-beeinflussung',
+        hook:     'Wie viel von dir bist wirklich du?',
+        subhook:  'Spiegelneuronen, soziale Bewährtheit & Persuasion',
+        teaser:   'Soziale Einflüsse operieren unterhalb der Wahrnehmungsschwelle. Du denkst, du entscheidest — dabei hat die Gruppe schon für dich entschieden.',
+        readTime: '10 min',
+        level:    'Fortgeschritten',
+        featured: true,
+      },
+      {
+        slug:     'konformitaet',
+        hook:     '65 % folgten dem Befehl. Wärst du dabei gewesen?',
+        subhook:  'Milgram, Asch & die Macht der Situation',
+        teaser:   'Asch, Milgram, Zimbardo — drei Experimente, die zeigen, dass Situation mächtiger ist als Charakter. Das ist keine Entschuldigung, sondern eine Warnung.',
+        readTime: '13 min',
+        level:    'Fortgeschritten',
+      },
+      {
+        slug:     'online-dating',
+        hook:     'Kann ein Algorithmus entscheiden, wen du liebst?',
+        subhook:  'Matching-Logik, parasoziale Bindungen & das Paradox der Wahl',
+        teaser:   'Swipe right, swipe left — Online-Dating hat das Kennenlernen gamifiziert. Was das mit unserer Bindungsfähigkeit macht, ist weniger romantisch als erhofft.',
+        readTime: '8 min',
+        level:    'Angewandt',
+      },
+    ],
+  },
+  {
+    id:    'beeinflussung',
+    label: 'Unbewusste Beeinflussung',
+    title: 'Was du nicht siehst, formt dich am stärksten',
+    desc:  'Farben, Priming, Entscheidungsarchitektur — Werkzeuge der stillen Steuerung.',
+    articles: [
+      {
+        slug:     'farbpsychologie',
+        hook:     'Die Welt manipuliert dich — und du merkst es nicht.',
+        subhook:  'Farbpsychologie, Neuromarketing & Priming',
+        teaser:   'Rot erhöht deinen Herzschlag. Blau senkt deinen Blutdruck. Fast Food-Ketten, Streaming-Plattformen und Casinos wissen das — und nutzen es täglich gegen dich.',
+        readTime: '9 min',
+        level:    'Angewandt',
+        featured: true,
+      },
+      {
+        slug:     'prokrastination',
+        hook:     'Du weißt, dass du solltest. Warum tust du es trotzdem nicht?',
+        subhook:  'Zeitdiskontierung, Habit Loops & emotionale Regulation',
+        teaser:   'Prokrastination ist kein Zeitproblem — es ist ein Emotionsproblem. Das Gehirn priorisiert sofortigen Komfort, und das zukünftige Ich zahlt dafür.',
+        readTime: '11 min',
+        level:    'Angewandt',
+      },
+      {
+        slug:     'entscheidungen',
+        hook:     'Glaubst du wirklich, du entscheidest frei?',
+        subhook:  'Prospect Theory, Ankereffekte & Choice Architecture',
+        teaser:   'Kahneman zeigte: Wir sind keine rationalen Entscheider. Wir sind Wesen, die unter Zeitdruck mit unvollständigen Informationen Heuristiken nutzen — und es Vernunft nennen.',
+        readTime: '10 min',
+        level:    'Fortgeschritten',
+      },
+    ],
+  },
+  {
+    id:    'klinisch',
+    label: 'Klinische Psychologie',
+    title: 'Wenn die Psyche aus dem Gleichgewicht gerät',
+    desc:  'Burn-out, Depression, Trauma — Verstehen als erster Schritt zu Wandel.',
+    articles: [
+      {
+        slug:     'burnout-resilienz',
+        hook:     'Wann hört Erschöpfung auf, normal zu sein?',
+        subhook:  'Burn-out, chronischer Stress & die Biologie der Resilienz',
+        teaser:   'Burn-out ist kein Zeichen von Schwäche — es ist das Ergebnis eines Systems, das zu lange zu viel von sich verlangt hat. Und Resilienz ist trainierbar.',
+        readTime: '12 min',
+        level:    'Angewandt',
+        featured: true,
+      },
+      {
+        slug:     'depressionen-angst',
+        hook:     'Was steckt hinter dem Lächeln?',
+        subhook:  'Depression, Angststörungen & das biopsychosoziale Modell',
+        teaser:   'Depression ist nicht "schlechte Laune" und Angst ist nicht "Zickenalarm". Beides sind ernsthafte, neurobiologisch fundierte Zustände — und beide sind behandelbar.',
+        readTime: '14 min',
+        level:    'Fortgeschritten',
+      },
+      {
+        slug:     'trauma',
+        hook:     'Manche Wunden heilen nicht — sie verändern sich.',
+        subhook:  'Trauma, PTBS & Traumaverarbeitung',
+        teaser:   'Traumatische Erfahrungen hinterlassen neurobiologische Spuren. Das Gehirn reagiert, als sei die Gefahr noch jetzt — auch wenn sie längst vorbei ist.',
+        readTime: '13 min',
+        level:    'Fortgeschritten',
+      },
+    ],
+  },
+  {
+    id:    'gehirn',
+    label: 'Gehirn & Entwicklung',
+    title: 'Die Biologie hinter allem, was wir sind',
+    desc:  'Neuroplastizität, Schlaf, Entwicklung — das Gehirn als formbares Organ.',
+    articles: [
+      {
+        slug:     'neurowissenschaft',
+        hook:     'Dein Gehirn erfindet die Realität. Täglich.',
+        subhook:  'Neuroplastizität, Neurotransmitter & kognitive Kontrolle',
+        teaser:   'Von 11 Millionen Bits sensorischer Information werden gerade mal 40 bewusst verarbeitet. Den Rest erfindet dein Gehirn — und nennt es Wahrnehmung.',
+        readTime: '13 min',
+        level:    'Grundlagen',
+        featured: true,
+      },
+      {
+        slug:     'schlaf-leistung',
+        hook:     'Schlaf ist keine Pause. Er ist das System.',
+        subhook:  'Schlafphasen, kognitive Leistung & die Kosten des Schlafmangels',
+        teaser:   'Schlaf ist der Zeitraum, in dem das Gehirn Erinnerungen konsolidiert, Toxine auswäscht und emotionale Erfahrungen verarbeitet. Ihn zu kürzen ist teure Sparsamkeit.',
+        readTime: '10 min',
+        level:    'Angewandt',
+      },
+      {
+        slug:     'entwicklungspsychologie',
+        hook:     'Wer wärst du, wenn alles anders gewesen wäre?',
+        subhook:  'Piaget, Erikson, Bindungstheorie & Neuroplastizität',
+        teaser:   'Frühe Bindungserfahrungen verdrahten das Gehirn. Doch Neuroplastizität bedeutet: Frühe Muster sind nicht Schicksal — sie sind der Startpunkt.',
+        readTime: '12 min',
+        level:    'Grundlagen',
+      },
+    ],
+  },
+  {
+    id:    'arbeit',
+    label: 'Arbeit & Gesellschaft',
+    title: 'Psychologie im Alltag — Arbeit, Macht und Motivation',
+    desc:  'Führungspsychologie, Gamification, Homeoffice — Mechanismen moderner Arbeitswelten.',
+    articles: [
+      {
+        slug:     'fuehrungspsychologie',
+        hook:     'Macht verändert Menschen. Immer.',
+        subhook:  'Führungsstile, Power-Korrumpierung & psychologische Sicherheit',
+        teaser:   'Zimbardos Gefängnisexperiment zeigte es: Macht korrumpiert. Was gute Führung von schlechter unterscheidet, hat weniger mit Talent zu tun als mit Selbsterkenntnis.',
+        readTime: '10 min',
+        level:    'Angewandt',
+        featured: true,
+      },
+      {
+        slug:     'gamification',
+        hook:     'Warum du nicht aufhören kannst — und wer das weiß.',
+        subhook:  'Variable Verstärkung, Flow-Theorie & Gamification im Arbeitsalltag',
+        teaser:   'Smartphones, Social Media, Streaming — alle nutzen dasselbe psychologische Prinzip wie Spielautomaten: variable Belohnung. Du bist das Produkt, nicht der Spieler.',
+        readTime: '9 min',
+        level:    'Angewandt',
+      },
+    ],
+  },
 ];
 
-// Prokrastinations-Bereiche (17 Kategorien — universell)
-const PROKR_AREAS = [
-  'bildung', 'morgenroutine', 'mentale_kompetenz', 'beziehungen',
-  'hobbys', 'gaming', 'passiver_konsum', 'ernaehrung_zucker',
-  'koerperpflege', 'koerperhaltung', 'rhetorik', 'raumordnung',
-  'gewohnheiten', 'ernaehrung', 'schlaf', 'smartphone', 'finanzen',
-];
-
-// ══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════
 // PAGE CLASS
-// ══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════
 
 export default class PsychologiePage {
   constructor(router) {
     this.router = router;
-    this._activeTab = PSYCH_TABS[0].id;
-    this._onTabClick = this._onTabClick.bind(this);
-    this._onAccordionClick = this._onAccordionClick.bind(this);
-    this._onLangChange = this._onLangChange.bind(this);
-    this._resizeHandler = null;
+    this._onCardClick = this._onCardClick.bind(this);
   }
 
-  render() {
-    i18n.load({ de, en, ru, es });
+  // ── Render ─────────────────────────────────────────────────────
 
+  render() {
     const el = document.createElement('div');
     el.className = 'page page-psychologie';
 
+    // CSS lazy-load (einmal pro Session)
     if (!document.querySelector('link[href*="psychologie.css"]')) {
       const link = document.createElement('link');
-      link.rel = 'stylesheet';
+      link.rel  = 'stylesheet';
       link.href = 'pages/projekte/lernzettel/eigenes/psychologie/styles/psychologie.css';
       document.head.appendChild(link);
     }
@@ -60,333 +240,144 @@ export default class PsychologiePage {
     return el;
   }
 
-  // ── HTML ───────────────────────────────────────────────
+  // ── HTML ───────────────────────────────────────────────────────
 
   _getHTML() {
+    const totalArticles  = CATEGORIES.reduce((n, c) => n + c.articles.length, 0);
+    const totalReadTime  = CATEGORIES.reduce(
+      (n, c) => n + c.articles.reduce((m, a) => m + parseInt(a.readTime), 0), 0
+    );
+
     return `
-      <!-- HERO -->
-      <section class="psy-hero">
-        <div class="psy-hero-inner">
-          <div class="psy-hero-orb" aria-hidden="true"></div>
-          <div class="psy-hero-content">
-            <p class="psy-eyebrow">
-              <i class="fas fa-brain"></i>
-              <span data-i18n="psy.eyebrow">Kompendium · Psychologie</span>
-            </p>
-            <h1 class="psy-headline">
-              <span data-i18n="psy.headline.1">Psychologie verstehen</span><br>
-              <em data-i18n="psy.headline.2">Von der Theorie zur Lebenskunst.</em>
-            </h1>
-            <p class="psy-hero-desc" data-i18n="psy.hero.desc">
-              Von Tiefenpsychologie bis Neurowissenschaft — die wichtigsten Perspektiven,
-              wie sie zusammenhängen und was sie für den Alltag bedeuten.
-            </p>
-            <div class="psy-scroll-hint">
-              <div class="psy-scroll-mouse"><div class="psy-scroll-wheel"></div></div>
-            </div>
-          </div>
+      <!-- HERO ─────────────────────────────────────────────── -->
+      <section class="psy-hub-hero reveal">
+        <div class="psy-hub-hero-inner">
+          <p class="psy-eyebrow">
+            <i class="fas fa-brain" aria-hidden="true"></i>
+            Lernzettel · Eigenes · Psychologie
+          </p>
+          <h1 class="psy-hub-title">
+            Der Mensch,<br><em>durchleuchtet.</em>
+          </h1>
+          <p class="psy-hub-desc">
+            ${totalArticles} Themen. Keine einfachen Antworten.
+            Jedes davon könnte dein Weltbild ein kleines Stück verschieben —
+            und das ist der Punkt.
+          </p>
         </div>
       </section>
 
-      <!-- MAIN CONTENT -->
-      <section class="psy-content">
-        <div class="psy-content-wrap">
+      <!-- KATEGORIEN ─────────────────────────────────────── -->
+      ${CATEGORIES.map(cat => this._renderCategory(cat)).join('')}
 
-          <!-- WIM-Style Tab Navigation -->
-          <nav class="wim-tabs reveal" id="psyTabs" role="tablist">
-            ${PSYCH_TABS.map((tab, i) => `
-              <button class="wim-tab ${i === 0 ? 'active' : ''}"
-                      data-psy-tab="${tab.id}"
-                      role="tab"
-                      aria-selected="${i === 0}">
-                <i class="${tab.icon}"></i>
-                <span data-i18n="psy.tab.${tab.id}"></span>
-              </button>
-            `).join('')}
-          </nav>
-
-          <!-- Tab Panels -->
-          <div class="psy-panels" id="psyPanels">
-            ${PSYCH_TABS.map((tab, i) =>
-              tab.id === 'prokrastination'
-                ? this._renderProkrastinationPanel(tab, i === 0)
-                : this._renderPsychPanel(tab, i === 0)
-            ).join('')}
-          </div>
-
-        </div>
-      </section>
-
+      <!-- FOOTER ─────────────────────────────────────────── -->
       ${footerHTML(this.router, {
         extraColumn: {
-          title: 'Psychologie & Weiterführendes',
-          titleI18n: 'psy.footer.extra.title',
+          title: 'Weiterführendes',
           items: [
             { label: 'Stanford Encyclopedia of Philosophy', href: 'https://plato.stanford.edu/entries/psychology/' },
             { label: 'Simply Psychology', href: 'https://www.simplypsychology.org/' },
-            { label: 'Zurück zur Übersicht', link: '/projekte/lernzettel', i18n: 'psy.footer.extra.back' },
-            { label: 'Portfolio', link: '/portfolio', i18n: 'psy.footer.extra.portfolio' },
-          ]
-        }
+            { label: 'Zurück zur Lernzettel-Übersicht', link: '/projekte/lernzettel' },
+          ],
+        },
       })}
     `;
   }
 
-  // ── Psychologie-Panel (Quote + Intro + Accordions) ─────
+  // ── Category ───────────────────────────────────────────────────
 
-  _renderPsychPanel(tab, isActive) {
+  _renderCategory(cat) {
     return `
-      <div class="psy-panel ${isActive ? 'active' : ''}"
-           data-psy-panel="${tab.id}"
-           role="tabpanel">
-
-        <!-- Zitat-Card -->
-        <div class="psy-quote-card">
-          <div class="psy-quote-icon"><i class="fas fa-quote-left"></i></div>
-          <blockquote class="psy-quote-text" data-i18n="psy.${tab.id}.quote"></blockquote>
-          <cite class="psy-quote-author" data-i18n="psy.${tab.id}.quote.author"></cite>
-        </div>
-
-        <!-- Intro -->
-        <div class="psy-panel-intro">
-          <div class="psy-panel-icon"><i class="${tab.icon}"></i></div>
-          <div class="psy-panel-intro-text">
-            <h2 data-i18n="psy.${tab.id}.title"></h2>
-            <p data-i18n="psy.${tab.id}.intro"></p>
+      <section class="psy-category reveal" style="--cat-color: var(--psy-${cat.id})">
+        <div class="psy-category-inner">
+          <header class="psy-category-head">
+            <span class="psy-category-label">${cat.label}</span>
+            <div class="psy-category-line" aria-hidden="true"></div>
+          </header>
+          <h2 class="psy-category-title" style="color: var(--text-primary); font-family: var(--psy-serif); font-size: 1.4rem; margin-bottom: 0.4rem; font-weight: 700;">
+            ${cat.title}
+          </h2>
+          <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 2rem; line-height: 1.6;">
+            ${cat.desc}
+          </p>
+          <div class="psy-cards-grid">
+            ${cat.articles.map((a, i) => this._renderCard(a, cat.id, i === 0 && a.featured)).join('')}
           </div>
         </div>
-
-        <!-- Accordions -->
-        <div class="psy-accordions">
-          ${Array.from({ length: tab.sections }, (_, i) => `
-            <div class="psy-accordion">
-              <button class="psy-accordion-head" aria-expanded="false">
-                <span class="psy-accordion-num">${String(i + 1).padStart(2, '0')}</span>
-                <span class="psy-accordion-title" data-i18n="psy.${tab.id}.sec${i}.title"></span>
-                <span class="psy-accordion-chevron"><i class="fas fa-chevron-down"></i></span>
-              </button>
-              <div class="psy-accordion-body">
-                <div class="psy-accordion-content" data-i18n="psy.${tab.id}.sec${i}.text"></div>
-              </div>
-            </div>
-          `).join('')}
-        </div>
-
-      </div>
+      </section>
     `;
   }
 
-  // ── Prokrastination-Panel (Dialog-Bubbles) ─────────────
+  // ── Article Card ───────────────────────────────────────────────
 
-  _renderProkrastinationPanel(tab, isActive) {
-    return `
-      <div class="psy-panel ${isActive ? 'active' : ''}"
-           data-psy-panel="${tab.id}"
-           role="tabpanel">
+  _renderCard(article, catId, featured = false) {
+    const route = `/projekte/lernzettel/eigenes/psychologie/themen/${article.slug}`;
 
-        <!-- Intro-Zitat -->
-        <div class="psy-quote-card">
-          <div class="psy-quote-icon"><i class="fas fa-quote-left"></i></div>
-          <blockquote class="psy-quote-text" data-i18n="psy.prokr.quote"></blockquote>
-          <cite class="psy-quote-author" data-i18n="psy.prokr.quote.author"></cite>
-        </div>
-
-        <!-- Intro -->
-        <div class="psy-panel-intro">
-          <div class="psy-panel-icon"><i class="${tab.icon}"></i></div>
-          <div class="psy-panel-intro-text">
-            <h2 data-i18n="psy.prokr.title"></h2>
-            <p data-i18n="psy.prokr.intro"></p>
-          </div>
-        </div>
-
-        <!-- Dialog-Bubbles pro Bereich -->
-        <div class="psy-dialog-list">
-          ${PROKR_AREAS.map((area, i) => `
-            <div class="psy-dialog-pair" style="animation-delay: ${i * 0.04}s">
-              <!-- Frage (links) -->
-              <div class="psy-bubble psy-bubble--question">
-                <div class="psy-bubble-header">
-                  <span class="psy-bubble-num">${String(i + 1).padStart(2, '0')}</span>
-                  <span class="psy-bubble-label" data-i18n="psy.prokr.${area}.label"></span>
-                </div>
-                <p class="psy-bubble-text" data-i18n="psy.prokr.${area}.q"></p>
-              </div>
-              <!-- Antwort (rechts) -->
-              <div class="psy-bubble psy-bubble--answer">
-                <p class="psy-bubble-text" data-i18n="psy.prokr.${area}.a"></p>
-                <div class="psy-bubble-metric">
-                  <span class="psy-metric-label" data-i18n="psy.prokr.impact">Impact</span>
-                  <span class="psy-metric-bar">
-                    <span class="psy-metric-fill" data-i18n-attr="style" style="--fill: var(--prokr-fill-${area}, 70%)"></span>
-                  </span>
-                </div>
-              </div>
+    if (featured) {
+      return `
+        <article class="psy-card psy-card--featured" data-cat="${catId}" data-route="${route}" role="button" tabindex="0" aria-label="${article.hook}">
+          <div class="psy-card-num" aria-hidden="true">01</div>
+          <div class="psy-card-body">
+            <div class="psy-card-top">
+              <span class="psy-card-tag">${article.subhook}</span>
+              <span class="psy-card-read"><i class="fas fa-clock" aria-hidden="true"></i> ${article.readTime}</span>
             </div>
-          `).join('')}
-        </div>
+            <h3 class="psy-card-hook">${article.hook}</h3>
+            <p class="psy-card-teaser">${article.teaser}</p>
+            <div class="psy-card-footer">
+              <span class="psy-card-level">${article.level}</span>
+              <span class="psy-card-arrow" aria-hidden="true">→</span>
+            </div>
+          </div>
+        </article>
+      `;
+    }
 
-        <!-- Zusammenfassung -->
-        <div class="psy-summary-card">
-          <div class="psy-summary-icon"><i class="fas fa-bullseye"></i></div>
-          <h3 data-i18n="psy.prokr.summary.title"></h3>
-          <p data-i18n="psy.prokr.summary.text"></p>
+    return `
+      <article class="psy-card" data-cat="${catId}" data-route="${route}" role="button" tabindex="0" aria-label="${article.hook}">
+        <div class="psy-card-top">
+          <span class="psy-card-tag">${article.subhook}</span>
+          <span class="psy-card-read"><i class="fas fa-clock" aria-hidden="true"></i> ${article.readTime}</span>
         </div>
-
-      </div>
+        <h3 class="psy-card-hook">${article.hook}</h3>
+        <p class="psy-card-teaser">${article.teaser}</p>
+        <div class="psy-card-footer">
+          <span class="psy-card-level">${article.level}</span>
+          <span class="psy-card-arrow" aria-hidden="true">→</span>
+        </div>
+      </article>
     `;
   }
 
-  // ── Init ───────────────────────────────────────────────
+  // ── Init ───────────────────────────────────────────────────────
 
   init() {
-    i18n.init();
     initScrollReveal();
-    this._initWimTabs();
-
-    const panels = document.getElementById('psyPanels');
-    if (panels) panels.addEventListener('click', this._onAccordionClick);
-
-    window.addEventListener('languageChanged', this._onLangChange);
+    document.querySelectorAll('.psy-card[data-route]').forEach(card => {
+      card.addEventListener('click',   this._onCardClick);
+      card.addEventListener('keydown', this._onCardKeydown);
+    });
   }
 
   cleanup() {
-    const tabsNav = document.getElementById('psyTabs');
-    if (tabsNav) {
-      tabsNav.querySelectorAll('.wim-tab').forEach(btn => {
-        btn.removeEventListener('click', this._onTabClick);
-      });
+    document.querySelectorAll('.psy-card[data-route]').forEach(card => {
+      card.removeEventListener('click',   this._onCardClick);
+      card.removeEventListener('keydown', this._onCardKeydown);
+    });
+  }
+
+  // ── Event Handlers ─────────────────────────────────────────────
+
+  _onCardClick(e) {
+    const card = e.currentTarget;
+    const route = card.dataset.route;
+    if (route) this.router.push(route);
+  }
+
+  _onCardKeydown(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      e.currentTarget.click();
     }
-    if (this._resizeHandler) window.removeEventListener('resize', this._resizeHandler);
-
-    const panels = document.getElementById('psyPanels');
-    if (panels) panels.removeEventListener('click', this._onAccordionClick);
-
-    window.removeEventListener('languageChanged', this._onLangChange);
-  }
-
-  // ── WIM-Tab-Initialisierung (Slider + Overflow) ────────
-
-  _initWimTabs() {
-    const tabsContainer = document.getElementById('psyTabs');
-    if (!tabsContainer) return;
-    const tabs = tabsContainer.querySelectorAll('.wim-tab[data-psy-tab]');
-    if (!tabs.length) return;
-
-    // Slider erstellen
-    const slider = document.createElement('span');
-    slider.className = 'wim-tab-slider';
-    tabsContainer.appendChild(slider);
-
-    const positionSlider = (activeTab) => {
-      slider.style.transform = `translateX(${activeTab.offsetLeft}px)`;
-      slider.style.width = `${activeTab.getBoundingClientRect().width}px`;
-    };
-
-    const initialActive = tabsContainer.querySelector('.wim-tab.active') || tabs[0];
-    setTimeout(() => positionSlider(initialActive), 50);
-
-    // Tab-Klick
-    tabs.forEach((tab, index) => {
-      tab.addEventListener('click', (e) => {
-        this._onTabClick(e);
-        positionSlider(tab);
-
-        // Scroll tab into view
-        const tabCenter = tab.offsetLeft + tab.offsetWidth / 2;
-        const containerCenter = tabsContainer.clientWidth / 2;
-        this._smoothScroll(tabsContainer, tabCenter - containerCenter - tabsContainer.scrollLeft);
-      });
-
-      // Keyboard-Navigation
-      tab.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight') {
-          e.preventDefault();
-          const next = tabs[index + 1] || tabs[0];
-          next.focus(); next.click();
-        } else if (e.key === 'ArrowLeft') {
-          e.preventDefault();
-          const prev = tabs[index - 1] || tabs[tabs.length - 1];
-          prev.focus(); prev.click();
-        }
-      });
-    });
-
-    // Resize → Slider repositionieren
-    this._resizeHandler = () => {
-      const active = tabsContainer.querySelector('.wim-tab.active');
-      if (active) positionSlider(active);
-    };
-    window.addEventListener('resize', this._resizeHandler);
-  }
-
-  _smoothScroll(target, amount) {
-    const start = target.scrollLeft;
-    const end = start + amount;
-    const duration = 380;
-    const startTime = performance.now();
-    const ease = (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-    const step = (now) => {
-      const progress = Math.min((now - startTime) / duration, 1);
-      target.scrollLeft = start + (end - start) * ease(progress);
-      if (progress < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  }
-
-  // ── Tab Click ──────────────────────────────────────────
-
-  _onTabClick(e) {
-    const btn = e.target.closest('.wim-tab[data-psy-tab]');
-    if (!btn) return;
-
-    const tabId = btn.dataset.psyTab;
-    if (tabId === this._activeTab) return;
-    this._activeTab = tabId;
-
-    // Tabs umschalten
-    document.querySelectorAll('#psyTabs .wim-tab').forEach(t => {
-      t.classList.remove('active');
-      t.setAttribute('aria-selected', 'false');
-    });
-    btn.classList.add('active');
-    btn.setAttribute('aria-selected', 'true');
-
-    // Panels umschalten
-    document.querySelectorAll('#psyPanels .psy-panel').forEach(p => {
-      const isTarget = p.dataset.psyPanel === tabId;
-      p.classList.toggle('active', isTarget);
-    });
-  }
-
-  // ── Accordion Click ────────────────────────────────────
-
-  _onAccordionClick(e) {
-    const head = e.target.closest('.psy-accordion-head');
-    if (!head) return;
-
-    const accordion = head.parentElement;
-    const isOpen = accordion.classList.contains('open');
-
-    // Alle im gleichen Panel schließen
-    const panel = accordion.closest('.psy-panel');
-    if (panel) {
-      panel.querySelectorAll('.psy-accordion.open').forEach(a => {
-        if (a !== accordion) {
-          a.classList.remove('open');
-          a.querySelector('.psy-accordion-head')?.setAttribute('aria-expanded', 'false');
-        }
-      });
-    }
-
-    accordion.classList.toggle('open', !isOpen);
-    head.setAttribute('aria-expanded', String(!isOpen));
-  }
-
-  // ── Sprachwechsel ──────────────────────────────────────
-
-  _onLangChange() {
-    const wrap = document.querySelector('.psy-content-wrap');
-    if (wrap) i18n._patchDOM(wrap);
   }
 }

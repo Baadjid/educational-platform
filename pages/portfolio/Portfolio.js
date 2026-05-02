@@ -1,5 +1,4 @@
 // pages/portfolio/Portfolio.js
-// Vollständige Portfolio-Seite mit allen Sektionen — mit i18n-Integration
 
 import { initScrollReveal, initStatCounters } from '../../shared/js/index.js';
 import { initHolographicCard } from './js/holographic-card.js';
@@ -11,8 +10,8 @@ import { renderWimSection, initWimTabs } from '../../components/WimSection.js';
 import { i18n } from '../../shared/js/i18n.js';
 import { de, en, ru, es } from './js/translation/translation.js';
 
-// Timeline-Daten aus zentraler Datenbank
-import { TIMELINE_ITEMS } from '../../data/timeline.js';
+// Timeline-Daten jetzt async aus Firestore
+import { fetchTimeline } from '../../data/timeline.js';
 
 export default class PortfolioPage {
   constructor(router) {
@@ -21,14 +20,12 @@ export default class PortfolioPage {
   }
 
   render() {
-    // i18n-Bundles laden (merge — idempotent)
     i18n.load({ de, en, ru, es });
 
     const el = document.createElement('div');
     el.className = 'page page-portfolio';
 
     this._loadStyles();
-
     el.innerHTML = this._getHTML();
     return el;
   }
@@ -124,7 +121,7 @@ export default class PortfolioPage {
         </div>
       </section>
 
-      <!-- LEBENSLAUF (Timeline) -->
+      <!-- LEBENSLAUF (Timeline) — Platzhalter, wird in init() befüllt -->
       <section class="experience" id="experience">
         <div class="section-container">
           <div class="section-header reveal">
@@ -132,9 +129,12 @@ export default class PortfolioPage {
             <h2 class="section-title" data-i18n="port.exp.title">Berufserfahrung & Bildung</h2>
           </div>
 
-          <div class="timeline-container">
+          <div class="timeline-container" id="timelineContainer">
             <div class="timeline-line"></div>
-            ${TIMELINE_ITEMS.map((item, idx) => this._renderTimelineItem(item, idx)).join('')}
+            <!-- Timeline-Items werden nach dem Firestore-Fetch eingefügt -->
+            <div class="timeline-loading">
+              <div class="loading-spinner"></div>
+            </div>
           </div>
         </div>
       </section>
@@ -202,6 +202,33 @@ export default class PortfolioPage {
     `;
   }
 
+  // ── Timeline: async laden und in den Container einfügen ──────
+  async _loadTimeline() {
+    const container = document.getElementById('timelineContainer');
+    if (!container) return;
+
+    try {
+      const items = await fetchTimeline();
+
+      // Spinner entfernen, Items einfügen
+      container.innerHTML = '<div class="timeline-line"></div>';
+      items.forEach((item, idx) => {
+        container.insertAdjacentHTML('beforeend', this._renderTimelineItem(item, idx));
+      });
+
+      // Timeline-Animationen / Filter-Logik initialisieren
+      initTimeline();
+
+    } catch (err) {
+      console.error('[Portfolio] Timeline-Ladefehler:', err);
+      container.innerHTML = `
+        <p style="color:var(--text-muted);text-align:center;padding:2rem;">
+          <i class="fas fa-exclamation-circle"></i>
+          Timeline konnte nicht geladen werden.
+        </p>`;
+    }
+  }
+
   _renderHoloCard() {
     return `
       <div class="card-section">
@@ -211,8 +238,10 @@ export default class PortfolioPage {
               <div class="card__shine"></div>
               <div class="card__glare"></div>
               <div class="card__content avatar__content">
-                <img class="avatar" src="https://res.cloudinary.com/dglahdmrm/image/upload/q_auto/f_auto/v1775611260/profile_flnnc6.png" alt="Kirill Heldt"
-                    onerror="this.style.display='none'; this.parentElement.querySelector('.avatar-placeholder').style.display='flex';">
+                <img class="avatar"
+                     src="https://res.cloudinary.com/dglahdmrm/image/upload/q_auto/f_auto/v1775611260/profile_flnnc6.png"
+                     alt="Kirill Heldt"
+                     onerror="this.style.display='none'; this.parentElement.querySelector('.avatar-placeholder').style.display='flex';">
                 <div class="avatar-placeholder" style="display: none;"><span>KH</span></div>
               </div>
               <div class="card__content">
@@ -276,7 +305,6 @@ export default class PortfolioPage {
   _renderSkillCard(icon, titleKey, titleFallback, descKey, descFallback, tagsStr, accent = '') {
     const tags = tagsStr.split(',').map(t => `<span class="skill-tag">${t.trim()}</span>`).join('');
     const iconStyle = accent ? `style="background:${accent}22;color:${accent}"` : '';
-    const backStyle = accent ? `style="background:${accent};color:#fff"` : '';
 
     return `
       <div class="skill-card-flip" tabindex="0" role="button" aria-pressed="false">
@@ -287,7 +315,7 @@ export default class PortfolioPage {
             <div class="flip-indicator"><i class="fas fa-sync-alt"></i></div>
           </div>
           <div class="skill-card-back">
-            <div class="skill-icon-small" ${backStyle}><i class="${icon}"></i></div>
+            <div class="skill-icon-small" ${accent ? `style="background:${accent};color:#fff"` : ''}><i class="${icon}"></i></div>
             <h3 data-i18n="${titleKey}">${titleFallback}</h3>
             <p data-i18n="${descKey}">${descFallback}</p>
             <div class="skill-tags">${tags}</div>
@@ -298,73 +326,28 @@ export default class PortfolioPage {
   }
 
   _renderTimelineItem(item, idx) {
-  // Die Tags werden jetzt komplett über i18n geladen
-  // Die Keys existieren bereits in den Sprachdateien (tl.0.tag1, tl.0.tag2, etc.)
-  const tagCount = item.tags.length;
-  const tags = Array.from({ length: tagCount }, (_, i) => {
-    const tagKey = `tl.${idx}.tag${i + 1}`;
-    // Fallback: wenn kein i18n-Key existiert, den ursprünglichen Tag-Text verwenden
-    const fallback = item.tags[i];
-    return `<span class="tag" data-i18n="${tagKey}">${fallback}</span>`;
-  }).join('');
+    const tags = item.tags.map((fallback, i) => {
+      return `<span class="tag" data-i18n="tl.${idx}.tag${i + 1}">${fallback}</span>`;
+    }).join('');
 
-  return `
-    <div class="timeline-item ${item.type}" data-start="${item.start}" data-end="${item.end}">
-      <div class="timeline-card">
-        <div class="card-header">
-          <h3 data-i18n="tl.${idx}.title">${item.title}</h3>
-          <span class="card-date" data-i18n="tl.${idx}.date">${item.date}</span>
-        </div>
-        <div class="card-details">
-          <div class="card-company" data-i18n="tl.${idx}.company">${item.company}</div>
-          <p class="card-description" data-i18n="tl.${idx}.desc">${item.description}</p>
-          <div class="card-tags">${tags}</div>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-  _renderWimCard(size, iconKey, iconFA, badgeMod, badgeText, title, desc, cta, href, internal, stats = '') {
-    const sizeClass = size.split(' ').map(s => `card-${s}`).join(' ');
-    const badge = badgeText ? `<span class="card-badge${badgeMod ? ' ' + badgeMod : ''}">${badgeText}</span>` : '';
-    const ctaBtn = cta ? `<div class="card-footer"><span class="card-cta">${cta} <i class="fas fa-arrow-right"></i></span></div>` : '';
-
-    const inner = `
-      <div class="card-content">
-        <div class="card-header">
-          <div class="card-icon ${iconKey}"><i class="${iconFA}"></i></div>
-          ${badge}
-        </div>
-        <div class="card-body">
-          <h3 class="card-title">${title}</h3>
-          <p class="card-description">${desc}</p>
-          ${stats}
-        </div>
-        ${ctaBtn}
-      </div>
-    `;
-
-    if (internal) {
-      return `<article class="content-card ${sizeClass}"><button class="content-card-link" data-link="${href}">${inner}</button></article>`;
-    }
-    return `<article class="content-card ${sizeClass}"><a href="${href}" class="content-card-link" target="_blank" rel="noopener noreferrer">${inner}</a></article>`;
-  }
-
-  _renderCardStats(values) {
     return `
-      <div class="card-stats">
-        ${values.map(v => `
-          <div class="stat">
-            <div class="stat-value">${v}</div>
-            <div class="stat-label">${v === 'Live' ? 'Status' : v === '3D/Code' ? 'Content' : 'Sprache'}</div>
+      <div class="timeline-item ${item.type}" data-start="${item.start}" data-end="${item.end}">
+        <div class="timeline-card">
+          <div class="card-header">
+            <h3 data-i18n="tl.${idx}.title">${item.title}</h3>
+            <span class="card-date" data-i18n="tl.${idx}.date">${item.date}</span>
           </div>
-        `).join('')}
+          <div class="card-details">
+            <div class="card-company" data-i18n="tl.${idx}.company">${item.company}</div>
+            <p class="card-description" data-i18n="tl.${idx}.desc">${item.description}</p>
+            <div class="card-tags">${tags}</div>
+          </div>
+        </div>
       </div>
     `;
   }
 
-   init() {
+  async init() {
     i18n.init();
 
     document.querySelectorAll('.port-smooth[data-anchor]').forEach(btn => {
@@ -377,14 +360,16 @@ export default class PortfolioPage {
     initScrollReveal();
     initStatCounters();
     this._holoCleanup = initHolographicCard();
-    initSkillCards();  
-    initTimeline();
+    initSkillCards();
     initLangBars();
     initWimTabs();
+
+    // Timeline async laden — blockiert init() nicht für den Rest der Seite
+    await this._loadTimeline();
   }
 
   cleanup() {
     if (this._holoCleanup) this._holoCleanup();
-    cleanupSkillCards(); 
+    cleanupSkillCards();
   }
 }

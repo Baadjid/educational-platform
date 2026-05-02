@@ -1,4 +1,6 @@
 // components/Sidebar.js
+import { CONFIG } from '../core/config.js';
+import { renderProtectedButton } from '../core/routes/protected.js';
 
 export function sidebarHTML() {
   return `
@@ -14,15 +16,17 @@ export function sidebarHTML() {
 
       <nav class="sidebar-nav">
         <div class="sidebar-section-label" data-i18n="sidebar.section.pages">Seiten</div>
-        <button class="sidebar-link" data-link="/"><i class="fas fa-home"></i><span data-i18n="sidebar.home">Willkommen</span></button>
-        <button class="sidebar-link" data-link="/portfolio"><i class="fas fa-briefcase"></i><span data-i18n="sidebar.portfolio">Portfolio</span></button>
+
+        ${renderProtectedButton(CONFIG.ROUTES.HOME, '<i class="fas fa-home"></i><span data-i18n="sidebar.home">Willkommen</span>', 'sidebar-link')}
+        ${renderProtectedButton(CONFIG.ROUTES.PORTFOLIO, '<i class="fas fa-briefcase"></i><span data-i18n="sidebar.portfolio">Portfolio</span>', 'sidebar-link')}
 
         <div class="sidebar-divider"></div>
         <div class="sidebar-section-label" data-i18n="sidebar.section.projects">Projekte</div>
-        <button class="sidebar-link" data-link="/projekte/blender"><i class="fas fa-cube"></i><span data-i18n="sidebar.blender">Blender 3D</span></button>
-        <button class="sidebar-link" data-link="/projekte/lernzettel"><i class="fas fa-book-open"></i><span data-i18n="sidebar.lernzettel">Lernressourcen</span></button>
-        <button class="sidebar-link" data-link="/projekte/gedichte"><i class="fas fa-feather-alt"></i><span data-i18n="sidebar.gedichte">Gedichte</span></button>
-        <button class="sidebar-link" data-link="/projekte/study-planner"><i class="fas fa-calendar-alt"></i><span data-i18n="sidebar.planner">Schedule Crunch</span></button>
+
+        ${renderProtectedButton(CONFIG.ROUTES.BLENDER,       '<i class="fas fa-cube"></i><span data-i18n="sidebar.blender">Blender 3D</span>',                 'sidebar-link')}
+        ${renderProtectedButton(CONFIG.ROUTES.LERNSETTEL,    '<i class="fas fa-book-open"></i><span data-i18n="sidebar.lernzettel">Lernressourcen</span>',      'sidebar-link')}
+        ${renderProtectedButton(CONFIG.ROUTES.POEMS,      '<i class="fas fa-feather-alt"></i><span data-i18n="sidebar.gedichte">Gedichte</span>',            'sidebar-link')}
+        ${renderProtectedButton(CONFIG.ROUTES.SCHEDULECRUNCH, '<i class="fas fa-calendar-alt"></i><span data-i18n="sidebar.planner">Schedule Crunch</span>',    'sidebar-link')}
 
         <div class="sidebar-divider"></div>
         <div class="sidebar-section-label" data-i18n="sidebar.section.social">Social</div>

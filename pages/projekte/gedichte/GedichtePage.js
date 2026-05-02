@@ -5,7 +5,7 @@ import { initScrollReveal } from '../../../shared/js/index.js';
 import { footerHTML } from '../../../components/Footer.js';
 import { i18n } from '../../../shared/js/i18n.js';
 import { de, en, ru, es } from './js/translation/translation.js';
-import { POEMS, POEM_CATEGORIES, getPoemsByCategory, getPoemById } from '../../../data/poems.js';
+import { POEM_CATEGORIES, fetchPoems, getPoemsByCategory, getPoemById } from '../../../data/poems.js';
 import { initWimTabs } from '../../../shared/js/wim-tabs.js';
 
 
@@ -13,7 +13,8 @@ export default class GedichtePage {
   constructor(router) {
     this.router = router;
     this.currentCategory = 'all';
-    this.currentPoemId = 1;
+    this.currentPoemId = null;
+    this.poems = [];
     this._bindMethods();
   }
 
@@ -78,7 +79,9 @@ export default class GedichtePage {
             <!-- Gedicht-Liste (links) -->
             <div class="poetry-list-wrap">
               <div class="poetry-list-label" data-i18n="gd.list.label">Sammlung</div>
-              <div class="poetry-list" id="poemsList"></div>
+              <div class="poetry-list" id="poemsList">
+                <div class="auth-spinner" style="margin:2rem auto;"></div>
+              </div>
             </div>
 
             <!-- Gedicht-Anzeige (rechts) -->
@@ -103,12 +106,23 @@ export default class GedichtePage {
     `;
   }
 
-  init() {
+  async init() {
     i18n.init();
     initScrollReveal();
+
+    this.poems = await fetchPoems();
+
+    if (this.poems.length === 0) {
+      const list = document.getElementById('poemsList');
+      if (list) list.innerHTML = '<p style="padding:1rem;color:var(--text-muted);">Keine Gedichte gefunden.</p>';
+      return;
+    }
+
+    const first = getPoemsByCategory(this.poems, this.currentCategory);
+    if (first.length > 0) this.currentPoemId = first[0].id;
+
     this._renderAll();
 
-    // initWimTabs übernimmt Slider, Scroll, Keyboard — wir liefern nur den Kategorie-Callback
     initWimTabs(document, {
       onTabChange: (key) => this._onCategoryChange(key),
     });
@@ -130,10 +144,8 @@ export default class GedichtePage {
 
   _onCategoryChange(category) {
     this.currentCategory = category;
-
-    const poems = getPoemsByCategory(category);
+    const poems = getPoemsByCategory(this.poems, category);
     if (poems.length > 0) this.currentPoemId = poems[0].id;
-
     this._renderAll();
   }
 
@@ -148,7 +160,7 @@ export default class GedichtePage {
     const btn = e.target.closest('[data-nav]');
     if (!btn) return;
 
-    const poems      = getPoemsByCategory(this.currentCategory);
+    const poems      = getPoemsByCategory(this.poems, this.currentCategory);
     const currentIdx = poems.findIndex(p => p.id === this.currentPoemId);
     const dir        = btn.dataset.nav;
 
@@ -172,7 +184,7 @@ export default class GedichtePage {
     const el = document.getElementById('poemsList');
     if (!el) return;
 
-    const poems = getPoemsByCategory(this.currentCategory);
+    const poems = getPoemsByCategory(this.poems, this.currentCategory);
 
     el.innerHTML = poems.map((poem, idx) => `
       <button class="poem-btn ${poem.id === this.currentPoemId ? 'active' : ''}"
@@ -197,10 +209,10 @@ export default class GedichtePage {
     const el = document.getElementById('poemDisplay');
     if (!el) return;
 
-    const poem = getPoemById(this.currentPoemId);
+    const poem = getPoemById(this.poems, this.currentPoemId);
     if (!poem) return;
 
-    const poems      = getPoemsByCategory(this.currentCategory);
+    const poems      = getPoemsByCategory(this.poems, this.currentCategory);
     const currentIdx = poems.findIndex(p => p.id === this.currentPoemId);
 
     const stanzas = poem.stanzas

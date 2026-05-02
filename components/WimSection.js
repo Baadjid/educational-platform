@@ -1,23 +1,14 @@
 // components/WimSection.js
-// Wiederverwendbare "Was ich mache" Section für Home und Portfolio
-// Mit i18n-Integration
-
 import { i18n } from '../shared/js/i18n.js';
-import { de, en, ru, es } from './translation/translations.js';
+import { de, en, ru, es } from '../core/translation/translation.js';
 import { initWimTabs } from '../shared/js/wim-tabs.js';
+import { PROTECTED_ROUTES, renderLockOverlay } from '../core/routes/protected.js';
 
-// ================================================================
-// Icon-Map: iconKey → PNG-Pfad (für eigene Icons statt FontAwesome)
-// ================================================================
 const ICON_IMAGES = {
   'blender-custom':   'https://res.cloudinary.com/dglahdmrm/image/upload/q_auto/f_auto/v1775611250/blender_Icon_zam2sz.png',
   'education-custom': 'https://res.cloudinary.com/dglahdmrm/image/upload/q_auto/f_auto/v1775611250/abiunity_Icon_ddix3a.png',
   'flutter-custom':   'assets/icons/flutter_Icon.png',
 };
-
-// ================================================================
-// Interne Hilfsfunktionen
-// ================================================================
 
 function _renderCardStats(stat1Key, stat1Fallback, stat2Key, stat2Fallback, stat3Key, stat3Fallback) {
   return `
@@ -69,10 +60,13 @@ function _renderWimCard(size, iconKey, iconFA, badgeMod, badgeKey, badgeFallback
     </div>
   `;
 
+  const lockOverlay = (internal && PROTECTED_ROUTES.has(href)) ? renderLockOverlay(href) : '';
+
   if (internal) {
     return `
       <article class="content-card ${sizeClass}">
         <button class="content-card-link" data-link="${href}">${inner}</button>
+        ${lockOverlay}
       </article>
     `;
   }
@@ -80,15 +74,265 @@ function _renderWimCard(size, iconKey, iconFA, badgeMod, badgeKey, badgeFallback
   return `
     <article class="content-card ${sizeClass}">
       <a href="${href}" class="content-card-link" target="_blank" rel="noopener noreferrer">${inner}</a>
+      ${lockOverlay}
     </article>
   `;
 }
 
-// ================================================================
-// Hauptfunktion: WIM-Section rendern
-// ================================================================
+// ============================================
+// PROJEKTE METADATEN - Zentrale Datenquelle
+// ============================================
+const PROJECTS_META = [
+  { 
+    id: 'twitch',
+    size: 'large featured',
+    iconKey: 'twitch',
+    iconFA: 'fab fa-twitch',
+    badgeMod: 'live',
+    badgeKey: 'wim.twitch.badge',
+    badgeFallback: 'Live Projekt',
+    titleKey: 'wim.twitch.title',
+    titleFallback: 'Twitch Gaming & 3D Live Creation',
+    descKey: 'wim.twitch.desc',
+    descFallback: 'Gaming-Streams kombiniert mit der Live-Erstellung von 3D-Modellen und Designs – interaktiv, transparent und in Echtzeit.',
+    ctaKey: 'wim.twitch.cta',
+    ctaFallback: 'Stream ansehen',
+    href: 'https://www.twitch.tv/baadjid',
+    internal: false,
+    category: ['all', 'social'],
+    stats: _renderCardStats('wim.twitch.stat1', 'Live', 'wim.twitch.stat2', 'Gaming', 'wim.twitch.stat3', '3D')
+  },
+  { 
+    id: 'blender',
+    size: 'medium',
+    iconKey: 'blender-custom',
+    iconFA: '',
+    badgeMod: '',
+    badgeKey: 'wim.blender.badge',
+    badgeFallback: 'Kreativprojekt',
+    titleKey: 'wim.blender.title',
+    titleFallback: '3D Visualisierung',
+    descKey: 'wim.blender.desc',
+    descFallback: 'Hochwertige 3D-Modelle, Animationen und Renderings mit Fokus auf Präzision und Ästhetik.',
+    ctaKey: 'wim.blender.cta',
+    ctaFallback: 'Galerie öffnen',
+    href: '/projekte/blender',
+    internal: true,
+    category: ['all', 'creative']
+  },
+  { 
+    id: 'tiktok',
+    size: 'small',
+    iconKey: 'tiktok',
+    iconFA: 'fab fa-tiktok',
+    badgeMod: '',
+    badgeKey: 'wim.tiktok.badge',
+    badgeFallback: 'Content Kanal',
+    titleKey: 'wim.tiktok.title',
+    titleFallback: 'TikTok',
+    descKey: 'wim.tiktok.desc',
+    descFallback: 'Kurzvideos zu Gaming, 3D und Development – kompakt, verständlich und visuell klar strukturiert.',
+    ctaKey: 'wim.tiktok.cta',
+    ctaFallback: 'Kanal öffnen',
+    href: 'https://www.tiktok.com/@baadjid',
+    internal: false,
+    category: ['all', 'social']
+  },
+  { 
+    id: 'instagram',
+    size: 'small',
+    iconKey: 'instagram',
+    iconFA: 'fab fa-instagram',
+    badgeMod: '',
+    badgeKey: 'wim.instagram.badge',
+    badgeFallback: 'Content Kanal',
+    titleKey: 'wim.instagram.title',
+    titleFallback: 'Instagram',
+    descKey: 'wim.instagram.desc',
+    descFallback: 'Einblicke in Projekte, Designprozesse und kreative Konzepte – modern und konsistent präsentiert.',
+    ctaKey: 'wim.instagram.cta',
+    ctaFallback: 'Profil ansehen',
+    href: 'https://www.instagram.com/esencia_silvestre61/',
+    internal: false,
+    category: ['all', 'social']
+  },
+  { 
+    id: 'poetry',
+    size: 'small',
+    iconKey: 'poetry',
+    iconFA: 'fas fa-feather-alt',
+    badgeMod: '',
+    badgeKey: 'wim.poetry.badge',
+    badgeFallback: 'Kreativprojekt',
+    titleKey: 'wim.poetry.title',
+    titleFallback: 'Gedichte & Texte',
+    descKey: 'wim.poetry.desc',
+    descFallback: 'Literarische Arbeiten mit Fokus auf Ausdruck, Stil und sprachliche Klarheit.',
+    ctaKey: 'wim.poetry.cta',
+    ctaFallback: 'Texte lesen',
+    href: '/projekte/gedichte',
+    internal: true,
+    category: ['all', 'creative']
+  },
+  { 
+    id: 'github',
+    size: 'wide',
+    iconKey: 'github',
+    iconFA: 'fab fa-github',
+    badgeMod: '',
+    badgeKey: 'wim.github.badge',
+    badgeFallback: 'Open Source',
+    titleKey: 'wim.github.title',
+    titleFallback: 'Softwareprojekte',
+    descKey: 'wim.github.desc',
+    descFallback: 'Technische Projekte, Tools und Experimente mit sauberer Architektur und Performance-Fokus.',
+    ctaKey: 'wim.github.cta',
+    ctaFallback: 'Repository ansehen',
+    href: 'https://github.com/Baadjid',
+    internal: false,
+    category: ['all', 'dev']
+  },
+  { 
+    id: 'lernzettel',
+    size: 'wide',
+    iconKey: 'education-custom',
+    iconFA: '',
+    badgeMod: '',
+    badgeKey: 'wim.lernzettel.badge',
+    badgeFallback: 'Wissensprojekt',
+    titleKey: 'wim.lernzettel.title',
+    titleFallback: 'Lernressourcen',
+    descKey: 'wim.lernzettel.desc',
+    descFallback: 'Strukturierte Lernunterlagen und technische Zusammenfassungen – effizient und praxisorientiert.',
+    ctaKey: 'wim.lernzettel.cta',
+    ctaFallback: 'Ressourcen öffnen',
+    href: '/projekte/lernzettel',
+    internal: true,
+    category: ['all', 'education']
+  },
+  { 
+    id: 'planner',
+    size: 'small',
+    iconKey: 'flutter-custom',
+    iconFA: 'fab fa-calendar-alt',
+    badgeMod: 'soon',
+    badgeKey: 'wim.planner.badge',
+    badgeFallback: 'In Entwicklung',
+    titleKey: 'wim.planner.title',
+    titleFallback: 'Schedule Crunch',
+    descKey: 'wim.planner.desc',
+    descFallback: 'Produktivitäts-App zur strukturierten Planung von Lern- und Projektphasen.',
+    ctaKey: 'wim.planner.cta',
+    ctaFallback: 'Entwicklung verfolgen',
+    href: '/projekte/study-planner',
+    internal: true,
+    category: ['all', 'dev']
+  }
+];
+
+// Kategorien-spezifische Description-Overrides
+const DESC_OVERRIDES = {
+  social: {
+    twitch: 'wim.twitch.desc.social',
+    tiktok: 'wim.tiktok.desc.social',
+    instagram: 'wim.instagram.desc.social'
+  },
+  creative: {
+    blender: 'wim.blender.desc.creative',
+    poetry: 'wim.poetry.desc.creative'
+  },
+  dev: {
+    github: 'wim.github.desc.dev'
+  },
+  education: {
+    lernzettel: 'wim.lernzettel.desc.edu'
+  }
+};
+
+// Stats-Overrides für spezifische Kategorien
+const STATS_OVERRIDES = {
+  social: {
+    twitch: {
+      stat3: { key: 'wim.twitch.stat3.social', fallback: 'Community' }
+    }
+  }
+};
+
+function getProjectDescription(project, category) {
+  if (category !== 'all' && DESC_OVERRIDES[category] && DESC_OVERRIDES[category][project.id]) {
+    return DESC_OVERRIDES[category][project.id];
+  }
+  return project.descKey;
+}
+
+function getProjectStats(project, category) {
+  if (category !== 'all' && STATS_OVERRIDES[category] && STATS_OVERRIDES[category][project.id]) {
+    const override = STATS_OVERRIDES[category][project.id];
+    if (override.stat3) {
+      return _renderCardStats(
+        project.stats.match(/data-i18n="([^"]+)"/g)?.[0]?.match(/"([^"]+)"/)?.[1] || 'wim.twitch.stat1',
+        project.stats.match(/data-i18n="[^"]+">([^<]+)</)?.[1] || 'Live',
+        project.stats.match(/data-i18n="[^"]+">([^<]+)</)?.[2] || 'Gaming',
+        override.stat3.key,
+        override.stat3.fallback
+      );
+    }
+  }
+  return project.stats || '';
+}
+
+function renderProjectsByCategory(category) {
+  const projects = PROJECTS_META.filter(p => p.category.includes(category));
+  
+  return projects.map(project => {
+    const descKey = getProjectDescription(project, category);
+    const stats = getProjectStats(project, category);
+    
+    return _renderWimCard(
+      project.size,
+      project.iconKey,
+      project.iconFA,
+      project.badgeMod,
+      project.badgeKey,
+      project.badgeFallback,
+      project.titleKey,
+      project.titleFallback,
+      descKey,
+      project.descFallback,
+      project.ctaKey,
+      project.ctaFallback,
+      project.href,
+      project.internal,
+      stats
+    );
+  }).join('');
+}
+
+// Kategorien Konfiguration
+const CATEGORIES = [
+  { id: 'all', label: 'wim.tab.all', labelFallback: 'Alle', icon: 'fas fa-th-large' },
+  { id: 'social', label: 'wim.tab.social', labelFallback: 'Social Media', icon: 'fas fa-share-nodes' },
+  { id: 'creative', label: 'wim.tab.creative', labelFallback: 'Kreatives', icon: 'fas fa-wand-magic-sparkles' },
+  { id: 'dev', label: 'wim.tab.dev', labelFallback: 'Entwicklung', icon: 'fas fa-code' },
+  { id: 'education', label: 'wim.tab.education', labelFallback: 'Bildung', icon: 'fas fa-graduation-cap' }
+];
+
 export function renderWimSection() {
   i18n.load({ de, en, ru, es });
+
+  const tabsHtml = CATEGORIES.map(cat => `
+    <button class="wim-tab ${cat.id === 'all' ? 'active' : ''}" data-wim="${cat.id}" role="tab">
+      <i class="${cat.icon}"></i><span data-i18n="${cat.label}">${cat.labelFallback}</span>
+    </button>
+  `).join('');
+
+  const categoriesHtml = CATEGORIES.map(cat => `
+    <div class="wim-category ${cat.id === 'all' ? 'active' : 'hidden'}" data-wim-cat="${cat.id}">
+      <div class="wim-grid">
+        ${renderProjectsByCategory(cat.id)}
+      </div>
+    </div>
+  `).join('');
 
   return `
     <section class="was-ich-mache" id="content">
@@ -104,146 +348,11 @@ export function renderWimSection() {
             </p>
           </header>
 
-          <!-- Tab Navigation -->
           <nav class="wim-tabs" role="tablist">
-            <button class="wim-tab active" data-wim="all" role="tab"><i class="fas fa-th-large"></i><span data-i18n="wim.tab.all">Alle</span></button>
-            <button class="wim-tab" data-wim="social" role="tab"><i class="fas fa-share-nodes"></i><span data-i18n="wim.tab.social">Social Media</span></button>
-            <button class="wim-tab" data-wim="creative" role="tab"><i class="fas fa-wand-magic-sparkles"></i><span data-i18n="wim.tab.creative">Kreatives</span></button>
-            <button class="wim-tab" data-wim="dev" role="tab"><i class="fas fa-code"></i><span data-i18n="wim.tab.dev">Entwicklung</span></button>
-            <button class="wim-tab" data-wim="education" role="tab"><i class="fas fa-graduation-cap"></i><span data-i18n="wim.tab.education">Bildung</span></button>
+            ${tabsHtml}
           </nav>
 
-          <!-- ===================== ALLE ===================== -->
-          <div class="wim-category active" data-wim-cat="all">
-            <div class="wim-grid">
-              ${_renderWimCard('large featured', 'twitch', 'fab fa-twitch', 'live',
-                'wim.twitch.badge', 'Live Projekt',
-                'wim.twitch.title', 'Twitch Gaming & 3D Live Creation',
-                'wim.twitch.desc', 'Gaming-Streams kombiniert mit der Live-Erstellung von 3D-Modellen und Designs – interaktiv, transparent und in Echtzeit.',
-                'wim.twitch.cta', 'Stream ansehen',
-                'https://www.twitch.tv/baadjid', false,
-                _renderCardStats('wim.twitch.stat1', 'Live', 'wim.twitch.stat2', 'Gaming', 'wim.twitch.stat3', '3D'))}
-
-              ${_renderWimCard('medium', 'blender-custom', '', '',
-                'wim.blender.badge', 'Kreativprojekt',
-                'wim.blender.title', '3D Visualisierung',
-                'wim.blender.desc', 'Hochwertige 3D-Modelle, Animationen und Renderings mit Fokus auf Präzision und Ästhetik.',
-                'wim.blender.cta', 'Galerie öffnen',
-                '/projekte/blender', true)}
-
-              ${_renderWimCard('small', 'tiktok', 'fab fa-tiktok', '',
-                'wim.tiktok.badge', 'Content Kanal',
-                'wim.tiktok.title', 'TikTok',
-                'wim.tiktok.desc', 'Kurzvideos zu Gaming, 3D und Development – kompakt, verständlich und visuell klar strukturiert.',
-                'wim.tiktok.cta', 'Kanal öffnen',
-                'https://www.tiktok.com/@baadjid', false)}
-
-              ${_renderWimCard('small', 'instagram', 'fab fa-instagram', '',
-                'wim.instagram.badge', 'Content Kanal',
-                'wim.instagram.title', 'Instagram',
-                'wim.instagram.desc', 'Einblicke in Projekte, Designprozesse und kreative Konzepte – modern und konsistent präsentiert.',
-                'wim.instagram.cta', 'Profil ansehen',
-                'https://www.instagram.com/esencia_silvestre61/', false)}
-
-              ${_renderWimCard('small', 'poetry', 'fas fa-feather-alt', '',
-                'wim.poetry.badge', 'Kreativprojekt',
-                'wim.poetry.title', 'Gedichte & Texte',
-                'wim.poetry.desc', 'Literarische Arbeiten mit Fokus auf Ausdruck, Stil und sprachliche Klarheit.',
-                'wim.poetry.cta', 'Texte lesen',
-                '/projekte/gedichte', true)}
-
-              ${_renderWimCard('wide', 'github', 'fab fa-github', '',
-                'wim.github.badge', 'Open Source',
-                'wim.github.title', 'Softwareprojekte',
-                'wim.github.desc', 'Technische Projekte, Tools und Experimente mit sauberer Architektur und Performance-Fokus.',
-                'wim.github.cta', 'Repository ansehen',
-                'https://github.com/Baadjid', false)}
-
-              ${_renderWimCard('wide', 'education-custom', '', '',
-                'wim.lernzettel.badge', 'Wissensprojekt',
-                'wim.lernzettel.title', 'Lernressourcen',
-                'wim.lernzettel.desc', 'Strukturierte Lernunterlagen und technische Zusammenfassungen – effizient und praxisorientiert.',
-                'wim.lernzettel.cta', 'Ressourcen öffnen',
-                '/projekte/lernzettel', true)}
-
-              ${_renderWimCard('small', 'flutter-custom', 'fab fa-calendar-alt', 'soon',
-                'wim.planner.badge', 'In Entwicklung',
-                'wim.planner.title', 'Study Planner App',
-                'wim.planner.desc', 'Produktivitäts-App zur strukturierten Planung von Lern- und Projektphasen.',
-                'wim.planner.cta', 'Entwicklung verfolgen',
-                '#', true)}
-            </div>
-          </div>
-
-          <!-- ===================== SOCIAL ===================== -->
-          <div class="wim-category hidden" data-wim-cat="social">
-            <div class="wim-grid">
-              ${_renderWimCard('large featured', 'twitch', 'fab fa-twitch', 'live',
-                'wim.twitch.badge', 'Live Projekt',
-                'wim.twitch.title', 'Twitch Gaming & 3D Live Creation',
-                'wim.twitch.desc.social', 'Interaktive Gaming-Sessions kombiniert mit 3D-Erstellung in Echtzeit.',
-                'wim.twitch.cta', 'Stream ansehen',
-                'https://www.twitch.tv/baadjid', false,
-                _renderCardStats('wim.twitch.stat1', 'Live', 'wim.twitch.stat2', 'Gaming', 'wim.twitch.stat3.social', 'Community'))}
-
-              ${_renderWimCard('medium', 'tiktok', 'fab fa-tiktok', '',
-                'wim.tiktok.badge', 'Content Kanal',
-                'wim.tiktok.title', 'TikTok',
-                'wim.tiktok.desc.social', 'Kompakte Tutorials und kreative Kurzformate.',
-                'wim.tiktok.cta', 'Kanal öffnen',
-                'https://www.tiktok.com/@baadjid', false)}
-
-              ${_renderWimCard('medium', 'instagram', 'fab fa-instagram', '',
-                'wim.instagram.badge', 'Content Kanal',
-                'wim.instagram.title', 'Instagram',
-                'wim.instagram.desc.social', 'Kuratiertes Portfolio und visuelle Projekt-Highlights.',
-                'wim.instagram.cta', 'Profil ansehen',
-                'https://www.instagram.com/esencia_silvestre61/', false)}
-            </div>
-          </div>
-
-          <!-- ===================== KREATIV ===================== -->
-          <div class="wim-category hidden" data-wim-cat="creative">
-            <div class="wim-grid">
-              ${_renderWimCard('large', 'blender-custom', '', '',
-                'wim.blender.badge', 'Portfolio',
-                'wim.blender.title', '3D Visualisierung',
-                'wim.blender.desc.creative', 'Professionelles 3D-Design und hochwertige Renderings.',
-                'wim.blender.cta', 'Portfolio öffnen',
-                '/projekte/blender', true)}
-
-              ${_renderWimCard('medium', 'poetry', 'fas fa-feather-alt', '',
-                'wim.poetry.badge', 'Kreativprojekt',
-                'wim.poetry.title', 'Gedichte & Texte',
-                'wim.poetry.desc.creative', 'Literarische Projekte mit stilistischem Anspruch.',
-                'wim.poetry.cta', 'Texte lesen',
-                '/projekte/gedichte', true)}
-            </div>
-          </div>
-
-          <!-- ===================== ENTWICKLUNG ===================== -->
-          <div class="wim-category hidden" data-wim-cat="dev">
-            <div class="wim-grid">
-              ${_renderWimCard('large', 'github', 'fab fa-github', '',
-                'wim.github.badge', 'Open Source',
-                'wim.github.title', 'Softwareprojekte',
-                'wim.github.desc.dev', 'Skalierbare Webprojekte und strukturierte Code-Architekturen.',
-                'wim.github.cta', 'Repository ansehen',
-                'https://github.com/Baadjid', false)}
-            </div>
-          </div>
-
-          <!-- ===================== BILDUNG ===================== -->
-          <div class="wim-category hidden" data-wim-cat="education">
-            <div class="wim-grid">
-              ${_renderWimCard('large', 'education-custom', '', '',
-                'wim.lernzettel.badge', 'Wissensprojekt',
-                'wim.lernzettel.title', 'Lernressourcen',
-                'wim.lernzettel.desc.edu', 'Systematisch aufbereitete Lernunterlagen zur effizienten Wissensvermittlung.',
-                'wim.lernzettel.cta', 'Ressourcen öffnen',
-                '/projekte/lernzettel', true)}
-            </div>
-          </div>
+          ${categoriesHtml}
 
         </div>
       </div>

@@ -67,18 +67,13 @@ export function initWimTabs(container = document, { onTabChange } = {}) {
     };
 
     // ── Initialisierung: sofort den aktiven Tab anzeigen ─────────
-    const initialActive = tabsContainer.querySelector('.wim-tab.active') || tabs[0];
-    if (initialActive) {
-      // Sicherstellen dass genau dieser Tab die active-Klasse hat
-      tabs.forEach(t => t.classList.remove('active'));
-      initialActive.classList.add('active');
-
-      // Panels sofort korrekt ein-/ausblenden
-      activatePanel(initialActive.dataset.wim);
-
-      // Slider nach Layout-Berechnung positionieren
-      setTimeout(() => positionSlider(initialActive), 50);
-    }
+      const initialActive = tabsContainer.querySelector('.wim-tab.active') || tabs[0];
+      if (initialActive) {
+        tabs.forEach(t => t.classList.remove('active'));
+        initialActive.classList.add('active');
+        activatePanel(initialActive.dataset.wim);
+        setTimeout(() => positionSlider(initialActive), 50);
+      }
 
     window.addEventListener('resize', () => {
       const active = tabsContainer.querySelector('.wim-tab.active');
